@@ -13,6 +13,8 @@ GIT_FOLDER="$FAMILY_DASHBOARD_FOLDER/.git"
 WEBSITE_FOLDER="$FAMILY_DASHBOARD_FOLDER/website"
 TODAYS_LOG_FILE_NAME="$LOG_PREFIX$TODAY$LOG_SUFFIX"
 
+UPDATE_STATE="NOTHING_SET"
+
 NGINX_WEBSITE_FOLDER="/usr/share/nginx/html/family-dashboard"
 NGINX_WEBSITE_LOGS_FOLDER="$NGINX_WEBSITE_FOLDER/logs"
 NGINX_WEBSITE_LOGS_INDEX_FILE="$NGINX_WEBSITE_LOGS_FOLDER/index.html"
@@ -83,6 +85,7 @@ fetch_latest(){
     log "There is a difference on origin/master pulling into $(pwd)"
     if git pull origin master; then
       log "Pull completed successfully."
+      UPDATE_STATE="UPDATE_SITE"
       return 0
     else
       banner_text "ERROR PULL FAILED!"
@@ -97,6 +100,7 @@ fetch_latest(){
 clone_project(){
   if git clone "https://github.com/henock/family-dashboard.git"; then
     log "Clone completed successfully"
+    UPDATE_STATE="UPDATE_SITE"
     return 0
   else
     banner_text "ERROR CLONE FAILED!"
@@ -122,9 +126,12 @@ clean_up_old_logs(){
   TEN_DAYS_AGO=$(date -I -d now-10-days)
   LOG_TO_DELETE="$LOG_DIR/$LOG_PREFIX$TEN_DAYS_AGO$LOG_SUFFIX"
   log "Cleaning up logs - checking for logs from 10 days ago: $LOG_TO_DELETE"
-  if test -e "$TEN_DAYS_AGO"; then
+  if test -e "$LOG_TO_DELETE"; then
+      log "Deleting $LOG_TO_DELETE"
       rm "$LOG_TO_DELETE" || log "ERROR - failed to delete $LOG_TO_DELETE"
-      show_all_variables
+      for i in "$LOG_DIR/"*; do
+        log "log file found in $LOG_DIR $i"
+      done
   else
     log "$LOG_TO_DELETE not found."
   fi
@@ -148,7 +155,10 @@ link_logs(){
 
 ########## START OF SCRIPT ##########
 test -e "$FAMILY_DASHBOARD_FOLDER" || init_website
-update_source_files && copy_files_to_website
+update_source_files
+if [[ "$UPDATE_STATE" == "UPDATE_SITE" ]] ; then
+  copy_files_to_website
+fi
 clean_up_old_logs
 link_logs
 log "================================================"
