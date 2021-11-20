@@ -5,6 +5,7 @@ set -euo pipefail
 
 TODAY="$(date -I)"
 SOURCE_FOLDER="/source"
+RUNTIME_CONFIG_FILE="runtime-config.js"
 LOG_PREFIX="deployments-on-"
 LOG_SUFFIX=".log.txt"                                         # .txt suffix allows the log files to be viewed in the browser
 LOG_DIR="/var/log/continuous-deployment"
@@ -34,6 +35,7 @@ show_all_variables(){
   log "================================================"
   log "LOG_DIR=$LOG_DIR"
   log "SOURCE_FOLDER=$SOURCE_FOLDER"
+  log "RUNTIME_CONFIG_FILE=$RUNTIME_CONFIG_FILE"
   log "FAMILY_DASHBOARD_FOLDER=$FAMILY_DASHBOARD_FOLDER"
   log "GIT_FOLDER=$GIT_FOLDER"
   log "WEBSITE_FOLDER=$WEBSITE_FOLDER"
@@ -72,6 +74,7 @@ copy_files_to_website(){
 
   log "Copying source files ($WEBSITE_FOLDER/* -> $NGINX_WEBSITE_FOLDER)."
   cp -Rvf "$WEBSITE_FOLDER/"* "$NGINX_WEBSITE_FOLDER"
+#  cat /config/runtime-config.js > "$NGINX_WEBSITE_FOLDER/js/$RUNTIME_CONFIG_FILE"
 
 #  for i in "$WEBSITE_FOLDER/"*; do
 #    echo "$i" | grep '.git' && continue
@@ -112,11 +115,9 @@ update_source_files(){
   cd $SOURCE_FOLDER
   if test -e "$GIT_FOLDER"; then
     cd $FAMILY_DASHBOARD_FOLDER
-    log "Local repo exists, checking for changes from origin..."
     fetch_latest
     return $?
   else
-    log "Cloning source into $(pwd)"
     clone_project
     return $?
   fi
@@ -125,15 +126,15 @@ update_source_files(){
 clean_up_old_logs(){
   TEN_DAYS_AGO=$(date -I -d now-10-days)
   LOG_TO_DELETE="$LOG_DIR/$LOG_PREFIX$TEN_DAYS_AGO$LOG_SUFFIX"
-  log "Cleaning up logs - checking for logs from 10 days ago: $LOG_TO_DELETE"
   if test -e "$LOG_TO_DELETE"; then
-      log "Deleting $LOG_TO_DELETE"
+      log "Deleting 10 days old log: $LOG_TO_DELETE"
       rm "$LOG_TO_DELETE" || log "ERROR - failed to delete $LOG_TO_DELETE"
+      log "Log files found in $LOG_DIR"
       for i in "$LOG_DIR/"*; do
-        log "log file found in $LOG_DIR $i"
+        log "$LOG_DIR/$i"
       done
   else
-    log "$LOG_TO_DELETE not found."
+    log "Cleaning up logs: Log from 10 days ago not found $LOG_TO_DELETE"
   fi
 }
 

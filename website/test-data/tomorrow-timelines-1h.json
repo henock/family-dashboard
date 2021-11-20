@@ -1,0 +1,1539 @@
+{
+  "data": {
+    "timelines": [
+      {
+        "timestep": "1h",
+        "startTime": "2021-09-19T11:00:00Z",
+        "endTime": "2021-09-23T23:00:00Z",
+        "intervals": [
+          {
+            "startTime": "2021-09-19T11:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.38,
+              "temperatureApparent": 17.38,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 1.81,
+              "humidity": 80
+            }
+          },
+          {
+            "startTime": "2021-09-19T12:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.38,
+              "temperatureApparent": 17.38,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 1.67,
+              "humidity": 82.06
+            }
+          },
+          {
+            "startTime": "2021-09-19T13:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.96,
+              "temperatureApparent": 16.96,
+              "precipitationProbability": 30,
+              "precipitationType": 1,
+              "windSpeed": 1.74,
+              "humidity": 85.75
+            }
+          },
+          {
+            "startTime": "2021-09-19T14:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4200,
+              "temperature": 16.91,
+              "temperatureApparent": 16.91,
+              "precipitationProbability": 40,
+              "precipitationType": 1,
+              "windSpeed": 1.5,
+              "humidity": 85.4
+            }
+          },
+          {
+            "startTime": "2021-09-19T15:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 17.13,
+              "temperatureApparent": 17.13,
+              "precipitationProbability": 45,
+              "precipitationType": 1,
+              "windSpeed": 1.48,
+              "humidity": 83.68
+            }
+          },
+          {
+            "startTime": "2021-09-19T16:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4200,
+              "temperature": 16.98,
+              "temperatureApparent": 16.98,
+              "precipitationProbability": 50,
+              "precipitationType": 1,
+              "windSpeed": 1.07,
+              "humidity": 87.95
+            }
+          },
+          {
+            "startTime": "2021-09-19T17:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4200,
+              "temperature": 16.97,
+              "temperatureApparent": 16.97,
+              "precipitationProbability": 40,
+              "precipitationType": 1,
+              "windSpeed": 0.85,
+              "humidity": 89.01
+            }
+          },
+          {
+            "startTime": "2021-09-19T18:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4200,
+              "temperature": 16.84,
+              "temperatureApparent": 16.84,
+              "precipitationProbability": 35,
+              "precipitationType": 1,
+              "windSpeed": 0.99,
+              "humidity": 89.51
+            }
+          },
+          {
+            "startTime": "2021-09-19T19:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.66,
+              "temperatureApparent": 16.66,
+              "precipitationProbability": 30,
+              "precipitationType": 1,
+              "windSpeed": 0.51,
+              "humidity": 89.61
+            }
+          },
+          {
+            "startTime": "2021-09-19T20:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.46,
+              "temperatureApparent": 16.46,
+              "precipitationProbability": 35,
+              "precipitationType": 1,
+              "windSpeed": 0.45,
+              "humidity": 90.76
+            }
+          },
+          {
+            "startTime": "2021-09-19T21:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.31,
+              "temperatureApparent": 16.31,
+              "precipitationProbability": 35,
+              "precipitationType": 1,
+              "windSpeed": 0.71,
+              "humidity": 90.18
+            }
+          },
+          {
+            "startTime": "2021-09-19T22:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.07,
+              "temperatureApparent": 16.07,
+              "precipitationProbability": 35,
+              "precipitationType": 1,
+              "windSpeed": 1.63,
+              "humidity": 80.95
+            }
+          },
+          {
+            "startTime": "2021-09-19T23:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.44,
+              "temperatureApparent": 15.44,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 1.95,
+              "humidity": 84.62
+            }
+          },
+          {
+            "startTime": "2021-09-20T00:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.04,
+              "temperatureApparent": 15.04,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.31,
+              "humidity": 86.21
+            }
+          },
+          {
+            "startTime": "2021-09-20T01:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14.75,
+              "temperatureApparent": 14.75,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.55,
+              "humidity": 85.14
+            }
+          },
+          {
+            "startTime": "2021-09-20T02:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 14.45,
+              "temperatureApparent": 14.45,
+              "precipitationProbability": 25,
+              "precipitationType": 1,
+              "windSpeed": 2.42,
+              "humidity": 84.47
+            }
+          },
+          {
+            "startTime": "2021-09-20T03:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14,
+              "temperatureApparent": 14,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.7,
+              "humidity": 82.6
+            }
+          },
+          {
+            "startTime": "2021-09-20T04:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 13.42,
+              "temperatureApparent": 13.42,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.48,
+              "humidity": 82.45
+            }
+          },
+          {
+            "startTime": "2021-09-20T05:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.93,
+              "temperatureApparent": 12.93,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.27,
+              "humidity": 83.95
+            }
+          },
+          {
+            "startTime": "2021-09-20T06:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.71,
+              "temperatureApparent": 12.71,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.29,
+              "humidity": 85.18
+            }
+          },
+          {
+            "startTime": "2021-09-20T07:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.99,
+              "temperatureApparent": 12.99,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.62,
+              "humidity": 85.23
+            }
+          },
+          {
+            "startTime": "2021-09-20T08:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 13.44,
+              "temperatureApparent": 13.44,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 2.89,
+              "humidity": 83.73
+            }
+          },
+          {
+            "startTime": "2021-09-20T09:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14.29,
+              "temperatureApparent": 14.29,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.23,
+              "humidity": 80.94
+            }
+          },
+          {
+            "startTime": "2021-09-20T10:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.88,
+              "temperatureApparent": 15.88,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.69,
+              "humidity": 75.98
+            }
+          },
+          {
+            "startTime": "2021-09-20T11:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.4,
+              "temperatureApparent": 17.4,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.5,
+              "humidity": 68.8
+            }
+          },
+          {
+            "startTime": "2021-09-20T12:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 18.2,
+              "temperatureApparent": 18.2,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.33,
+              "humidity": 66.35
+            }
+          },
+          {
+            "startTime": "2021-09-20T13:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1102,
+              "temperature": 18.95,
+              "temperatureApparent": 18.95,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.48,
+              "humidity": 63.48
+            }
+          },
+          {
+            "startTime": "2021-09-20T14:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1102,
+              "temperature": 19.79,
+              "temperatureApparent": 19.79,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.16,
+              "humidity": 57.81
+            }
+          },
+          {
+            "startTime": "2021-09-20T15:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.16,
+              "temperatureApparent": 20.16,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.41,
+              "humidity": 55.21
+            }
+          },
+          {
+            "startTime": "2021-09-20T16:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 19.81,
+              "temperatureApparent": 19.81,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.9,
+              "humidity": 57.89
+            }
+          },
+          {
+            "startTime": "2021-09-20T17:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 19.31,
+              "temperatureApparent": 19.31,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 3.31,
+              "humidity": 61.24
+            }
+          },
+          {
+            "startTime": "2021-09-20T18:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 18.25,
+              "temperatureApparent": 18.25,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 2.91,
+              "humidity": 69.29
+            }
+          },
+          {
+            "startTime": "2021-09-20T19:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 17.56,
+              "temperatureApparent": 17.56,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.71,
+              "humidity": 74.11
+            }
+          },
+          {
+            "startTime": "2021-09-20T20:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1102,
+              "temperature": 16.65,
+              "temperatureApparent": 16.65,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.63,
+              "humidity": 80.09
+            }
+          },
+          {
+            "startTime": "2021-09-20T21:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 15.95,
+              "temperatureApparent": 15.95,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 1.26,
+              "humidity": 85.35
+            }
+          },
+          {
+            "startTime": "2021-09-20T22:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.54,
+              "temperatureApparent": 15.54,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.13,
+              "humidity": 88.54
+            }
+          },
+          {
+            "startTime": "2021-09-20T23:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.22,
+              "temperatureApparent": 15.22,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.69,
+              "humidity": 91.11
+            }
+          },
+          {
+            "startTime": "2021-09-21T00:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.04,
+              "temperatureApparent": 15.04,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.34,
+              "humidity": 91.39
+            }
+          },
+          {
+            "startTime": "2021-09-21T01:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14.72,
+              "temperatureApparent": 14.72,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.05,
+              "humidity": 91.95
+            }
+          },
+          {
+            "startTime": "2021-09-21T02:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14.13,
+              "temperatureApparent": 14.13,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.72,
+              "humidity": 94.37
+            }
+          },
+          {
+            "startTime": "2021-09-21T03:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 13.28,
+              "temperatureApparent": 13.28,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.67,
+              "humidity": 97.15
+            }
+          },
+          {
+            "startTime": "2021-09-21T04:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.44,
+              "temperatureApparent": 12.44,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.72,
+              "humidity": 99.96
+            }
+          },
+          {
+            "startTime": "2021-09-21T05:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.07,
+              "temperatureApparent": 12.07,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.68,
+              "humidity": 100
+            }
+          },
+          {
+            "startTime": "2021-09-21T06:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.08,
+              "temperatureApparent": 12.08,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.64,
+              "humidity": 99.92
+            }
+          },
+          {
+            "startTime": "2021-09-21T07:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.18,
+              "temperatureApparent": 12.18,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.52,
+              "humidity": 99.88
+            }
+          },
+          {
+            "startTime": "2021-09-21T08:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.84,
+              "temperatureApparent": 12.84,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.61,
+              "humidity": 96.53
+            }
+          },
+          {
+            "startTime": "2021-09-21T09:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14.59,
+              "temperatureApparent": 14.59,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.74,
+              "humidity": 84.87
+            }
+          },
+          {
+            "startTime": "2021-09-21T10:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 16.39,
+              "temperatureApparent": 16.39,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.66,
+              "humidity": 73.15
+            }
+          },
+          {
+            "startTime": "2021-09-21T11:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 18.05,
+              "temperatureApparent": 18.05,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 0.81,
+              "humidity": 63.97
+            }
+          },
+          {
+            "startTime": "2021-09-21T12:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 19.26,
+              "temperatureApparent": 19.26,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.38,
+              "humidity": 57.12
+            }
+          },
+          {
+            "startTime": "2021-09-21T13:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 19.93,
+              "temperatureApparent": 19.93,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.82,
+              "humidity": 52.04
+            }
+          },
+          {
+            "startTime": "2021-09-21T14:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.3,
+              "temperatureApparent": 20.3,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.81,
+              "humidity": 47.25
+            }
+          },
+          {
+            "startTime": "2021-09-21T15:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.35,
+              "temperatureApparent": 20.35,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.64,
+              "humidity": 46.69
+            }
+          },
+          {
+            "startTime": "2021-09-21T16:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.22,
+              "temperatureApparent": 20.22,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.67,
+              "humidity": 48.07
+            }
+          },
+          {
+            "startTime": "2021-09-21T17:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 19.84,
+              "temperatureApparent": 19.84,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.67,
+              "humidity": 50.62
+            }
+          },
+          {
+            "startTime": "2021-09-21T18:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 18.8,
+              "temperatureApparent": 18.8,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.65,
+              "humidity": 56.46
+            }
+          },
+          {
+            "startTime": "2021-09-21T19:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.51,
+              "temperatureApparent": 17.51,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.56,
+              "humidity": 63.76
+            }
+          },
+          {
+            "startTime": "2021-09-21T20:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 16.1,
+              "temperatureApparent": 16.1,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.24,
+              "humidity": 77.77
+            }
+          },
+          {
+            "startTime": "2021-09-21T21:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.52,
+              "temperatureApparent": 15.52,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.14,
+              "humidity": 80.7
+            }
+          },
+          {
+            "startTime": "2021-09-21T22:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1102,
+              "temperature": 15.18,
+              "temperatureApparent": 15.18,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.9,
+              "humidity": 80.85
+            }
+          },
+          {
+            "startTime": "2021-09-21T23:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 14.66,
+              "temperatureApparent": 14.66,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.64,
+              "humidity": 84.32
+            }
+          },
+          {
+            "startTime": "2021-09-22T00:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 14.27,
+              "temperatureApparent": 14.27,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.61,
+              "humidity": 85.34
+            }
+          },
+          {
+            "startTime": "2021-09-22T01:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1100,
+              "temperature": 13.91,
+              "temperatureApparent": 13.91,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.4,
+              "humidity": 85.25
+            }
+          },
+          {
+            "startTime": "2021-09-22T02:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1000,
+              "temperature": 13.54,
+              "temperatureApparent": 13.54,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.38,
+              "humidity": 85.55
+            }
+          },
+          {
+            "startTime": "2021-09-22T03:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1000,
+              "temperature": 13.27,
+              "temperatureApparent": 13.27,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.35,
+              "humidity": 85.71
+            }
+          },
+          {
+            "startTime": "2021-09-22T04:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1000,
+              "temperature": 13.06,
+              "temperatureApparent": 13.06,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.43,
+              "humidity": 85.94
+            }
+          },
+          {
+            "startTime": "2021-09-22T05:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1000,
+              "temperature": 12.99,
+              "temperatureApparent": 12.99,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.5,
+              "humidity": 85.62
+            }
+          },
+          {
+            "startTime": "2021-09-22T06:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1000,
+              "temperature": 12.83,
+              "temperatureApparent": 12.83,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.41,
+              "humidity": 88.12
+            }
+          },
+          {
+            "startTime": "2021-09-22T07:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1000,
+              "temperature": 13.29,
+              "temperatureApparent": 13.29,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.59,
+              "humidity": 88.65
+            }
+          },
+          {
+            "startTime": "2021-09-22T08:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1100,
+              "temperature": 14.71,
+              "temperatureApparent": 14.71,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.38,
+              "humidity": 83.87
+            }
+          },
+          {
+            "startTime": "2021-09-22T09:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 16.52,
+              "temperatureApparent": 16.52,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.92,
+              "humidity": 73.73
+            }
+          },
+          {
+            "startTime": "2021-09-22T10:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.32,
+              "temperatureApparent": 17.32,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.4,
+              "humidity": 71.27
+            }
+          },
+          {
+            "startTime": "2021-09-22T11:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1102,
+              "temperature": 18.75,
+              "temperatureApparent": 18.75,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.4,
+              "humidity": 65.5
+            }
+          },
+          {
+            "startTime": "2021-09-22T12:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1102,
+              "temperature": 20.12,
+              "temperatureApparent": 20.12,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.98,
+              "humidity": 57.23
+            }
+          },
+          {
+            "startTime": "2021-09-22T13:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 20.41,
+              "temperatureApparent": 20.41,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 4.2,
+              "humidity": 56.24
+            }
+          },
+          {
+            "startTime": "2021-09-22T14:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 20.69,
+              "temperatureApparent": 20.69,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 4.42,
+              "humidity": 55.25
+            }
+          },
+          {
+            "startTime": "2021-09-22T15:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 20.97,
+              "temperatureApparent": 20.97,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 4.64,
+              "humidity": 54.25
+            }
+          },
+          {
+            "startTime": "2021-09-22T16:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1101,
+              "temperature": 20.24,
+              "temperatureApparent": 20.24,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.22,
+              "humidity": 57.86
+            }
+          },
+          {
+            "startTime": "2021-09-22T17:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 19.5,
+              "temperatureApparent": 19.5,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.81,
+              "humidity": 61.47
+            }
+          },
+          {
+            "startTime": "2021-09-22T18:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 18.77,
+              "temperatureApparent": 18.77,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.4,
+              "humidity": 65.08
+            }
+          },
+          {
+            "startTime": "2021-09-22T19:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.74,
+              "temperatureApparent": 17.74,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.65,
+              "humidity": 71.28
+            }
+          },
+          {
+            "startTime": "2021-09-22T20:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 16.71,
+              "temperatureApparent": 16.71,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.91,
+              "humidity": 77.47
+            }
+          },
+          {
+            "startTime": "2021-09-22T21:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.68,
+              "temperatureApparent": 15.68,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.17,
+              "humidity": 83.67
+            }
+          },
+          {
+            "startTime": "2021-09-22T22:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.86,
+              "temperatureApparent": 15.86,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.27,
+              "humidity": 84.45
+            }
+          },
+          {
+            "startTime": "2021-09-22T23:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.04,
+              "temperatureApparent": 16.04,
+              "precipitationProbability": 10,
+              "precipitationType": 1,
+              "windSpeed": 4.38,
+              "humidity": 85.23
+            }
+          },
+          {
+            "startTime": "2021-09-23T00:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.22,
+              "temperatureApparent": 16.22,
+              "precipitationProbability": 10,
+              "precipitationType": 1,
+              "windSpeed": 4.48,
+              "humidity": 86
+            }
+          },
+          {
+            "startTime": "2021-09-23T01:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 15.73,
+              "temperatureApparent": 15.73,
+              "precipitationProbability": 12,
+              "precipitationType": 1,
+              "windSpeed": 4.44,
+              "humidity": 80.54
+            }
+          },
+          {
+            "startTime": "2021-09-23T02:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.24,
+              "temperatureApparent": 15.24,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.4,
+              "humidity": 75.07
+            }
+          },
+          {
+            "startTime": "2021-09-23T03:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14.76,
+              "temperatureApparent": 14.76,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.36,
+              "humidity": 69.61
+            }
+          },
+          {
+            "startTime": "2021-09-23T04:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 14.09,
+              "temperatureApparent": 14.09,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.17,
+              "humidity": 71.48
+            }
+          },
+          {
+            "startTime": "2021-09-23T05:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 13.42,
+              "temperatureApparent": 13.42,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.99,
+              "humidity": 73.35
+            }
+          },
+          {
+            "startTime": "2021-09-23T06:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 12.75,
+              "temperatureApparent": 12.75,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.8,
+              "humidity": 75.22
+            }
+          },
+          {
+            "startTime": "2021-09-23T07:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 13.29,
+              "temperatureApparent": 13.29,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 3.96,
+              "humidity": 73.53
+            }
+          },
+          {
+            "startTime": "2021-09-23T08:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 13.83,
+              "temperatureApparent": 13.83,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.12,
+              "humidity": 71.85
+            }
+          },
+          {
+            "startTime": "2021-09-23T09:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1102,
+              "temperature": 14.37,
+              "temperatureApparent": 14.37,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 4.28,
+              "humidity": 70.16
+            }
+          },
+          {
+            "startTime": "2021-09-23T10:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.13,
+              "temperatureApparent": 15.13,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.91,
+              "humidity": 70.56
+            }
+          },
+          {
+            "startTime": "2021-09-23T11:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 15.9,
+              "temperatureApparent": 15.9,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.55,
+              "humidity": 70.96
+            }
+          },
+          {
+            "startTime": "2021-09-23T12:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 16.66,
+              "temperatureApparent": 16.66,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.19,
+              "humidity": 71.36
+            }
+          },
+          {
+            "startTime": "2021-09-23T13:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.14,
+              "temperatureApparent": 17.14,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.29,
+              "humidity": 69.42
+            }
+          },
+          {
+            "startTime": "2021-09-23T14:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.71,
+              "temperatureApparent": 17.71,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.76,
+              "humidity": 66.72
+            }
+          },
+          {
+            "startTime": "2021-09-23T15:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 18.09,
+              "temperatureApparent": 18.09,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.86,
+              "humidity": 64.98
+            }
+          },
+          {
+            "startTime": "2021-09-23T16:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 17.51,
+              "temperatureApparent": 17.51,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.7,
+              "humidity": 68.24
+            }
+          },
+          {
+            "startTime": "2021-09-23T17:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.75,
+              "temperatureApparent": 16.75,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 1.7,
+              "humidity": 70.26
+            }
+          },
+          {
+            "startTime": "2021-09-23T18:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 16.04,
+              "temperatureApparent": 16.04,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 0.85,
+              "humidity": 73.36
+            }
+          },
+          {
+            "startTime": "2021-09-23T19:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1100,
+              "temperature": 15.04,
+              "temperatureApparent": 15.04,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.13,
+              "humidity": 77.88
+            }
+          },
+          {
+            "startTime": "2021-09-23T20:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1100,
+              "temperature": 14.41,
+              "temperatureApparent": 14.41,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 1.91,
+              "humidity": 81.04
+            }
+          },
+          {
+            "startTime": "2021-09-23T21:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1100,
+              "temperature": 14.06,
+              "temperatureApparent": 14.06,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.75,
+              "humidity": 82.4
+            }
+          },
+          {
+            "startTime": "2021-09-23T22:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1000,
+              "temperature": 13.46,
+              "temperatureApparent": 13.46,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.21,
+              "humidity": 83.66
+            }
+          },
+          {
+            "startTime": "2021-09-23T23:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1100,
+              "temperature": 13,
+              "temperatureApparent": 13,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.95,
+              "humidity": 80.32
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

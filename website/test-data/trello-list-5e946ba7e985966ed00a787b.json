@@ -1,0 +1,28 @@
+[
+  {
+    "id": "5f2d77c3b9cecf045c4151b0",
+    "name": "Listening",
+    "dateLastActivity": "2020-08-07T15:49:38.439Z",
+    "labels": [
+      {
+        "id": "5e946ba7e985966ed00a78b8",
+        "idBoard": "5e946ba7e985966ed00a7877",
+        "name": "Melkam",
+        "color": "lime"
+      }
+    ]
+  },
+  {
+    "id": "5f2d77ed2b41d12b9266df57",
+    "name": "Temper tantrum ",
+    "dateLastActivity": "2020-08-07T15:49:41.914Z",
+    "labels": [
+      {
+        "id": "5e946ba7e985966ed00a78b6",
+        "idBoard": "5e946ba7e985966ed00a7877",
+        "name": "Sennai",
+        "color": "red"
+      }
+    ]
+  }
+]

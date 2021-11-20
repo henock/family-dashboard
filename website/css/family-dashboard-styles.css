@@ -1,0 +1,147 @@
+body{
+    background-color: black;
+    color: white;
+}
+
+.Henock {
+    color: #7ebbed!important
+}
+
+.Fikir {
+    color: #ffc107!important
+}
+
+.Melkam {
+    color: #52e36a!important
+}
+
+.Sennai {
+    color: #e34646!important
+}
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.bus-arrival{
+    font-size: 15px;
+}
+
+.time-to-walk{
+    color: yellow;
+}
+
+.world-clock{
+    font-family: "Courier New"
+}
+
+
+.time-to-run{
+    color: red;
+}
+
+.sun_rise
+, .sun_set
+, .freezing_rain_heavy
+, .freezing_rain
+, .freezing_rain_light
+, .freezing_drizzle
+, .ice_pellets
+, .light_ice_pellets
+, .heavy_ice_pellets
+, .snow_heavy
+, .snow
+, .light_snow
+, .heavy_snow
+, .flurries
+, .thunderstorm
+, .rain
+, .light_rain
+, .heavy_rain
+, .drizzle
+, .freezing_drizzle
+, .freezing_rain
+, .light_freezing_rain
+, .heavy_freezing_rain
+, .light_fog
+, .wind
+, .light_wind
+, .strong_wind
+, .fog
+, .cloudy
+, .mostly_cloudy
+, .partly_cloudy
+, .mostly_clear
+, .clear{
+    background-image: url('../img/colored_48px_weather_at_1x.png');
+    background-repeat: no-repeat;
+    height: 100px;
+}
+
+.sun_rise {
+    background-position: -595px -480px;
+}
+
+.sun_set {
+    background-position: -695px -480px;
+}
+
+.clear{
+    background-position: -25px 0px;
+}
+
+.cloudy{
+    background-position: -215px 0px;
+}
+
+.mostly_clear{
+    background-position: -780px -480px;
+}
+
+.partly_cloudy{
+    background-position: -600px -95px;
+}
+
+.mostly_cloudy{
+    background-position: -500px -100px;
+}
+
+.light_fog, .fog{
+    background-position: -310px 10px;
+}
+
+.wind, .light_wind{
+    background-position: -690px -185px;
+}
+
+.strong_wind{
+    background-position: -780px -185px;
+}
+
+.drizzle{
+    background-position: -300px -90px;
+}
+
+.rain{
+    background-position: -110px -190px;
+}
+
+.light_rain{
+    background-position: -780px -385px;
+}
+
+.heavy_rain{
+    background-position: -15px -190px;
+}
+
+.snow, .light_snow, .heavy_snow, .flurries{
+    background-position: -685px  -360px;
+}
+
+.freezing_drizzle, .freezing_rain, .light_freezing_rain, .heavy_freezing_rain, .ice_pellets, .heavy_ice_pellets, .light_ice_pellets {
+    background-position: -300px -90px;
+}
+
+.thunderstorm{
+    background-position: -880px 30px;
+}

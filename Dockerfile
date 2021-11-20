@@ -7,7 +7,7 @@ RUN apk add --update coreutils && rm -rf /var/cache/apk/*
 RUN apk add --no-cache git
 
 RUN rm /etc/nginx/conf.d/*
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./config/nginx.conf /etc/nginx/nginx.conf
 
 COPY startup-crond.sh /docker-entrypoint.d/startup-crond.sh
 RUN chmod +x /docker-entrypoint.d/startup-crond.sh

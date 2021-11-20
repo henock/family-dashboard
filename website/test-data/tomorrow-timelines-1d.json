@@ -1,0 +1,257 @@
+{
+  "data": {
+    "timelines": [
+      {
+        "timestep": "1d",
+        "startTime": "2021-09-19T05:00:00Z",
+        "endTime": "2021-10-03T05:00:00Z",
+        "intervals": [
+          {
+            "startTime": "2021-09-19T05:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 4000,
+              "temperature": 17.38,
+              "temperatureApparent": 17.38,
+              "precipitationProbability": 50,
+              "precipitationType": 1,
+              "windSpeed": 2.7,
+              "sunriseTime": "2021-09-19T05:41:40Z",
+              "sunsetTime": "2021-09-19T18:06:40Z",
+              "humidity": 90.76
+            }
+          },
+          {
+            "startTime": "2021-09-20T05:00:00Z",
+            "values": {
+              "grassIndex": 0,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.16,
+              "temperatureApparent": 20.16,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 3.69,
+              "sunriseTime": "2021-09-20T05:43:20Z",
+              "sunsetTime": "2021-09-20T18:03:20Z",
+              "humidity": 99.96
+            }
+          },
+          {
+            "startTime": "2021-09-21T05:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.35,
+              "temperatureApparent": 20.35,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 2.24,
+              "sunriseTime": "2021-09-21T05:45:00Z",
+              "sunsetTime": "2021-09-21T18:01:40Z",
+              "humidity": 99.92
+            }
+          },
+          {
+            "startTime": "2021-09-22T05:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.97,
+              "temperatureApparent": 20.97,
+              "precipitationProbability": 10,
+              "precipitationType": 1,
+              "windSpeed": 4.64,
+              "sunriseTime": "2021-09-22T05:45:00Z",
+              "sunsetTime": "2021-09-22T18:00:00Z",
+              "humidity": 88.65
+            }
+          },
+          {
+            "startTime": "2021-09-23T05:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 18.09,
+              "temperatureApparent": 18.09,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 4.28,
+              "sunriseTime": "2021-09-23T05:46:40Z",
+              "sunsetTime": "2021-09-23T17:56:40Z",
+              "humidity": 83.66
+            }
+          },
+          {
+            "startTime": "2021-09-24T05:00:00Z",
+            "values": {
+              "grassIndex": 1,
+              "treeIndex": 0,
+              "weatherCode": 1001,
+              "temperature": 20.76,
+              "temperatureApparent": 20.76,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 4.52,
+              "sunriseTime": "2021-09-24T05:50:00Z",
+              "sunsetTime": "2021-09-24T17:55:00Z",
+              "humidity": 88.1
+            }
+          },
+          {
+            "startTime": "2021-09-25T05:00:00Z",
+            "values": {
+              "weatherCode": 1100,
+              "temperature": 21.21,
+              "temperatureApparent": 21.21,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "windSpeed": 3.67,
+              "sunriseTime": "2021-09-25T05:51:40Z",
+              "sunsetTime": "2021-09-25T17:53:20Z",
+              "humidity": 88.66
+            }
+          },
+          {
+            "startTime": "2021-09-26T05:00:00Z",
+            "values": {
+              "weatherCode": 1001,
+              "temperature": 20.07,
+              "temperatureApparent": 20.07,
+              "precipitationProbability": 15,
+              "precipitationType": 1,
+              "windSpeed": 6.4,
+              "sunriseTime": "2021-09-26T05:51:40Z",
+              "sunsetTime": "2021-09-26T17:51:40Z",
+              "humidity": 88.88
+            }
+          },
+          {
+            "startTime": "2021-09-27T05:00:00Z",
+            "values": {
+              "weatherCode": 4000,
+              "temperature": 16.94,
+              "temperatureApparent": 16.94,
+              "precipitationProbability": 35,
+              "precipitationType": 1,
+              "windSpeed": 7.48,
+              "sunriseTime": "2021-09-27T05:53:20Z",
+              "sunsetTime": "2021-09-27T17:48:20Z",
+              "humidity": 84.42
+            }
+          },
+          {
+            "startTime": "2021-09-28T05:00:00Z",
+            "values": {
+              "weatherCode": 4000,
+              "temperature": 14.65,
+              "temperatureApparent": 14.65,
+              "precipitationProbability": 40,
+              "precipitationType": 1,
+              "windSpeed": 4.86,
+              "sunriseTime": "2021-09-28T05:56:40Z",
+              "sunsetTime": "2021-09-28T17:45:00Z",
+              "humidity": 91.24
+            }
+          },
+          {
+            "startTime": "2021-09-29T05:00:00Z",
+            "values": {
+              "weatherCode": 1001,
+              "temperature": 16.21,
+              "temperatureApparent": 16.21,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 4.23,
+              "sunriseTime": "2021-09-29T05:58:20Z",
+              "sunsetTime": "2021-09-29T17:41:40Z",
+              "humidity": 88.44
+            }
+          },
+          {
+            "startTime": "2021-09-30T05:00:00Z",
+            "values": {
+              "weatherCode": 4000,
+              "temperature": 15.94,
+              "temperatureApparent": 15.94,
+              "precipitationProbability": 60,
+              "precipitationType": 1,
+              "windSpeed": 4.66,
+              "sunriseTime": "2021-09-30T05:58:20Z",
+              "sunsetTime": "2021-09-30T17:40:00Z",
+              "humidity": 97.56
+            }
+          },
+          {
+            "startTime": "2021-10-01T05:00:00Z",
+            "values": {
+              "weatherCode": 4000,
+              "temperature": 12.45,
+              "temperatureApparent": 12.45,
+              "precipitationProbability": 40,
+              "precipitationType": 1,
+              "windSpeed": 5.19,
+              "sunriseTime": "2021-10-01T06:00:00Z",
+              "sunsetTime": "2021-10-01T17:38:20Z",
+              "humidity": 95.98
+            }
+          },
+          {
+            "startTime": "2021-10-02T05:00:00Z",
+            "values": {
+              "weatherCode": 1001,
+              "temperature": 16.87,
+              "temperatureApparent": 16.87,
+              "precipitationProbability": 5,
+              "precipitationType": 1,
+              "windSpeed": 6.63,
+              "sunriseTime": "2021-10-02T06:03:20Z",
+              "sunsetTime": "2021-10-02T17:36:40Z",
+              "humidity": 93.3
+            }
+          },
+          {
+            "startTime": "2021-10-03T05:00:00Z",
+            "values": {
+              "weatherCode": 1001,
+              "temperature": 18.48,
+              "temperatureApparent": 18.48,
+              "precipitationProbability": 0,
+              "precipitationType": 1,
+              "windSpeed": 5.45,
+              "sunriseTime": "2021-10-03T06:05:00Z",
+              "sunsetTime": "2021-10-03T17:33:20Z",
+              "humidity": 70.04
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "warnings": [
+    {
+      "code": 246001,
+      "type": "Time Bounded Field",
+      "message": "The following field is not supported for a time range: 'grassIndex'",
+      "meta": {
+        "field": "grassIndex",
+        "from": "2021-09-19T04:30:00+01:00",
+        "to": "2021-09-24T11:22:00Z"
+      }
+    },
+    {
+      "code": 246001,
+      "type": "Time Bounded Field",
+      "message": "The following field is not supported for a time range: 'treeIndex'",
+      "meta": {
+        "field": "treeIndex",
+        "from": "2021-09-19T04:30:00+01:00",
+        "to": "2021-09-24T11:22:00Z"
+      }
+    }
+  ]
+}
