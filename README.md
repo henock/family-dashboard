@@ -2,10 +2,25 @@
 
 A simple web based dashboard - making API calls to other systems and displaying the results.
  
-> NOTE: This is not supposed to be running out on the internet, but instead on a local server running in our kitchen
+> **SECURITY NOTE** 
+> 
+> This is not supposed to be running out on the internet, but instead on a local server running in our kitchen.
+>
+> This is because your runtime-config.json would expose all of your API keys
 
 
-All code is present but you will need to provide your own runtime-config.json files which is passed in as a volume see the docker run command below.
+### Original Trello board
+
+![Original Trello board](/docs/2021-11-20-trello-board.png)
+
+### Resulting family dashboard
+
+![Original Trello board](/docs/2021-11-20-family-dashboard.png)
+
+
+## Configuration and deployment 
+
+All code is present in the repository, however you will need to provide your own runtime-config.json files which is passed in as a volume see the docker run command below.
 
 What your runtime-config.json needs to look like
 
@@ -35,8 +50,13 @@ What your runtime-config.json needs to look like
 }
 ```
 
-# Running from Docker 
+# Running the server from Docker 
 ```shell
+ git clone https://github.com/henock/family-dashboard.git
+ # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
+ # Register with http://www.tomrrow.io and get an API key
+ # Create a local file called <project folder>/config/runtime-config.json
+ # Populate it with the keys in the format shown above
  docker build -t henock/family-dashboard .  
  docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/js/runtime-config.json henock/family-dashboard   
 ``` 
