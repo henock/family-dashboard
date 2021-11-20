@@ -50,7 +50,12 @@ function run_function_by_the_minute( interval_in_seconds ){
 
 
 function check_secrets_file_is_present(){
-    console.log( 'Trello secret:' + get_runtime_config().trello.key );
+    let runtimeConfig = get_runtime_config();
+    if( runtimeConfig){
+        console.log( 'Runtime config is being read fine: ' + runtimeConfig  );
+    }else{
+        console.log( 'ERROR --- Runtime config is being as expected: ' + runtimeConfig  );
+    }
 }
 
 $(document).ready(function(){

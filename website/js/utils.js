@@ -1,4 +1,4 @@
-
+var runtime_config = null;
 
 function get_request_param( param_id ){
     var paramString = window.location.search.substring(1);
@@ -67,19 +67,20 @@ function is_check_box_checked( checkbox_id ){
 
 
 function get_runtime_config(){
-    var result = null;
-    $.ajax({
-            url: "js/runtime-config.json",
-            type: "GET",
-            async: false,
-            success: function( data ) {
-                console.log( data );
-                result = data;
-            },
-            error: function ( xhr , something ){
-                log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseJSON.message +').');
-            }
-        });
+    if( !runtime_config ){
+        $.ajax({
+                url: "js/runtime-config.json",
+                type: "GET",
+                async: false,
+                success: function( data ) {
+                    console.log( data );
+                    runtime_config = data;
+                },
+                error: function ( xhr , something ){
+                    log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseJSON.message +').');
+                }
+            });
+    }
 
-    return result;
+    return runtime_config;
 }

@@ -35,16 +35,16 @@ What your runtime-config.json needs to look like
     },
     "tomorrowIo": {
         "apiKey": "<your api key for http://tomorrow.io>",
-        "location": "<the GPS location for which you want to display weather data>"
+        "location": "<the GPS coordinates for which you want to display weather data>"
     },
     "timeZones": {
         "one": {
-        "id": "America/New_York",
-        "name": "DC"
-    },
-    "two": {
-        "id": "Africa/Nairobi",
-        "name": "Addis"
+            "id": "America/New_York",
+            "name": "DC"
+        },
+        "two": {
+            "id": "Africa/Nairobi",
+            "name": "Addis"
         }
     }
 }

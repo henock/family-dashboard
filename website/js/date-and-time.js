@@ -29,8 +29,8 @@ function set_local_date_time(){
     var local_time_zone = (now.isDstObserved() ? ' (British Summer Time)' : 'GMT');
 
     $("#date").html( date );
-    $("#uk-time").html( time );
-    $("#uk-time-zone").html( local_time_zone );
+    $("#local-time").html( time );
+    $("#local-time-zone").html( local_time_zone );
 }
 
 
