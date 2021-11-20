@@ -43,13 +43,14 @@ function run_function_by_the_second(){
 
 
 function run_function_by_the_minute( interval_in_seconds ){
-    set_date_time_for_time_zone( "America/New_York", "#dc-time" )
-    set_date_time_for_time_zone( "Africa/Nairobi", '#addis-time' )
+    let timeZones = get_runtime_config().timeZones;
+    set_date_time_for_time_zone( timeZones.one.id, timeZones.one.name, "#time-zone-1" )
+    set_date_time_for_time_zone( timeZones.two.id, timeZones.two.name, "#time-zone-2" )
 }
 
 
 function check_secrets_file_is_present(){
-    console.log( 'Trello secret:' + get_config_for( 'trello' ).key );
+    console.log( 'Trello secret:' + get_runtime_config().trello.key );
 }
 
 $(document).ready(function(){

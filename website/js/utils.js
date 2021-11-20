@@ -64,3 +64,22 @@ function remove_overdue_messages(){
 function is_check_box_checked( checkbox_id ){
     return $('#' + checkbox_id + ':checkbox:checked').length > 0
 }
+
+
+function get_runtime_config(){
+    var result = null;
+    $.ajax({
+            url: "js/runtime-config.json",
+            type: "GET",
+            async: false,
+            success: function( data ) {
+                console.log( data );
+                result = data;
+            },
+            error: function ( xhr , something ){
+                log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseJSON.message +').');
+            }
+        });
+
+    return result;
+}

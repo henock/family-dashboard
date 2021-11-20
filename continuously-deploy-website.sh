@@ -5,7 +5,7 @@ set -euo pipefail
 
 TODAY="$(date -I)"
 SOURCE_FOLDER="/source"
-RUNTIME_CONFIG_FILE="runtime-config.js"
+RUNTIME_CONFIG_FILE="runtime-config.json"
 LOG_PREFIX="deployments-on-"
 LOG_SUFFIX=".log.txt"                                         # .txt suffix allows the log files to be viewed in the browser
 LOG_DIR="/var/log/continuous-deployment"
@@ -74,12 +74,6 @@ copy_files_to_website(){
 
   log "Copying source files ($WEBSITE_FOLDER/* -> $NGINX_WEBSITE_FOLDER)."
   cp -Rvf "$WEBSITE_FOLDER/"* "$NGINX_WEBSITE_FOLDER"
-#  cat /config/runtime-config.js > "$NGINX_WEBSITE_FOLDER/js/$RUNTIME_CONFIG_FILE"
-
-#  for i in "$WEBSITE_FOLDER/"*; do
-#    echo "$i" | grep '.git' && continue
-#    log "copying $i"
-#  done
   log "Site update complete."
 }
 

@@ -4,16 +4,17 @@ function set_date_and_time() {
     set_local_date_time();
 }
 
-function set_date_time_for_time_zone( time_zone , element_id ){
+function set_date_time_for_time_zone( time_zone_id , time_zone_name ,  element_id_prefix ){
     $.ajax({
-        url: "http://worldtimeapi.org/api/timezone/" + time_zone ,
+        url: "http://worldtimeapi.org/api/timezone/" + time_zone_id ,
         type: "GET",
         success: function( data ) {
             var time = data.datetime.split("T")[1].split('.')[0].substring(0,5);
-            $( element_id ).html( time );
+            $( element_id_prefix + "-name" ).html( time_zone_name );
+            $( element_id_prefix + "-time").html( time );
         },
         error: function ( xhr ){
-            log_error( xhr.status +' Error calling worldtimeapi with timezone '+time_zone+ ' ('+xhr.responseText +').');
+            log_error( xhr.status +' Error calling worldtimeapi with timezone '+time_zone_id+ ' ('+xhr.responseText +').');
             return 'api_error';
         }
     });

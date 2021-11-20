@@ -92,14 +92,12 @@ function set_weather_for_upcoming_days( result ){
 }
 
 function get_and_set_weather_for_upcoming_days(){
-    let tomorrowIoConfig = get_config_for( 'tomorrow.io' );
+    let tomorrowIoConfig = get_runtime_config().tomorrowIo;
     let urlToGet = '';
     if( is_debug_on()){
         urlToGet = "test-data/tomorrow-timelines-1d.json"
     } else{
-        // Bromley = lat=51.388904&lon=0.038086
-        // Flat 2 = lat=51.414282&lon=-0.017142
-        // 'apikey', 'p34AKKcgAVYBAQ23dWEJi7zMIAXe5KbR' from junk.henock
+        // 'apikey', '' from junk.henock
         // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
         urlToGet = "https://api.tomorrow.io/v4/timelines"
                     + "?location=" + tomorrowIoConfig.location
@@ -138,20 +136,19 @@ function set_weather_for_upcoming_hours( daily ){
 }
 
 function get_and_set_weather_for_upcoming_hours( interval_in_seconds ){
+    let tomorrowIoConfig = get_runtime_config().tomorrowIo;
     let urlToGet = '';
     if( is_debug_on()){
         urlToGet = "test-data/tomorrow-timelines-1h.json"
     } else{
-        // Bromley = lat=51.388904&lon=0.038086
-        // Flat 2 = lat=51.414282&lon=-0.017142
-        // 'apikey', 'p34AKKcgAVYBAQ23dWEJi7zMIAXe5KbR' from junk.henock
+        // 'apikey', from junk.henock
         // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
         urlToGet = "https://api.tomorrow.io/v4/timelines"
-                    + "?location=51.414282,-0.017142"
+                    + "?location=" + tomorrowIoConfig.location
                     + "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,humidity"
                     + "&units=metric"
                     + "&timesteps=1h"
-                    + "&apikey=p34AKKcgAVYBAQ23dWEJi7zMIAXe5KbR"
+                    + "&apikey=" + tomorrowIoConfig.apiKey;
     }
 
     $.ajax({

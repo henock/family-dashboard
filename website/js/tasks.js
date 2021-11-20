@@ -2,7 +2,7 @@
 
 
 function set_todo_tasks( interval_in_seconds ) {
-    let trelloConfig = get_config_for( 'trello' );
+    let trelloConfig = get_runtime_config().trello;
     update_tasks_list(trelloConfig.todoListId,'todo');
     update_tasks_list(trelloConfig.inProgressListId,'in-progress' );
     update_tasks_list(trelloConfig.doneListId,'done' );
@@ -11,7 +11,7 @@ function set_todo_tasks( interval_in_seconds ) {
 
 //TODO - USE COMMON GET METHOD
 function update_tasks_list( listId, statusId ){
-    let trelloConfig = get_config_for( 'trello' );
+    let trelloConfig = get_runtime_config().trello;
     let urlToGet = '';
     if( is_debug_on()){
         urlToGet = 'test-data/trello-list-' + listId + '.json'
