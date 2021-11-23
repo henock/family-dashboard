@@ -1,0 +1,209 @@
+{
+  "date": "2021-11-23",
+  "time_of_day": "22:16",
+  "request_time": "2021-11-23T22:16:01+00:00",
+  "station_name": "London Cannon Street",
+  "station_code": "CST",
+  "departures": {
+    "all": [
+      {
+        "mode": "train",
+        "service": "24655005",
+        "train_uid": "G84146",
+        "platform": "4",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:20",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Orpington",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84146/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84347",
+        "platform": "2",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:27",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84347/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24659005",
+        "train_uid": "G83464",
+        "platform": "3",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:32",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Dartford",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83464/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24657005",
+        "train_uid": "G83993",
+        "platform": "1",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:38",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Dartford",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83993/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24655005",
+        "train_uid": "G84149",
+        "platform": "4",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:50",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Orpington",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84149/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84348",
+        "platform": "2",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:57",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84348/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24659005",
+        "train_uid": "G83465",
+        "platform": "1",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:02",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Dartford",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83465/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24655005",
+        "train_uid": "G84152",
+        "platform": "4",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:20",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Orpington",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84152/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84349",
+        "platform": "1",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:27",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84349/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24659005",
+        "train_uid": "G83466",
+        "platform": "3",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:32",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Dartford",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83466/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24655005",
+        "train_uid": "G84155",
+        "platform": "4",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:46",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Orpington",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84155/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      }
+    ]
+  }
+}

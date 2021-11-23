@@ -1,3 +1,18 @@
+const DEGREES_CELSIUS 		= ' &#176;C ';
+const WALK_GLYPH      		= ' &#128694; ';
+const RUN_GLYPH       		= ' &#127939; ';
+const BUS_GLYPH 	  		= ' &#128652; ';
+const TRAIN_GLYPH     		= ' &#128646; ';
+const SPACE_CHARACTER 		= '&nbsp;';
+const A_MINUTE				=  60;
+const FIVE_MINUTES 			= A_MINUTE * 5
+const TEN_MINUTES 			= A_MINUTE * 10
+const FIFTEEN_MINUTES		= A_MINUTE * 15
+const HALF_AN_HOUR 			= A_MINUTE * 30
+const AN_HOUR				= A_MINUTE * 60;
+const TWELVE_HOURS			= AN_HOUR * 12;
+const TWENTY_FOUR_HOURS		= AN_HOUR * 24;
+
 var runtime_config = null;
 
 function get_request_param( param_id ){
@@ -18,6 +33,10 @@ function log_debug(  message, remove_after_seconds ){
     }
 }
 
+function log_info( message, remove_after_seconds ){
+    write_message( message, "text-info", remove_after_seconds  );
+}
+
 function log_error( message, remove_after_seconds ){
     write_message( message, "text-danger border-top border-bottom p-1", remove_after_seconds  );
 }
@@ -26,9 +45,6 @@ function log_warn( message, remove_after_seconds ){
     write_message( message, "text-warning", remove_after_seconds  );
 }
 
-function log_info( message, remove_after_seconds ){
-    write_message( message, "text-info", remove_after_seconds  );
-}
 
 function add_message_div_if_missing(){
     var userMessagesDiv = $("#user-messages");
@@ -66,18 +82,47 @@ function is_check_box_checked( checkbox_id ){
 }
 
 
+function colour_special_fields( field, regex ){
+    if(field.match( regex )){
+        return '<span class="text-success">' + field + '</span>';
+    }else{
+        return field;
+    }
+}
+
+
 function get_runtime_config(){
+
     if( !runtime_config ){
         $.ajax({
                 url: "js/runtime-config.json",
                 type: "GET",
                 async: false,
                 success: function( data ) {
-                    console.log( data );
                     runtime_config = data;
                 },
                 error: function ( xhr , something ){
-                    log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseJSON.message +').');
+                    if(xhr){
+                        log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseText +').');
+                    }else{
+                        log_error( ' Error getting js/runtime-config.json ( Unknown error ).');
+                    }
+                }
+            });
+
+        $.ajax({
+                url: "js/station-codes.json",
+                type: "GET",
+                async: false,
+                success: function( data ) {
+                    runtime_config.transport.stationCodeToNameMap = data;
+                },
+                error: function ( xhr , something ){
+                    if(xhr){
+                        log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseText +').');
+                    }else{
+                        log_error( ' Error getting js/runtime-config.json ( Unknown error ).');
+                    }
                 }
             });
     }

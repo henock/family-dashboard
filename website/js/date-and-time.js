@@ -14,7 +14,11 @@ function set_date_time_for_time_zone( time_zone_id , time_zone_name ,  element_i
             $( element_id_prefix + "-time").html( time );
         },
         error: function ( xhr ){
-            log_error( xhr.status +' Error calling worldtimeapi with timezone '+time_zone_id+ ' ('+xhr.responseText +').');
+            if( xhr ){
+                log_error( xhr.status +' Error calling worldtimeapi with timezone '+time_zone_id+ ' ('+xhr.responseText +').');
+            } else{
+                log_error( 'Error calling worldtimeapi with timezone '+time_zone_id+ ' ( Unknown error ).');
+            }
             return 'api_error';
         }
     });
@@ -55,7 +59,7 @@ function now_plus_seconds( seconds_to_add ){
 }
 
 function date_plus_seconds( date, seconds_to_add ){
-    if( !date ){
+    if( !date || ! (date instanceof Date) ){
         log_error( "date_plus_seconds() date was null - using now");
         date = new Date();
     }
@@ -63,11 +67,11 @@ function date_plus_seconds( date, seconds_to_add ){
 }
 
 function get_seconds_between_dates( date_a, date_b ){
-    if( !date_a ){
+    if( !date_a || ! (date instanceof Date) ){
         log_error( "get_seconds_between_dates() date_a was null - using now");
         date_a = new Date();
     }
-    if( !date_b ){
+    if( !date_b || ! (date instanceof Date) ){
         log_error( "get_seconds_between_dates() date_b was null - using now");
         date_b = new Date();
     }
@@ -75,7 +79,7 @@ function get_seconds_between_dates( date_a, date_b ){
 }
 
 function get_seconds_since( date ){
-    if( !date ){
+    if( !date || ! (date instanceof Date) ){
         log_error( "get_seconds_since() date was null - using now");
         date = new Date();
     }
@@ -84,7 +88,7 @@ function get_seconds_since( date ){
 }
 
 function get_seconds_until( date ){
-    if( !date ){
+    if( !date || ! (date instanceof Date) ){
         log_error( "get_seconds_until() date was null - using now");
         date = new Date();
     }
@@ -133,7 +137,27 @@ function display_time_period_from_seconds( seconds ){
     return displayTime;
 }
 
+function set_time_on_date( date, timeAsString ){
+    var hours =  timeAsString.split(":")[0];
+    var minutes =  timeAsString.split(":")[1];
+    date.setHours(parseInt(hours));
+    date.setMinutes(parseInt(minutes));;
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
+}
+
 function update_all_count_down_times(){
+
+    $(".transit-departure-time").each(function(index, element){
+        var arrivalTime = new Date($(element).attr("scheduled-time"));
+        var walkTransitTime = $(element).attr("walkTransitTime");
+        var runTransitTime = $(element).attr("runTransitTime");
+        var driveTransitTime = $(element).attr("driveTransitTime");
+        var arrivalString = build_arrival_string( arrivalTime, walkTransitTime, runTransitTime, driveTransitTime);
+        element.innerHTML = arrivalString;
+    });
+
     $(".refresh-time").each(function(index,element){
         var id = $(element).attr('id');;
         var refreshTime = new Date($(element).attr("next-refresh-time"));

@@ -12,18 +12,18 @@
 </div>
 <script src="../js/jquery-v3.5.0.min.js" crossorigin="anonymous">
 </script>
-<script type="text/javascript" src="../js/utils.js"></script>
-<script type="text/javascript" src="../js/date-and-time.js"></script>
-<script type="text/javascript" src="../js/public-transport.js"></script>
-<script type="text/javascript" src="../js/tasks.js"></script>
-<script type="text/javascript" src="../js/testing-and-debugging.js"></script>
+<!--<script type="text/javascript" src="../js/utils.js"></script>-->
+<!--<script type="text/javascript" src="../js/date-and-time.js"></script>-->
+<!--<script type="text/javascript" src="../js/travel.js"></script>-->
+<!--<script type="text/javascript" src="../js/tasks.js"></script>-->
+<!--<script type="text/javascript" src="../js/testing-and-debugging.js"></script>-->
 <script type="text/javascript" src="../js/weather-forecast.js"></script>
-<script type="text/javascript" src="../js/family-dashboard.js"></script>
+<!--<script type="text/javascript" src="../js/family-dashboard.js"></script>-->
 <script type="text/javascript">
 
     let ids = [0,1000,1001,1100,1101,1102,2000,2100,3000,3001,3002,4000,4001,4200,4201,5000,5001,5100,5101,6000,6001,6200,6201,7000,7101,7102,8000];
 
-    let table = "<table>";
+    let table = "<table border='1'>";
     for(var i = 0; i < ids.length; i++ ){
         console.log( ids[i] );
         table += "<tr><td>" + convert_weather_code_to_text( ids[i] ) + "</td><td class='" + convert_weather_code_to_css_class( ids[i] ) + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>" ;

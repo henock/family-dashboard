@@ -41,7 +41,12 @@ function update_tasks_list( listId, statusId ){
             });
         },
         error: function ( xhr ){
-            log_error( xhr.status +' Error calling Trello for '+statusId+ ' ('+xhr.responseText +').');
+            if( xhr ){
+                log_error( xhr.status +' Error calling Trello for '+statusId+ ' ('+xhr.responseText +').');
+            }else{
+                log_error( ' Error calling Trello for '+statusId+ ' ( Unknown error ).');
+            }
+
         }
     });
 }

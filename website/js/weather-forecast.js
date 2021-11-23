@@ -112,7 +112,7 @@ function get_and_set_weather_for_upcoming_days(){
         type: "GET",
         success: set_weather_for_upcoming_days,
         error: function ( xhr , something ){
-            log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseJSON.message +').');
+            log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
         }
     });
 }
@@ -156,7 +156,11 @@ function get_and_set_weather_for_upcoming_hours( interval_in_seconds ){
         type: "GET",
         success: set_weather_for_upcoming_hours,
         error: function ( xhr , something ){
-            log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseJSON.message +').');
+            if( xhr ){
+                log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
+            } else{
+                log_error( ' Error calling Climacell for days ( Unknown error ).');
+            }
         }
     });
 
