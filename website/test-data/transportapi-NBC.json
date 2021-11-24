@@ -1,0 +1,245 @@
+{
+  "date": "2021-11-23",
+  "time_of_day": "22:20",
+  "request_time": "2021-11-23T22:20:31+00:00",
+  "station_name": "New Beckenham",
+  "station_code": "NBC",
+  "departures": {
+    "all": [
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84346",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:23",
+        "aimed_arrival_time": "22:23",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84346/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "C16682",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:33",
+        "aimed_arrival_time": "22:33",
+        "aimed_pass_time": null,
+        "origin_name": "London Charing Cross",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16682/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "C16684",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:44",
+        "aimed_arrival_time": "22:44",
+        "aimed_pass_time": null,
+        "origin_name": "Hayes (Kent)",
+        "destination_name": "London Charing Cross",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16684/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84347",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:53",
+        "aimed_arrival_time": "22:53",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84347/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G83783",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "22:59",
+        "aimed_arrival_time": "22:59",
+        "aimed_pass_time": null,
+        "origin_name": "Hayes (Kent)",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83783/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "C16688",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:03",
+        "aimed_arrival_time": "23:03",
+        "aimed_pass_time": null,
+        "origin_name": "London Charing Cross",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16688/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "C16691",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:14",
+        "aimed_arrival_time": "23:14",
+        "aimed_pass_time": null,
+        "origin_name": "Hayes (Kent)",
+        "destination_name": "London Charing Cross",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16691/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84348",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:23",
+        "aimed_arrival_time": "23:23",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84348/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G83785",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:29",
+        "aimed_arrival_time": "23:29",
+        "aimed_pass_time": null,
+        "origin_name": "Hayes (Kent)",
+        "destination_name": "Lewisham",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83785/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "C16693",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:33",
+        "aimed_arrival_time": "23:33",
+        "aimed_pass_time": null,
+        "origin_name": "London Charing Cross",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16693/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84349",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:53",
+        "aimed_arrival_time": "23:53",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84349/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "C03763",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "23:59",
+        "aimed_arrival_time": "23:59",
+        "aimed_pass_time": null,
+        "origin_name": "Hayes (Kent)",
+        "destination_name": "Lewisham",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C03763/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "C16701",
+        "platform": null,
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "00:03",
+        "aimed_arrival_time": "00:03",
+        "aimed_pass_time": null,
+        "origin_name": "London Charing Cross",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16701/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      }
+    ]
+  }
+}

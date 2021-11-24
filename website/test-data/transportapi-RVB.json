@@ -1,0 +1,173 @@
+{
+  "date": "2021-11-23",
+  "time_of_day": "22:18",
+  "request_time": "2021-11-23T22:18:46+00:00",
+  "station_name": "Ravensbourne",
+  "station_code": "RVB",
+  "departures": {
+    "all": [
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "W77025",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "22:28",
+        "aimed_arrival_time": "22:28",
+        "aimed_pass_time": null,
+        "origin_name": "Sevenoaks",
+        "destination_name": "London Blackfriars",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77025/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "W77034",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "22:47",
+        "aimed_arrival_time": "22:47",
+        "aimed_pass_time": null,
+        "origin_name": "London Blackfriars",
+        "destination_name": "Sevenoaks",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77034/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "W77031",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "22:58",
+        "aimed_arrival_time": "22:58",
+        "aimed_pass_time": null,
+        "origin_name": "Sevenoaks",
+        "destination_name": "London Blackfriars",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77031/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "W77039",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:17",
+        "aimed_arrival_time": "23:17",
+        "aimed_pass_time": null,
+        "origin_name": "London Blackfriars",
+        "destination_name": "Sevenoaks",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77039/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "W77037",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:28",
+        "aimed_arrival_time": "23:28",
+        "aimed_pass_time": null,
+        "origin_name": "Sevenoaks",
+        "destination_name": "London Blackfriars",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77037/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "W77044",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:47",
+        "aimed_arrival_time": "23:47",
+        "aimed_pass_time": null,
+        "origin_name": "London Blackfriars",
+        "destination_name": "Sevenoaks",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77044/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "G45007",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:58",
+        "aimed_arrival_time": "23:58",
+        "aimed_pass_time": null,
+        "origin_name": "Sevenoaks",
+        "destination_name": "London Blackfriars",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G45007/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "L67292",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:58",
+        "aimed_arrival_time": "23:58",
+        "aimed_pass_time": null,
+        "origin_name": "Sevenoaks",
+        "destination_name": "London Victoria",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:L67292/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "W77047",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "00:17",
+        "aimed_arrival_time": "00:17",
+        "aimed_pass_time": null,
+        "origin_name": "London Blackfriars",
+        "destination_name": "Sevenoaks",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77047/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      }
+    ]
+  }
+}

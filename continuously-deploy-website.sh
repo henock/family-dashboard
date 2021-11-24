@@ -5,6 +5,7 @@ set -euo pipefail
 
 TODAY="$(date -I)"
 SOURCE_FOLDER="/source"
+RUNTIME_CONFIG_FILE="runtime-config.json"
 LOG_PREFIX="deployments-on-"
 LOG_SUFFIX=".log.txt"                                         # .txt suffix allows the log files to be viewed in the browser
 LOG_DIR="/var/log/continuous-deployment"
@@ -12,6 +13,8 @@ FAMILY_DASHBOARD_FOLDER="$SOURCE_FOLDER/family-dashboard"
 GIT_FOLDER="$FAMILY_DASHBOARD_FOLDER/.git"
 WEBSITE_FOLDER="$FAMILY_DASHBOARD_FOLDER/website"
 TODAYS_LOG_FILE_NAME="$LOG_PREFIX$TODAY$LOG_SUFFIX"
+
+UPDATE_STATE="NOTHING_SET"
 
 NGINX_WEBSITE_FOLDER="/usr/share/nginx/html/family-dashboard"
 NGINX_WEBSITE_LOGS_FOLDER="$NGINX_WEBSITE_FOLDER/logs"
@@ -32,6 +35,7 @@ show_all_variables(){
   log "================================================"
   log "LOG_DIR=$LOG_DIR"
   log "SOURCE_FOLDER=$SOURCE_FOLDER"
+  log "RUNTIME_CONFIG_FILE=$RUNTIME_CONFIG_FILE"
   log "FAMILY_DASHBOARD_FOLDER=$FAMILY_DASHBOARD_FOLDER"
   log "GIT_FOLDER=$GIT_FOLDER"
   log "WEBSITE_FOLDER=$WEBSITE_FOLDER"
@@ -70,11 +74,6 @@ copy_files_to_website(){
 
   log "Copying source files ($WEBSITE_FOLDER/* -> $NGINX_WEBSITE_FOLDER)."
   cp -Rvf "$WEBSITE_FOLDER/"* "$NGINX_WEBSITE_FOLDER"
-
-#  for i in "$WEBSITE_FOLDER/"*; do
-#    echo "$i" | grep '.git' && continue
-#    log "copying $i"
-#  done
   log "Site update complete."
 }
 
@@ -83,6 +82,7 @@ fetch_latest(){
     log "There is a difference on origin/master pulling into $(pwd)"
     if git pull origin master; then
       log "Pull completed successfully."
+      UPDATE_STATE="UPDATE_SITE"
       return 0
     else
       banner_text "ERROR PULL FAILED!"
@@ -97,6 +97,7 @@ fetch_latest(){
 clone_project(){
   if git clone "https://github.com/henock/family-dashboard.git"; then
     log "Clone completed successfully"
+    UPDATE_STATE="UPDATE_SITE"
     return 0
   else
     banner_text "ERROR CLONE FAILED!"
@@ -108,11 +109,9 @@ update_source_files(){
   cd $SOURCE_FOLDER
   if test -e "$GIT_FOLDER"; then
     cd $FAMILY_DASHBOARD_FOLDER
-    log "Local repo exists, checking for changes from origin..."
     fetch_latest
     return $?
   else
-    log "Cloning source into $(pwd)"
     clone_project
     return $?
   fi
@@ -121,12 +120,15 @@ update_source_files(){
 clean_up_old_logs(){
   TEN_DAYS_AGO=$(date -I -d now-10-days)
   LOG_TO_DELETE="$LOG_DIR/$LOG_PREFIX$TEN_DAYS_AGO$LOG_SUFFIX"
-  log "Cleaning up logs - checking for logs from 10 days ago: $LOG_TO_DELETE"
-  if test -e "$TEN_DAYS_AGO"; then
+  if test -e "$LOG_TO_DELETE"; then
+      log "Deleting 10 days old log: $LOG_TO_DELETE"
       rm "$LOG_TO_DELETE" || log "ERROR - failed to delete $LOG_TO_DELETE"
-      show_all_variables
+      log "Log files found in $LOG_DIR"
+      for i in "$LOG_DIR/"*; do
+        log "$LOG_DIR/$i"
+      done
   else
-    log "$LOG_TO_DELETE not found."
+    log "Cleaning up logs: Log from 10 days ago not found $LOG_TO_DELETE"
   fi
 }
 
@@ -148,7 +150,10 @@ link_logs(){
 
 ########## START OF SCRIPT ##########
 test -e "$FAMILY_DASHBOARD_FOLDER" || init_website
-update_source_files && copy_files_to_website
+update_source_files
+if [[ "$UPDATE_STATE" == "UPDATE_SITE" ]] ; then
+  copy_files_to_website
+fi
 clean_up_old_logs
 link_logs
 log "================================================"

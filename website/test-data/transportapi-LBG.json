@@ -1,0 +1,461 @@
+{
+  "date": "2021-11-23",
+  "time_of_day": "08:59",
+  "request_time": "2021-11-23T08:59:37+00:00",
+  "station_name": "London Bridge",
+  "station_code": "LBG",
+  "departures": {
+    "all": [
+      {
+        "mode": "train",
+        "service": "24604000",
+        "train_uid": "C16745",
+        "platform": "3",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "08:59",
+        "aimed_arrival_time": "08:58",
+        "aimed_pass_time": null,
+        "origin_name": "Dover Priory",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16745/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22727100",
+        "train_uid": "G49252",
+        "platform": "4",
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "09:00",
+        "aimed_arrival_time": "08:59",
+        "aimed_pass_time": null,
+        "origin_name": "Peterborough",
+        "destination_name": "Horsham",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G49252/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24787000",
+        "train_uid": "Y87599",
+        "platform": "12",
+        "operator": "SN",
+        "operator_name": "Southern",
+        "aimed_departure_time": "09:01",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Bridge",
+        "destination_name": "Beckenham Junction",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:Y87599/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653005",
+        "train_uid": "G84320",
+        "platform": "2",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:01",
+        "aimed_arrival_time": "09:00",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "Hayes (Kent)",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84320/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22729000",
+        "train_uid": "G10355",
+        "platform": "5",
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "09:01",
+        "aimed_arrival_time": "09:00",
+        "aimed_pass_time": null,
+        "origin_name": "Horsham",
+        "destination_name": "Peterborough",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G10355/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24653000",
+        "train_uid": "G83056",
+        "platform": "9",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:02",
+        "aimed_arrival_time": "09:00",
+        "aimed_pass_time": null,
+        "origin_name": "Hayes (Kent)",
+        "destination_name": "London Charing Cross",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83056/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24605000",
+        "train_uid": "C16779",
+        "platform": "3",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:03",
+        "aimed_arrival_time": "09:01",
+        "aimed_pass_time": null,
+        "origin_name": "Tonbridge",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16779/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22721000",
+        "train_uid": "W64525",
+        "platform": "5",
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "09:05",
+        "aimed_arrival_time": "09:04",
+        "aimed_pass_time": null,
+        "origin_name": "Brighton",
+        "destination_name": "Bedford",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W64525/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22720000",
+        "train_uid": "W64529",
+        "platform": "4",
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "09:05",
+        "aimed_arrival_time": "09:04",
+        "aimed_pass_time": null,
+        "origin_name": "Bedford",
+        "destination_name": "Brighton",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W64529/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24650005",
+        "train_uid": "G83860",
+        "platform": "6",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:05",
+        "aimed_arrival_time": "09:03",
+        "aimed_pass_time": null,
+        "origin_name": "London Charing Cross",
+        "destination_name": "Dartford",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83860/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24650000",
+        "train_uid": "G83253",
+        "platform": "8",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:05",
+        "aimed_arrival_time": "09:03",
+        "aimed_pass_time": null,
+        "origin_name": "Dartford",
+        "destination_name": "London Charing Cross",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83253/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24657005",
+        "train_uid": "G83591",
+        "platform": "3",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:06",
+        "aimed_arrival_time": "09:05",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83591/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24655000",
+        "train_uid": "G83544",
+        "platform": "9",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:07",
+        "aimed_arrival_time": "09:05",
+        "aimed_pass_time": null,
+        "origin_name": "Orpington",
+        "destination_name": "London Charing Cross",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83544/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24749000",
+        "train_uid": "Y83641",
+        "platform": "10",
+        "operator": "SN",
+        "operator_name": "Southern",
+        "aimed_departure_time": "09:07",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Bridge",
+        "destination_name": "Uckfield",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:Y83641/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24659005",
+        "train_uid": "G84011",
+        "platform": "2",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:09",
+        "aimed_arrival_time": "09:08",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84011/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24659005",
+        "train_uid": "G84008",
+        "platform": "3",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:09",
+        "aimed_arrival_time": "09:08",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84008/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24602000",
+        "train_uid": "G83579",
+        "platform": "8",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:09",
+        "aimed_arrival_time": "09:07",
+        "aimed_pass_time": null,
+        "origin_name": "Tunbridge Wells",
+        "destination_name": "London Charing Cross",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83579/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24602004",
+        "train_uid": "C16796",
+        "platform": "6",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:09",
+        "aimed_arrival_time": "09:07",
+        "aimed_pass_time": null,
+        "origin_name": "London Charing Cross",
+        "destination_name": "Tunbridge Wells",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:C16796/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24783000",
+        "train_uid": "G85136",
+        "platform": "13",
+        "operator": "SN",
+        "operator_name": "Southern",
+        "aimed_departure_time": "09:10",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Bridge",
+        "destination_name": "East Croydon",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G85136/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24657005",
+        "train_uid": "G83594",
+        "platform": "2",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:12",
+        "aimed_arrival_time": "09:11",
+        "aimed_pass_time": null,
+        "origin_name": "London Cannon Street",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83594/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24605000",
+        "train_uid": "G84356",
+        "platform": "8",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:13",
+        "aimed_arrival_time": "09:11",
+        "aimed_pass_time": null,
+        "origin_name": "Ramsgate",
+        "destination_name": "London Charing Cross",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84356/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24655005",
+        "train_uid": "G84093",
+        "platform": "6",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:13",
+        "aimed_arrival_time": "09:11",
+        "aimed_pass_time": null,
+        "origin_name": "London Charing Cross",
+        "destination_name": "Sevenoaks",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G84093/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24787000",
+        "train_uid": "G85081",
+        "platform": "15",
+        "operator": "SN",
+        "operator_name": "Southern",
+        "aimed_departure_time": "09:14",
+        "aimed_arrival_time": null,
+        "aimed_pass_time": null,
+        "origin_name": "London Bridge",
+        "destination_name": "Caterham",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G85081/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "24655000",
+        "train_uid": "G83481",
+        "platform": "3",
+        "operator": "SE",
+        "operator_name": "Southeastern",
+        "aimed_departure_time": "09:14",
+        "aimed_arrival_time": "09:13",
+        "aimed_pass_time": null,
+        "origin_name": "Orpington",
+        "destination_name": "London Cannon Street",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G83481/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22726100",
+        "train_uid": "W76268",
+        "platform": "4",
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "09:15",
+        "aimed_arrival_time": "09:14",
+        "aimed_pass_time": null,
+        "origin_name": "Cambridge",
+        "destination_name": "Brighton",
+        "source": "ATOC",
+        "category": "XX",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W76268/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      }
+    ]
+  }
+}
