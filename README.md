@@ -104,7 +104,7 @@ What your runtime-config.json needs to look like
 }
 ```
 
-# Running the server from a webserver process
+# Running the dashboard from a webserver process
 
 ```shell
  git clone https://github.com/henock/family-dashboard.git
@@ -116,7 +116,7 @@ What your runtime-config.json needs to look like
  <http-server-process> --website ./website
  
 ```
-# Running the server from Docker 
+# Running the dashboard from Docker 
 ```shell
  git clone https://github.com/henock/family-dashboard.git
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
