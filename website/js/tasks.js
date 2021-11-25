@@ -2,16 +2,17 @@
 
 
 function set_todo_tasks( interval_in_seconds ) {
-    let trelloConfig = get_runtime_config().trello;
-    update_tasks_list(trelloConfig.todoListId,'todo');
-    update_tasks_list(trelloConfig.inProgressListId,'in-progress' );
-    update_tasks_list(trelloConfig.doneListId,'done' );
-    set_refresh_values( "#tasks-update", interval_in_seconds );
+    if( familyDashboard.config.tasks ){
+        let trelloConfig = familyDashboard.runtimeConfig.trello;
+        update_tasks_list(trelloConfig, trelloConfig.todoListId,'todo');
+        update_tasks_list(trelloConfig, trelloConfig.inProgressListId,'in-progress' );
+        update_tasks_list(trelloConfig, trelloConfig.doneListId,'done' );
+        set_refresh_values( "#tasks-update", interval_in_seconds );
+    }
 }
 
 //TODO - USE COMMON GET METHOD
-function update_tasks_list( listId, statusId ){
-    let trelloConfig = get_runtime_config().trello;
+function update_tasks_list( trelloConfig,  listId, statusId ){
     let urlToGet = '';
     if( is_debug_on()){
         urlToGet = 'test-data/trello-list-' + listId + '.json'
@@ -28,7 +29,7 @@ function update_tasks_list( listId, statusId ){
         success: function( data ) {
             var status_id = '#' + statusId;
             $(status_id).html("");
-            $(data).each(function(index){
+            $(data).each(function(){
                 var now = $.now();
                 var dateTime = Date.parse(this.dateLastActivity); //new Date( "2020-04-01");
                 var diffDate = new Date(now - dateTime);

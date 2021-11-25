@@ -1,7 +1,24 @@
 
 
 function set_date_and_time() {
-    set_local_date_time();
+    var now = new Date();
+    var monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - DO THIS LOCAL THING BETTER
+
+    var date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();
+    var time = get_padded_time_seconds( now );
+    var local_time_zone = (now.isDstObserved() ? ' (British Summer Time)' : 'GMT');
+
+    $("#date").html( date );
+    $("#local-time").html( time );
+    $("#local-time-zone").html( local_time_zone );
+}
+
+function update_times_in_different_timezone(){
+    if( familyDashboard.config.timeZone ){
+        let timeZones = familyDashboard.runtimeConfig.timeZones;
+        set_date_time_for_time_zone(timeZones.one.id, timeZones.one.name, "#time-zone-1")
+        set_date_time_for_time_zone(timeZones.two.id, timeZones.two.name, "#time-zone-2")
+    }
 }
 
 function set_date_time_for_time_zone( time_zone_id , time_zone_name ,  element_id_prefix ){
@@ -23,20 +40,6 @@ function set_date_time_for_time_zone( time_zone_id , time_zone_name ,  element_i
         }
     });
 }
-
-function set_local_date_time(){
-    var now = new Date();
-    var monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - DO THIS LOCAL THING BETTER
-
-    var date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();
-    var time = get_padded_time_seconds( now );
-    var local_time_zone = (now.isDstObserved() ? ' (British Summer Time)' : 'GMT');
-
-    $("#date").html( date );
-    $("#local-time").html( time );
-    $("#local-time-zone").html( local_time_zone );
-}
-
 
 function pad_with_leading_zero( num ){
     if( num < 10 && num > -1 ){
@@ -96,14 +99,14 @@ function get_seconds_until( date ){
 }
 
 function get_padded_time_minutes( date ){
-    var date = date ? date : new Date();
+    date = date ? date : new Date();
     var time = 	pad_with_leading_zero(date.getHours()) + ':' +
                 pad_with_leading_zero(date.getMinutes());
     return time;
 }
 
 function get_padded_time_seconds( date ){
-    var date = date ? date : new Date();
+    date = date ? date : new Date();
     var time = 	get_padded_time_minutes(date) + ':' +
                 pad_with_leading_zero(date.getSeconds());
     return time;
@@ -141,7 +144,7 @@ function set_time_on_date( date, timeAsString ){
     var hours =  timeAsString.split(":")[0];
     var minutes =  timeAsString.split(":")[1];
     date.setHours(parseInt(hours));
-    date.setMinutes(parseInt(minutes));;
+    date.setMinutes(parseInt(minutes));
     date.setSeconds(0);
     date.setMilliseconds(0);
     return date;
@@ -154,12 +157,11 @@ function update_all_count_down_times(){
         var walkTransitTime = $(element).attr("walkTransitTime");
         var runTransitTime = $(element).attr("runTransitTime");
         var driveTransitTime = $(element).attr("driveTransitTime");
-        var arrivalString = build_arrival_string( arrivalTime, walkTransitTime, runTransitTime, driveTransitTime);
-        element.innerHTML = arrivalString;
+        element.innerHTML = build_arrival_string( arrivalTime, walkTransitTime, runTransitTime, driveTransitTime);
     });
 
     $(".refresh-time").each(function(index,element){
-        var id = $(element).attr('id');;
+        var id = $(element).attr('id');
         var refreshTime = new Date($(element).attr("next-refresh-time"));
         var refreshPeriodInMillis = $(element).attr("refresh-period-in-seconds") * 1000;
         var futureInMillis = (refreshTime.getTime() - (new Date()).getTime());
@@ -172,11 +174,10 @@ function update_all_count_down_times(){
 }
 
 function date_with_dashes( date ){
-    var date = date ? date : new Date();
+    date = date ? date : new Date();
     var day = pad_with_leading_zero(date.getDate());
     var month = pad_with_leading_zero(date.getMonth()+1);
     var year = date.getFullYear();
-    var fullDate = year + '-' + month + '-' + day;
-    return fullDate;
+    return  year + '-' + month + '-' + day;
 }
 

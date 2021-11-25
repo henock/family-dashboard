@@ -48,13 +48,15 @@ function log_warn( message, remove_after_seconds ){
 
 function add_message_div_if_missing(){
     var userMessagesDiv = $("#user-messages");
-    if( userMessagesDiv.length == 0 ){
-        $("#user-messages-div").html(  '<ul class="list-unstyled" id="user-messages"/>' );
+    if( userMessagesDiv.length === 0 ){
+        let messageDiv = $("#user-messages-div");
+        messageDiv.removeClass('d-none');
+        messageDiv.html(  '<ul class="list-unstyled" id="user-messages"/>' );
     }
 }
 
 function write_message( message, a_class, remove_after_seconds ){
-    var removeTime = remove_after_seconds ? now_plus_seconds(remove_after_seconds) : now_plus_seconds(600);
+    var removeTime = remove_after_seconds ? now_plus_seconds(remove_after_seconds) : now_plus_seconds(2 );
     var now = new Date();
     var timedMessage = ' [' + get_padded_time_seconds( now ) + '] ' + message ;
     add_message_div_if_missing();
@@ -65,22 +67,20 @@ function write_message( message, a_class, remove_after_seconds ){
 }
 
 function remove_overdue_messages(){
-    $("#user-messages").children().each( function( index, it ){
+    let userMessage = $("#user-messages");
+    userMessage.children().each( function( index, it ){
         var removeTime = new Date( $(it).attr("remove-time"));
         var secondsSince = get_seconds_since(removeTime);
         if( secondsSince > 0 ){
             it.remove();
         }
     });
-    if( $("#user-messages").children().length == 0 ){
-        $("#user-messages-div").html('');
+    if( userMessage.children().length === 0 ){
+        let userMessageDiv = $("#user-messages-div");
+        userMessageDiv.html('');
+        userMessageDiv.addClass('d-none');
     }
 }
-
-function is_check_box_checked( checkbox_id ){
-    return $('#' + checkbox_id + ':checkbox:checked').length > 0
-}
-
 
 function colour_special_fields( field, regex ){
     if(field.match( regex )){
@@ -91,7 +91,7 @@ function colour_special_fields( field, regex ){
 }
 
 
-function get_runtime_config(){
+function get_runtime_config( dontLog404s ){
 
     if( !runtime_config ){
         $.ajax({
@@ -101,15 +101,18 @@ function get_runtime_config(){
                 success: function( data ) {
                     runtime_config = data;
                 },
-                error: function ( xhr , something ){
-                    if(xhr){
+                error: function ( xhr ){
+                    if(xhr && (xhr.status === 404) && dontLog404s ) {
+                        console.log( "Ignoring 404 for runtime-config.json" );
+                    } else if(xhr){
                         log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseText +').');
                     }else{
                         log_error( ' Error getting js/runtime-config.json ( Unknown error ).');
                     }
                 }
             });
-
+    }
+    if( runtime_config ){
         $.ajax({
                 url: "js/station-codes.json",
                 type: "GET",
@@ -117,8 +120,10 @@ function get_runtime_config(){
                 success: function( data ) {
                     runtime_config.transport.stationCodeToNameMap = data;
                 },
-                error: function ( xhr , something ){
-                    if(xhr){
+                error: function ( xhr ){
+                    if(xhr && (xhr.status === 404) && dontLog404s ) {
+                        console.log( "Ignoring 404 for runtime-config.json" );
+                    } else if(xhr){
                         log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseText +').');
                     }else{
                         log_error( ' Error getting js/runtime-config.json ( Unknown error ).');

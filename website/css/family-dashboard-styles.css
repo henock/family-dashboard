@@ -28,13 +28,16 @@ body{
 }
 
 .world-clock{
-    font-family: "Courier New"
+    font-family: "Courier New", monospace
 }
 
 .time-to-walk{
     color: green;
 }
 
+#user-messages-div {
+    height: 100px;
+}
 
 .time-to-run{
     color: yellow;
