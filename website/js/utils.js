@@ -56,7 +56,7 @@ function add_message_div_if_missing(){
 }
 
 function write_message( message, a_class, remove_after_seconds ){
-    var removeTime = remove_after_seconds ? now_plus_seconds(remove_after_seconds) : now_plus_seconds(2 );
+    var removeTime = remove_after_seconds ? now_plus_seconds(remove_after_seconds) : now_plus_seconds( 5 );
     var now = new Date();
     var timedMessage = ' [' + get_padded_time_seconds( now ) + '] ' + message ;
     add_message_div_if_missing();

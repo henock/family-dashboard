@@ -1,6 +1,6 @@
 # Family dashboard
 
-A simple web based dashboard - making API calls to other systems and displaying the results.
+A simple web based dashboard - making API calls to other systems and displaying the results (weather, our commute and todo list).
  
 > **SECURITY NOTE** 
 > 
