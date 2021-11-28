@@ -49,6 +49,7 @@ body{
 
 .missed-transport{
     color: grey;
+    opacity: 0.3;
 }
 
 .sun_rise

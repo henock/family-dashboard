@@ -154,10 +154,11 @@ function update_all_count_down_times(){
 
     $(".transit-departure-time").each(function(index, element){
         var arrivalTime = new Date($(element).attr("scheduled-time"));
+        var noNeedToLeaveBefore = $(element).attr("noNeedToLeaveBefore");
         var walkTransitTime = $(element).attr("walkTransitTime");
         var runTransitTime = $(element).attr("runTransitTime");
         var driveTransitTime = $(element).attr("driveTransitTime");
-        element.innerHTML = build_arrival_string( arrivalTime, walkTransitTime, runTransitTime, driveTransitTime);
+        element.innerHTML = build_transport_eta_html( build_transport_eta_spans, arrivalTime, noNeedToLeaveBefore, walkTransitTime, runTransitTime, driveTransitTime, 5);
     });
 
     $(".refresh-time").each(function(index,element){
@@ -181,3 +182,17 @@ function date_with_dashes( date ){
     return  year + '-' + month + '-' + day;
 }
 
+//str = "now+20s"
+function time_from_string( str ){
+    if( str.includes("+")){
+        split = str.split("+");
+        let prefix = split[0];
+        let suffix = split[1];
+        if( suffix.endsWith( 's' )){
+            let seconds = suffix.substring(0, suffix.length-1);
+            if( prefix.toLowerCase() === "now" ){
+                return date_plus_seconds( new Date(), seconds );
+            }
+        }
+    }
+}

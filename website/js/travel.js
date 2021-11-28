@@ -87,76 +87,64 @@ function show_or_hide_school_run_departure_time(){
     if( familyDashboard.config.showSchoolRunCountdown ){
         let schoolRunCountDown = familyDashboard.runtimeConfig.schoolRunCountDown;
 
-        if( !schoolRunCountDown.datesUpdate ){
-            update_to_todays_dates( schoolRunCountDown );
-            schoolRunCountDown.datesUpdate = true;
-        }
-
         let now = new Date();
         let departTimeElement = $("#school-run-departure-time");
 
-        if( schoolRunCountDown.showCountDown < now < schoolRunCountDown.stopCountDown ){
+        if( ( is_week_day( now ) || is_debug_on() )
+            && schoolRunCountDown.showCountDown < now
+            && now < schoolRunCountDown.stopCountDown ){
             departTimeElement.removeClass('d-none');
-            let timeUntilDeparture = display_time_period_from_seconds( get_seconds_until( schoolRunCountDown.departureTime ));
-            departTimeElement.html(build_school_departure_string( now, schoolRunCountDown, timeUntilDeparture ));
+            let secondsUntilDeparture = display_time_period_from_seconds( get_seconds_until( schoolRunCountDown.departureTime ));
+            departTimeElement.html(
+                build_transport_eta_html( build_school_run_countdown_to_departure_spans, schoolRunCountDown.departureTime,
+                                            schoolRunCountDown.getOutOfBedBy ,
+                                            schoolRunCountDown.finishGettingDressedBy,schoolRunCountDown.finishBreakfastBy, schoolRunCountDown.putOnShoesBy , 15));
         } else {
             departTimeElement.addClass('d-none');
         }
     }
 }
 
-function update_to_todays_dates( schoolRunCountDown ){
-    schoolRunCountDown.showCountDown = set_time_on_date( new Date(), schoolRunCountDown.showCountDown );
-    schoolRunCountDown.startCountDown = set_time_on_date( new Date(), schoolRunCountDown.startCountDown );
-    schoolRunCountDown.finishGettingDressedBy = set_time_on_date( new Date(), schoolRunCountDown.finishGettingDressedBy );
-    schoolRunCountDown.finishBreakfastBy = set_time_on_date( new Date(), schoolRunCountDown.finishBreakfastBy );
-    schoolRunCountDown.departureTime = set_time_on_date( new Date(), schoolRunCountDown.departureTime );
-    schoolRunCountDown.stopCountDown = set_time_on_date( new Date(), schoolRunCountDown.stopCountDown );
+function is_week_day( now ){
+    let day = now.getDay();
+    return day > 0 && day < 6;
 }
 
 
 
-function build_arrival_string( arrivalTime,  walkTransitTime, runTransitTime, driveTransitTime ){
-     var secondsUntilArrival = get_seconds_until( arrivalTime);
+function build_transport_eta_html( function_to_call, targetTime,  tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, fullWidthOfSpan ){  //5
+    var secondsUntilTargetTime = get_seconds_until( targetTime);
+    var countDownVisualisation = build_count_down_visualisation_string( secondsUntilTargetTime, targetTime, tooEarly, fullWidthOfSpan );
+    return  function_to_call( secondsUntilTargetTime , countDownVisualisation, tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime );
+}
 
-    var arrivalString = display_time_period_from_seconds(secondsUntilArrival)
+
+function build_count_down_visualisation_string(secondsUntilTargetTime, targetTime, startArrowMovingAt, fullWidthOfSpan ){
+    return display_time_period_from_seconds(secondsUntilTargetTime)
                         + SPACE_CHARACTER
-                        + build_eta_visualisation_string(secondsUntilArrival)
-                        + get_padded_time_minutes(arrivalTime);
-
-    var tooEarly = parseInt(walkTransitTime) + parseInt(120);
-
-    return  colour_eta_warnings( secondsUntilArrival , arrivalString, tooEarly, walkTransitTime, runTransitTime, driveTransitTime );
+                        + build_eta_visualisation_string(secondsUntilTargetTime, startArrowMovingAt, fullWidthOfSpan) //600, 5)
+                        + get_padded_time_minutes(targetTime);
 }
 
-function build_eta_visualisation_string(secondsUntilArrival){
-    var FULL_WIDTH = 5;
-    var SECONDS_DEVIDER = 120;
-
-    let startPosition;
-
-    if( secondsUntilArrival < 1 ){
-        startPosition = 0;
-    } else if( secondsUntilArrival < 600 ){
-        startPosition = Math.floor(secondsUntilArrival / SECONDS_DEVIDER);
-    }else{
-        startPosition = FULL_WIDTH;
+function build_eta_visualisation_string(secondsLeft, startArrowMovingAt, fullWidthOfSpan ){
+    if( secondsLeft < startArrowMovingAt ){
+        let subSpanSize = startArrowMovingAt / fullWidthOfSpan;
+        let arrowPos = Math.floor((startArrowMovingAt - secondsLeft)/ subSpanSize);
+        str = '';
+        for( var i = 0; i < fullWidthOfSpan; i ++ ){
+            str += SPACE_CHARACTER;
+            if( arrowPos == i ){
+                str += '->';
+            }
+        }
+        return str;
+    }else {
+        let str = '->';
+        for( var i = 0; i < fullWidthOfSpan; i ++ ){
+            str += SPACE_CHARACTER;
+        }
+        return str;
     }
-
-    var etaVisualisationString = '';
-    var before = FULL_WIDTH - startPosition;
-    var after = FULL_WIDTH - before;
-
-    for (var i = 0; i < before; i++) {
-        etaVisualisationString += SPACE_CHARACTER;
-    }
-
-    etaVisualisationString += '->';
-
-    for (var i = 0; i < after; i++) {
-        etaVisualisationString += SPACE_CHARACTER;
-    }
-    return etaVisualisationString;
 }
 
 function get_station_code_from_name( station_name, stationCodeToNameMap ){
@@ -199,36 +187,40 @@ function update_train_UI( model ){
         );
 
         for( j = 0; j < commute.trains.length; j++ ){
+            let now = new Date();
             let train_details = commute.trains[j];
-            platform = train_details.platform == null ? '': '['+ SPACE_CHARACTER + train_details.platform + '] ';
-            var transportId =  commute.from + '-' + train_details.destination ;
-            destination_with_color = colour_special_fields( train_details.destination, commute.to.join("|") );
-            var tableRow =
-                '<tr class="train-departure text-monospace">'
-                +'  <td>'
-                +   	platform
-                +'  </td>'
-                +'  <td class="pr-2">' + destination_with_color + '</td>'
-                +'  <td class="train transit-departure-time text-nowrap" '
-                +'   	transport-id="' + transportId + '"'
-                +'	    display-name="' + train_details.destination + '"'
-                +'	    walkTransitTime="' + commute.walkTransitTime + '"'
-                +'	    runTransitTime="' + commute.runTransitTime + '"'
-                +'	    driveTransitTime="' + commute.driveTransitTime + '"'
-                +' 	    index="' + j + '"'
-                +'   	scheduled-time="' + train_details.departureTime + '">'
-                + 		build_arrival_string( train_details.departureTime, commute.walkTransitTime,
-                                                commute.runTransitTime, commute.driveTransitTime )
-                +'	 </td>'
-                +'</tr>';
+            if( now < train_details.departureTime ){
+                platform = train_details.platform == null ? '': '['+ SPACE_CHARACTER + train_details.platform + '] ';
+                var transportId =  commute.from + '-' + train_details.destination ;
+                destination_with_color = colour_special_fields( train_details.destination, commute.to.join("|") );
+                var tableRow =
+                    '<tr class="train-departure text-monospace">'
+                    +'  <td>'
+                    +   	platform
+                    +'  </td>'
+                    +'  <td class="pr-2">' + destination_with_color + '</td>'
+                    +'  <td class="train transit-departure-time text-nowrap" '
+                    +'   	transport-id="' + transportId + '"'
+                    +'	    display-name="' + train_details.destination + '"'
+                    +'	    noNeedToLeaveBefore="' + commute.noNeedToLeaveBefore + '"'
+                    +'	    walkTransitTime="' + commute.walkTransitTime + '"'
+                    +'	    runTransitTime="' + commute.runTransitTime + '"'
+                    +'	    driveTransitTime="' + commute.driveTransitTime + '"'
+                    +' 	    index="' + j + '"'
+                    +'   	scheduled-time="' + train_details.departureTime + '">'
+                    + 		build_transport_eta_html( build_transport_eta_spans, train_details.departureTime, commute.noNeedToLeaveBefore,
+                                                    commute.walkTransitTime, commute.runTransitTime, commute.driveTransitTime, 5 )
+                    +'	 </td>'
+                    +'</tr>';
 
-            $(station_element_id).append( tableRow );
+                $(station_element_id).append( tableRow );
+            }
         }
     }
 }
 
 
-function colour_eta_warnings( secondsUntilArrival , arrivalString, tooEarly, walkTimeSeconds, runTimeSeconds, driveTimeSeconds  ){
+function build_transport_eta_spans( secondsUntilArrival , arrivalString, tooEarly, walkTimeSeconds, runTimeSeconds, driveTimeSeconds  ){
     if( secondsUntilArrival > tooEarly ){
         return '<span class="text-info">' + arrivalString + '</span>';
     } else if( secondsUntilArrival > walkTimeSeconds ){
@@ -238,21 +230,23 @@ function colour_eta_warnings( secondsUntilArrival , arrivalString, tooEarly, wal
     } else if(  typeof driveTimeSeconds !== 'undefined'
                 && secondsUntilArrival > driveTimeSeconds ){
         return '<span class="time-to-drive">' + arrivalString + ' 🚗</span>';
-    }else {
+    }else if( secondsUntilArrival > 0 ){
+        return '<span class="missed-transport">' + arrivalString + '</span>';
+    } else {
         return '<span class="missed-transport">' + arrivalString + '</span>';
     }
 }
 
-function build_school_departure_string( now, schoolRunCountDown, timeUntilDeparture ){
-//    let arrowString = timeUntilDeparture + arrowString + build_eta_visualisation_string(timeUntilDeparture);
-    let departureString = get_padded_time_minutes(schoolRunCountDown.departureTime);
-    if( now < schoolRunCountDown.startCountDown ){
-        return '<span class="text-muted">Leave for school ' +  departureString +  ' 🛌</span>';
-    } else if( now < schoolRunCountDown.finishGettingDressedBy ){
-        return '<span class="text-success">Leave for school ' +  departureString +  ' 👔️</span>';
-    } else if( now < schoolRunCountDown.finishBreakfastBy){
-        return '<span class="text-warning">Leave for school ' +  departureString +  ' 🥣</span>';
-    } else if( now < schoolRunCountDown.departureTime){
-        return '<span class="text-danger">Leave for school ' +  departureString +  ' 🚗</span>';
+function build_school_run_countdown_to_departure_spans( secondsUntilDeparture , departureString, getOutOfBedBy, finishGettingDressedBy, finishBreakfastBy, putOnShoesBy ){
+    if( secondsUntilDeparture > getOutOfBedBy ){
+        return '<span class="text-info">Leave for school ' + departureString + '🛌</span>';
+    } else if( secondsUntilDeparture > finishGettingDressedBy ){
+        return '<span class="time-to-walk">Leave for school ' + departureString + ' 👔️</span>';
+    } else if( secondsUntilDeparture > finishBreakfastBy ){
+        return '<span class="time-to-run">Leave for school ' + departureString + '  🥣</span>';
+    } else if(  secondsUntilDeparture > putOnShoesBy ){
+        return '<span class="time-to-drive">Leave for school ' + departureString + ' 👞</span>';
+    }else {
+        return '<span class="missed-transport">YOU ARE LATE ' + departureString + '</span>';
     }
 }
