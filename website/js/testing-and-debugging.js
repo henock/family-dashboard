@@ -1,5 +1,7 @@
 
 
+function running_unit_tests(){ return false; }
+
 function is_debug_on(){
     return 'true' === get_url_parameter('debug');
 }
@@ -12,7 +14,7 @@ function get_url_parameter( paramToGet ){
 
 /// UNIT TEST RUNNER /////
 function run_unit_test( function_under_test, expected_result, parameters, compare_function ){
-    var result;
+    let result;
     //TODO - FIND A BETTER WAY
     if( parameters.length == 1 ){
         result =  window[function_under_test](parameters[0]);
@@ -40,4 +42,33 @@ function run_unit_test( function_under_test, expected_result, parameters, compar
                     + add_row( 'params',  parameters )
                     + '</table>' );
     }
+}
+
+function run_all_unit_tests(){
+    unit_test_calculate_departure_date_time_from_time_only_value();
+}
+
+
+function unit_test_calculate_departure_date_time_from_time_only_value(){
+    let testTime = new Date("2020-04-26T23:30:00.000");
+
+    let timeAsString = ['23:00','00:00','01:00'];
+
+    let expected = [ new Date('Sun Apr 26 2020 23:00:00 GMT+0100 (BST)'),
+                     new Date('Sun Apr 27 2020 00:00:00 GMT+0100 (BST)'),
+                     new Date('Sun Apr 27 2020 01:00:00 GMT+0100 (BST)')]
+
+    let compare_function = function(a,b){return a.getTime() != b.getTime()};
+
+    run_unit_test( "calculate_departure_date_time_from_time_only_value", expected[0], [timeAsString[0], testTime], compare_function );
+
+//    for (var i = 0; i < timeAsString.length; i++) {
+//        var params = [timeAsString[i], testTime];
+//        run_unit_test( "calculate_departure_date_time_from_time_only_value"
+//                        ,expected[i]
+//                        ,params
+//                        ,function(a,b){return a.getTime() != b.getTime();}
+//                    );
+//    }
+
 }

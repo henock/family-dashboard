@@ -1,12 +1,12 @@
 
 
 function set_date_and_time() {
-    var now = new Date();
-    var monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - DO THIS LOCAL THING BETTER
+    let now = new Date();
+    let monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - DO THIS LOCAL THING BETTER
 
-    var date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();
-    var time = get_padded_time_seconds( now );
-    var local_time_zone = (now.isDstObserved() ? ' (British Summer Time)' : 'GMT');
+    let date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();
+    let time = get_padded_time_seconds( now );
+    let local_time_zone = (now.isDstObserved() ? ' (British Summer Time)' : 'GMT');
 
     $("#date").html( date );
     $("#local-time").html( time );
@@ -26,7 +26,7 @@ function set_date_time_for_time_zone( time_zone_id , time_zone_name ,  element_i
         url: "http://worldtimeapi.org/api/timezone/" + time_zone_id ,
         type: "GET",
         success: function( data ) {
-            var time = data.datetime.split("T")[1].split('.')[0].substring(0,5);
+            let time = data.datetime.split("T")[1].split('.')[0].substring(0,5);
             $( element_id_prefix + "-name" ).html( time_zone_name );
             $( element_id_prefix + "-time").html( time );
         },
@@ -50,7 +50,7 @@ function pad_with_leading_zero( num ){
 }
 
 function pad_with_leading_spaces( full_length, a_string ){
-    var len = a_string.length;
+    let len = a_string.length;
     for (var i = len; i < full_length; i++) {
         a_string = SPACE_CHARACTER + a_string;
     }
@@ -86,7 +86,7 @@ function get_seconds_since( date ){
         log_error( "get_seconds_since() date was null - using now");
         date = new Date();
     }
-    var now = (new Date()).getTime();
+    let now = (new Date()).getTime();
     return Math.floor((now - date.getTime()) / 1000);
 }
 
@@ -100,21 +100,21 @@ function get_seconds_until( date ){
 
 function get_padded_time_minutes( date ){
     date = date ? date : new Date();
-    var time = 	pad_with_leading_zero(date.getHours()) + ':' +
+    let time = 	pad_with_leading_zero(date.getHours()) + ':' +
                 pad_with_leading_zero(date.getMinutes());
     return time;
 }
 
 function get_padded_time_seconds( date ){
     date = date ? date : new Date();
-    var time = 	get_padded_time_minutes(date) + ':' +
+    let time = 	get_padded_time_minutes(date) + ':' +
                 pad_with_leading_zero(date.getSeconds());
     return time;
 }
 
 Date.prototype.stdTimezoneOffset = function () {
-    var jan = new Date(this.getFullYear(), 0, 1);
-    var jul = new Date(this.getFullYear(), 6, 1);
+    let jan = new Date(this.getFullYear(), 0, 1);
+    let jul = new Date(this.getFullYear(), 6, 1);
     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
 }
 
@@ -124,11 +124,11 @@ Date.prototype.isDstObserved = function () {
 
 function display_time_period_from_seconds( seconds ){
     seconds = Math.abs(seconds);
-    var minutesIntoFuture = (seconds/60);
-    var displayTime;
+    let minutesIntoFuture = (seconds/60);
+    let displayTime;
     if( minutesIntoFuture > 59 ){
-        var hoursIntoTheFuture = parseFloat(minutesIntoFuture/60).toFixed(2);
-        var minutesLeft = minutesIntoFuture%60;
+        let hoursIntoTheFuture = parseFloat(minutesIntoFuture/60).toFixed(2);
+        let minutesLeft = minutesIntoFuture%60;
         displayTime =  Math.floor(hoursIntoTheFuture) + 'h ' + pad_with_leading_zero(Math.floor(minutesLeft));
     } else if( minutesIntoFuture > 1 ){
         seconds = (seconds % 60);
@@ -141,8 +141,8 @@ function display_time_period_from_seconds( seconds ){
 }
 
 function set_time_on_date( date, timeAsString ){
-    var hours =  timeAsString.split(":")[0];
-    var minutes =  timeAsString.split(":")[1];
+    let hours =  timeAsString.split(":")[0];
+    let minutes =  timeAsString.split(":")[1];
     date.setHours(parseInt(hours));
     date.setMinutes(parseInt(minutes));
     date.setSeconds(0);
@@ -153,32 +153,32 @@ function set_time_on_date( date, timeAsString ){
 function update_all_count_down_times(){
 
     $(".transit-departure-time").each(function(index, element){
-        var arrivalTime = new Date($(element).attr("scheduled-time"));
-        var noNeedToLeaveBefore = $(element).attr("noNeedToLeaveBefore");
-        var walkTransitTime = $(element).attr("walkTransitTime");
-        var runTransitTime = $(element).attr("runTransitTime");
-        var driveTransitTime = $(element).attr("driveTransitTime");
+        let arrivalTime = new Date($(element).attr("scheduled-time"));
+        let noNeedToLeaveBefore = $(element).attr("noNeedToLeaveBefore");
+        let walkTransitTime = $(element).attr("walkTransitTime");
+        let runTransitTime = $(element).attr("runTransitTime");
+        let driveTransitTime = $(element).attr("driveTransitTime");
         element.innerHTML = build_transport_eta_html( build_transport_eta_spans, arrivalTime, noNeedToLeaveBefore, walkTransitTime, runTransitTime, driveTransitTime, 5);
     });
 
     $(".refresh-time").each(function(index,element){
-        var id = $(element).attr('id');
-        var refreshTime = new Date($(element).attr("next-refresh-time"));
-        var refreshPeriodInMillis = $(element).attr("refresh-period-in-seconds") * 1000;
-        var futureInMillis = (refreshTime.getTime() - (new Date()).getTime());
-        var futureInSeconds = futureInMillis/1000;
-        var nextRefreshTimeForDisplay = display_time_period_from_seconds( futureInSeconds );
+        let id = $(element).attr('id');
+        let refreshTime = new Date($(element).attr("next-refresh-time"));
+        let refreshPeriodInMillis = $(element).attr("refresh-period-in-seconds") * 1000;
+        let futureInMillis = (refreshTime.getTime() - (new Date()).getTime());
+        let futureInSeconds = futureInMillis/1000;
+        let nextRefreshTimeForDisplay = display_time_period_from_seconds( futureInSeconds );
         $(element).html( nextRefreshTimeForDisplay );
-        var progressBarPercentage = futureInMillis / refreshPeriodInMillis * 100;
+        let progressBarPercentage = futureInMillis / refreshPeriodInMillis * 100;
         $(  '#' + id + '-progress-bar' ).attr('style', 'width: ' + (100 - progressBarPercentage) + '%');
     });
 }
 
 function date_with_dashes( date ){
     date = date ? date : new Date();
-    var day = pad_with_leading_zero(date.getDate());
-    var month = pad_with_leading_zero(date.getMonth()+1);
-    var year = date.getFullYear();
+    let day = pad_with_leading_zero(date.getDate());
+    let month = pad_with_leading_zero(date.getMonth()+1);
+    let year = date.getFullYear();
     return  year + '-' + month + '-' + day;
 }
 

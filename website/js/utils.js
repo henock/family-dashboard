@@ -16,10 +16,10 @@ const TWENTY_FOUR_HOURS		= AN_HOUR * 24;
 var runtime_config = null;
 
 function get_request_param( param_id ){
-    var paramString = window.location.search.substring(1);
-    var keyValuePair = paramString.split('&');
+    let paramString = window.location.search.substring(1);
+    let keyValuePair = paramString.split('&');
     for(var i = 0; i < keyValuePair.length; i++ ){
-        var keyValue = keyValuePair[i].split("=");
+        let keyValue = keyValuePair[i].split("=");
         if( keyValue[0] === param_id ){
             return keyValue[1];
         }
@@ -27,7 +27,7 @@ function get_request_param( param_id ){
 }
 
 function log_debug(  message, remove_after_seconds ){
-    var debugging = get_request_param('debug');
+    let debugging = get_request_param('debug');
     if(debugging){
         log_info( 'DEBUG: ' + message, remove_after_seconds );
     }
@@ -47,7 +47,7 @@ function log_warn( message, remove_after_seconds ){
 
 
 function add_message_div_if_missing(){
-    var userMessagesDiv = $("#user-messages");
+    let userMessagesDiv = $("#user-messages");
     if( userMessagesDiv.length === 0 ){
         let messageDiv = $("#user-messages-div");
         messageDiv.removeClass('d-none');
@@ -56,9 +56,9 @@ function add_message_div_if_missing(){
 }
 
 function write_message( message, a_class, remove_after_seconds ){
-    var removeTime = remove_after_seconds ? now_plus_seconds(remove_after_seconds) : now_plus_seconds( 5 );
-    var now = new Date();
-    var timedMessage = ' [' + get_padded_time_seconds( now ) + '] ' + message ;
+    let removeTime = remove_after_seconds ? now_plus_seconds(remove_after_seconds) : now_plus_seconds( 5 );
+    let now = new Date();
+    let timedMessage = ' [' + get_padded_time_seconds( now ) + '] ' + message ;
     add_message_div_if_missing();
     console.log( timedMessage );
     $("#user-messages").append(
@@ -69,8 +69,8 @@ function write_message( message, a_class, remove_after_seconds ){
 function remove_overdue_messages(){
     let userMessage = $("#user-messages");
     userMessage.children().each( function( index, it ){
-        var removeTime = new Date( $(it).attr("remove-time"));
-        var secondsSince = get_seconds_since(removeTime);
+        let removeTime = new Date( $(it).attr("remove-time"));
+        let secondsSince = get_seconds_since(removeTime);
         if( secondsSince > 0 ){
             it.remove();
         }
@@ -91,7 +91,7 @@ function colour_special_fields( field, regex ){
 }
 
 
-function get_runtime_config( dontLog404s ){
+function get_runtime_config(  ){
 
     let runtimeConfigUrl = "js/runtime-config.json";
 
@@ -108,10 +108,8 @@ function get_runtime_config( dontLog404s ){
                     runtime_config = data;
                 },
                 error: function ( xhr ){
-                    if(xhr && (xhr.status === 404) && dontLog404s ) {
+                    if(xhr && (xhr.status === 404)) {
                         console.log( "Ignoring 404 for runtime-config.json" );
-                    } else if(xhr){
-                        log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseText +').');
                     }else{
                         log_error( ' Error getting js/runtime-config.json ( Unknown error ).');
                     }
@@ -127,10 +125,8 @@ function get_runtime_config( dontLog404s ){
                     runtime_config.transport.stationCodeToNameMap = data;
                 },
                 error: function ( xhr ){
-                    if(xhr && (xhr.status === 404) && dontLog404s ) {
+                    if(xhr && (xhr.status === 404)) {
                         console.log( "Ignoring 404 for runtime-config.json" );
-                    } else if(xhr){
-                        log_error( xhr.status +' Error getting js/runtime-config.json ('+xhr.responseText +').');
                     }else{
                         log_error( ' Error getting js/runtime-config.json ( Unknown error ).');
                     }
@@ -138,10 +134,12 @@ function get_runtime_config( dontLog404s ){
             });
     }
 
-    if(is_debug_on()){
-        set_times_from_strings( runtime_config.schoolRunCountDown );
-    } else {
-        update_to_todays_dates( runtime_config.schoolRunCountDown );
+    if(runtime_config){
+        if(is_debug_on()){
+            set_times_from_strings( runtime_config.schoolRunCountDown );
+        } else {
+            update_to_todays_dates( runtime_config.schoolRunCountDown );
+        }
     }
 
 

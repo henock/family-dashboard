@@ -27,13 +27,13 @@ function update_tasks_list( trelloConfig,  listId, statusId ){
         url: urlToGet,
         type: "GET",
         success: function( data ) {
-            var status_id = '#' + statusId;
+            let status_id = '#' + statusId;
             $(status_id).html("");
             $(data).each(function(){
-                var now = $.now();
-                var dateTime = Date.parse(this.dateLastActivity); //new Date( "2020-04-01");
-                var diffDate = new Date(now - dateTime);
-                var days = Math.floor( diffDate/1000/60/60/24 );
+                let now = $.now();
+                let dateTime = Date.parse(this.dateLastActivity); //new Date( "2020-04-01");
+                let diffDate = new Date(now - dateTime);
+                let days = Math.floor( diffDate/1000/60/60/24 );
                 if( this.labels.length > 0 ){
                     $(status_id).append('<li><span class="'+this.labels[0].name+'">[' + days + '] '+this.name+' </span></li>');
                 }else{

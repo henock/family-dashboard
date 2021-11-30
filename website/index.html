@@ -1,281 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.v4.4.1.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh">
-    <link rel="stylesheet" href="css/family-dashboard-styles.css">
-    <title>The Zewde Dashboard</title>
-</head>
-<body>
-<div class="container-fluid">
-    <div id="dynamic-runtime-config" class="pl-4 pt-3 d-none">
-        <div>
-            <div class="alert alert-success" role="alert">
-                <p class="mb-0">You dont have the file <a href="js/runtime-config.json">js/runtime-config.json</a> configured.</p>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="css/bootstrap.v4.4.1.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh">
+        <link rel="stylesheet" href="css/family-dashboard-styles.css">
+        <title>The Zewde Dashboard</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div id="dynamic-runtime-config" class="pl-4 pt-3 d-none">
+                <div>
+                    <div class="alert alert-success" role="alert">
+                        <p class="mb-0">You dont have the file <a href="js/runtime-config.json">js/runtime-config.json</a> configured.</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <!-- ///////// DATE AND TIME /////// -->
-    <div id="date-time-messages" class="row border-bottom pb-3">
-        <div class="col-5">
-            <div id="local-time-zone"></div>
-            <div id="local-time" class="display-1"></div>
-            <div>
-                <table id="api-calls">
+            <!-- ///////// DATE AND TIME /////// -->
+            <div id="date-time-messages" class="row border-bottom pb-3">
+                <div class="col-5">
+                    <div id="local-time-zone"></div>
+                    <div id="local-time" class="display-1"></div>
+                    <div>
+                        <table id="api-calls">
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="pl-3">Next update</td>
+                            </tr>
+                            <tr>
+                                <td class="pr-2">&#9928;</td>
+                                <td></td>
+                                <td id="weather-update"
+                                    class="refresh-time text-right"
+                                    next-refresh-time=""
+                                    refresh-period-in-seconds="">
+                                    <div class="progress">
+                                        <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="progress" style="height: 3px;">
+                                        <div id="weather-update-progress-bar" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img width="18px;" height="18px;" src="img/trello-app-icon.png"/></td>
+                                <td></td>
+                                <td id="tasks-update"
+                                    class="refresh-time text-right"
+                                    next-refresh-time=""
+                                    refresh-period-in-seconds=""></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="progress" style="height: 3px;">
+                                        <div id="tasks-update-progress-bar"  class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&#128646;</td>
+                                <td></td>
+                                <td id="train-travel-update"
+                                    class="refresh-time text-right"
+                                    next-refresh-time=""
+                                    refresh-period-in-seconds=""></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="progress" style="height: 3px;">
+                                        <div id="train-travel-update-progress-bar"  class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col">
+                    <table>
+                        <tr>
+                            <td id="time-zone-1-name" class="pr-2"><span>🇺🇸</span> DC</td>
+                            <td class="border-left pl-1 world-clock" id="time-zone-1-time"></td>
+                        </tr>
+                        <tr>
+                            <td id="time-zone-2-name" class="pr-2"><span>🇪🇹</span> Addis</td>
+                            <td class="border-left pl-1 world-clock" id="time-zone-2-time"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-5">
+                    <div id="date" class="display-4 text-right"></div>
+                    <div>
+                        <table class="m-4">
+                            <tr>
+                                <td class="sun_rise" style="width: 80px; height: 90px;"></td>
+                                <td class="sun_set" style="width: 80px; height: 90px;"></td>
+                            </tr>
+                            <tr>
+                                <td id="weather-text-sun-rise"></td>
+                                <td id="weather-text-sun-set"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- This div get added/removed dinamically-->
+
+            <div id="user-messages-div" class="row">
+                <ul id="user-messages" class="list-unstyled" ></ul>
+            </div>
+            <!-- -->
+
+            <!-- ///////// SCHOOL RUN /////// -->
+            <div id="school-run-departure-time" class="text-center display-1 text-danger d-none"></div>
+
+            <!-- ///////// WEATHER /////// -->
+            <div id="weather" class="row border p-1">
+                <table width="100%" class="ml-4 pt-1 pb-1 pr-1">
                     <tr>
-                        <td colspan="2"></td>
-                        <td class="pl-3">Next update</td>
+                        <td id="weather-date-now"  style="width: 80px; height: 20px;"></td>
+                        <td id="weather-date-plus-6hrs"  style="width: 80px; height: 20px;"></td>
+                        <td class="border-left"  style="width: 10px; height: 20px;"></td>
+                        <td id="weather-date-day-1"  style="width: 80px; height: 20px;"></td>
+                        <td id="weather-date-day-2"  style="width: 80px; height: 20px;"></td>
+                        <td id="weather-date-day-3"  style="width: 80px; height: 20px;"></td>
+                        <td id="weather-date-day-4"  style="width: 80px; height: 20px;"></td>
+                        <td id="weather-date-day-5"  style="width: 80px; height: 20px;"></td>
                     </tr>
                     <tr>
-                        <td class="pr-2">&#9928;</td>
-                        <td></td>
-                        <td id="weather-update"
-                            class="refresh-time text-right"
-                            next-refresh-time=""
-                            refresh-period-in-seconds="">
-                            <div class="progress">
-                                <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td id="weather-image-now" style="width: 80px; height: 90px;"></td>
+                                    <td><!--used to keep image cell above from expanding--></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td id="weather-image-plus-6hrs" style="width: 80px; height: 90px;"></td>
+                                    <td><!--used to keep image cell above from expanding--></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="border-left"  style="width: 10px; height: 20px;"></td>
+                        <td >
+                            <table>
+                                <tr>
+                                    <td id="weather-image-day-1" style="width: 80px; height: 90px;"></td>
+                                    <td><!--used to keep image cell above from expanding--></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td id="weather-image-day-2" style="width: 80px; height: 90px;"></td>
+                                    <td><!--used to keep image cell above from expanding--></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td id="weather-image-day-3" style="width: 80px; height: 90px;"></td>
+                                    <td><!--used to keep image cell above from expanding--></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td id="weather-image-day-4" style="width: 80px; height: 90px;"></td>
+                                    <td><!--used to keep image cell above from expanding--></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td id="weather-image-day-5" style="width: 80px; height: 90px;"></td>
+                                    <td><!--used to keep image cell above from expanding--></td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
-                            <div class="progress" style="height: 3px;">
-                                <div id="weather-update-progress-bar" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </td>
+                        <td id="weather-text-now"></td>
+                        <td id="weather-text-plus-6hrs"></td>
+                        <td class="border-left"  style="width: 10px; height: 20px;"></td>
+                        <td id="weather-text-day-1"></td>
+                        <td id="weather-text-day-2"></td>
+                        <td id="weather-text-day-3"></td>
+                        <td id="weather-text-day-4"></td>
+                        <td id="weather-text-day-5"></td>
                     </tr>
                     <tr>
-                        <td><img width="18px;" height="18px;" src="img/trello-app-icon.png"/></td>
-                        <td></td>
-                        <td id="tasks-update"
-                            class="refresh-time text-right"
-                            next-refresh-time=""
-                            refresh-period-in-seconds=""></td>
+                        <td id="weather-temp-now" class="pt-1"></td>
+                        <td id="weather-temp-plus-6hrs"></td>
+                        <td class="border-left"  style="width: 10px; height: 20px;"></td>
+                        <td id="weather-temp-day-1" class="pt-1"></td>
+                        <td id="weather-temp-day-2" class="pt-1"></td>
+                        <td id="weather-temp-day-3" class="pt-1"></td>
+                        <td id="weather-temp-day-4" class="pt-1"></td>
+                        <td id="weather-temp-day-5" class="pt-1"></td>
                     </tr>
                     <tr>
-                        <td colspan="3">
-                            <div class="progress" style="height: 3px;">
-                                <div id="tasks-update-progress-bar"  class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </td>
+                        <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-now"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-plus-6hrs"></span></td>
+                        <td class="border-left"  style="width: 10px; height: 20px;"></td>
+                        <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-1"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-2"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-3"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-4"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-5"></span></td>
                     </tr>
                     <tr>
-                        <td>&#128646;</td>
-                        <td></td>
-                        <td id="train-travel-update"
-                            class="refresh-time text-right"
-                            next-refresh-time=""
-                            refresh-period-in-seconds=""></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <div class="progress" style="height: 3px;">
-                                <div id="train-travel-update-progress-bar"  class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </td>
+                        <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-now"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-plus-6hrs"></span></td>
+                        <td class="border-left"  style="width: 10px; height: 20px;"></td>
+                        <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-1"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-2"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-3"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-4"></span></td>
+                        <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-5"></span></td>
                     </tr>
                 </table>
             </div>
-        </div>
-        <div class="col">
-            <table>
-                <tr>
-                    <td id="time-zone-1-name" class="pr-2"><span>🇺🇸</span> DC</td>
-                    <td class="border-left pl-1 world-clock" id="time-zone-1-time"></td>
-                </tr>
-                <tr>
-                    <td id="time-zone-2-name" class="pr-2"><span>🇪🇹</span> Addis</td>
-                    <td class="border-left pl-1 world-clock" id="time-zone-2-time"></td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-5">
-            <div id="date" class="display-4 text-right"></div>
-            <div>
-                <table class="m-4">
-                    <tr>
-                        <td class="sun_rise" style="width: 80px; height: 90px;"></td>
-                        <td class="sun_set" style="width: 80px; height: 90px;"></td>
-                    </tr>
-                    <tr>
-                        <td id="weather-text-sun-rise"></td>
-                        <td id="weather-text-sun-set"></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- This div get added/removed dinamically-->
 
-    <div id="user-messages-div" class="row">
-        <ul id="user-messages" class="list-unstyled" ></ul>
-    </div>
-    <!-- -->
-
-    <!-- ///////// SCHOOL RUN /////// -->
-    <div id="school-run-departure-time" class="text-center display-1 text-danger d-none"></div>
-
-    <!-- ///////// WEATHER /////// -->
-    <div id="weather" class="row border p-1">
-        <table width="100%" class="ml-4 pt-1 pb-1 pr-1">
-            <tr>
-                <td id="weather-date-now"  style="width: 80px; height: 20px;"></td>
-                <td id="weather-date-plus-6hrs"  style="width: 80px; height: 20px;"></td>
-                <td class="border-left"  style="width: 10px; height: 20px;"></td>
-                <td id="weather-date-day-1"  style="width: 80px; height: 20px;"></td>
-                <td id="weather-date-day-2"  style="width: 80px; height: 20px;"></td>
-                <td id="weather-date-day-3"  style="width: 80px; height: 20px;"></td>
-                <td id="weather-date-day-4"  style="width: 80px; height: 20px;"></td>
-                <td id="weather-date-day-5"  style="width: 80px; height: 20px;"></td>
-            </tr>
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td id="weather-image-now" style="width: 80px; height: 90px;"></td>
-                            <td><!--used to keep image cell above from expanding--></td>
-                        </tr>
+            <!-- ///////// TRAVEL /////// -->
+            <div id="travel" class="row">
+                <div class="col p-0">
+                    <table class="border-bottom border-left" width="100%">
+                        <tr id="bus-travel" class="border-bottom"></tr>
+                        <tr  id="train-travel" class="border-bottom"></tr>
                     </table>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td id="weather-image-plus-6hrs" style="width: 80px; height: 90px;"></td>
-                            <td><!--used to keep image cell above from expanding--></td>
-                        </tr>
-                    </table>
-                </td>
-                <td class="border-left"  style="width: 10px; height: 20px;"></td>
-                <td >
-                    <table>
-                        <tr>
-                            <td id="weather-image-day-1" style="width: 80px; height: 90px;"></td>
-                            <td><!--used to keep image cell above from expanding--></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td id="weather-image-day-2" style="width: 80px; height: 90px;"></td>
-                            <td><!--used to keep image cell above from expanding--></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td id="weather-image-day-3" style="width: 80px; height: 90px;"></td>
-                            <td><!--used to keep image cell above from expanding--></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td id="weather-image-day-4" style="width: 80px; height: 90px;"></td>
-                            <td><!--used to keep image cell above from expanding--></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td id="weather-image-day-5" style="width: 80px; height: 90px;"></td>
-                            <td><!--used to keep image cell above from expanding--></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td id="weather-text-now"></td>
-                <td id="weather-text-plus-6hrs"></td>
-                <td class="border-left"  style="width: 10px; height: 20px;"></td>
-                <td id="weather-text-day-1"></td>
-                <td id="weather-text-day-2"></td>
-                <td id="weather-text-day-3"></td>
-                <td id="weather-text-day-4"></td>
-                <td id="weather-text-day-5"></td>
-            </tr>
-            <tr>
-                <td id="weather-temp-now" class="pt-1"></td>
-                <td id="weather-temp-plus-6hrs"></td>
-                <td class="border-left"  style="width: 10px; height: 20px;"></td>
-                <td id="weather-temp-day-1" class="pt-1"></td>
-                <td id="weather-temp-day-2" class="pt-1"></td>
-                <td id="weather-temp-day-3" class="pt-1"></td>
-                <td id="weather-temp-day-4" class="pt-1"></td>
-                <td id="weather-temp-day-5" class="pt-1"></td>
-            </tr>
-            <tr>
-                <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-now"></span></td>
-                <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-plus-6hrs"></span></td>
-                <td class="border-left"  style="width: 10px; height: 20px;"></td>
-                <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-1"></span></td>
-                <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-2"></span></td>
-                <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-3"></span></td>
-                <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-4"></span></td>
-                <td class="pt-1"><span class="pr-2">&#x1f33f;</span><span class="text-right" id="weather-grassIndex-day-5"></span></td>
-            </tr>
-            <tr>
-                <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-now"></span></td>
-                <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-plus-6hrs"></span></td>
-                <td class="border-left"  style="width: 10px; height: 20px;"></td>
-                <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-1"></span></td>
-                <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-2"></span></td>
-                <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-3"></span></td>
-                <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-4"></span></td>
-                <td class="pt-1"><span class="pr-2">&#127795;</span><span class="text-right" id="weather-treeIndex-day-5"></span></td>
-            </tr>
-        </table>
-    </div>
-
-    <!-- ///////// TRAVEL /////// -->
-    <div id="travel" class="row">
-        <div class="col p-0">
-            <table class="border-bottom border-left" width="100%">
-                <tr id="bus-travel" class="border-bottom"></tr>
-                <tr  id="train-travel" class="border-bottom"></tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- ///////// TASKS /////// -->
-    <div id="tasks" class="row">
-        <div class="col">
-            <div class="row" id="tasks-headings">
-                <div class="col h3">Todo</div>
-                <div class="col h3">In progress</div>
-                <div class="col h3">Done</div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <ul class="list-unstyled" id="todo"></ul>
                 </div>
+            </div>
+
+            <!-- ///////// TASKS /////// -->
+            <div id="tasks" class="row">
                 <div class="col">
-                    <ul class="list-unstyled" id="in-progress"></ul>
-                </div>
-                <div class="col">
-                    <ul class="list-unstyled" id="done"></ul>
+                    <div class="row" id="tasks-headings">
+                        <div class="col h3">Todo</div>
+                        <div class="col h3">In progress</div>
+                        <div class="col h3">Done</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled" id="todo"></ul>
+                        </div>
+                        <div class="col">
+                            <ul class="list-unstyled" id="in-progress"></ul>
+                        </div>
+                        <div class="col">
+                            <ul class="list-unstyled" id="done"></ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<script src="js/jquery-v3.5.0.min.js" crossorigin="anonymous">
-</script>
-<script type="text/javascript" src="js/utils.js"></script>
-<script type="text/javascript" src="js/date-and-time.js"></script>
-<script type="text/javascript" src="js/travel.js"></script>
-<script type="text/javascript" src="js/tasks.js"></script>
-<script type="text/javascript" src="js/testing-and-debugging.js"></script>
-<script type="text/javascript" src="js/weather-forecast.js"></script>
-<script type="text/javascript" src="js/family-dashboard.js"></script>
-</body>
+        <script src="js/jquery-v3.5.0.min.js" crossorigin="anonymous">
+        </script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/date-and-time.js"></script>
+        <script type="text/javascript" src="js/travel.js"></script>
+        <script type="text/javascript" src="js/tasks.js"></script>
+        <script type="text/javascript" src="js/testing-and-debugging.js"></script>
+        <script type="text/javascript" src="js/weather-forecast.js"></script>
+        <script type="text/javascript" src="js/testing-and-debugging.js"></script>
+        <script type="text/javascript" src="js/family-dashboard.js"></script>
+    </body>
 </html>

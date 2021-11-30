@@ -67,14 +67,14 @@ function set_train_station_arrivals( commute, model, transportApi ){
 }
 
 function is_destination_station( commute, stationName, stationCodeToNameMap ){
-    var stationCode = get_station_code_from_name( stationName, stationCodeToNameMap );
+    let stationCode = get_station_code_from_name( stationName, stationCodeToNameMap );
     return commute.to.includes(stationCode);
 }
 
 function extract_trains_details( it , stationCodeToNameMap ){
-    var platform = it.platform ;
-    var departureTime = calculate_departure_time_for_bad_api_time_only_value( it.aimed_departure_time  );
-    var destination = get_station_code_from_name( it.destination_name, stationCodeToNameMap );
+    let platform = it.platform ;
+    let departureTime = calculate_departure_date_time_from_time_only_value( it.aimed_departure_time  );
+    let destination = get_station_code_from_name( it.destination_name, stationCodeToNameMap );
 
     return {
         "departureTime" : departureTime,
@@ -111,13 +111,28 @@ function is_week_day( now ){
 }
 
 
-
 function build_transport_eta_html( function_to_call, targetTime,  tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, fullWidthOfSpan ){  //5
-    var secondsUntilTargetTime = get_seconds_until( targetTime);
-    var countDownVisualisation = build_count_down_visualisation_string( secondsUntilTargetTime, targetTime, tooEarly, fullWidthOfSpan );
+    let secondsUntilTargetTime = get_seconds_until( targetTime);
+    let countDownVisualisation = build_count_down_visualisation_string( secondsUntilTargetTime, targetTime, tooEarly, fullWidthOfSpan );
     return  function_to_call( secondsUntilTargetTime , countDownVisualisation, tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime );
 }
 
+// TODO - FIX
+//function build_transport_eta_html( function_to_call, targetTime,  tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, fullWidthOfSpan ){  //5
+//    let times = [ tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime ];
+//    let secondsUntilNextTargetTime = get_seconds_until_next_target( targetTime, times );
+//    let countDownVisualisation = build_count_down_visualisation_string( secondsUntilNextTargetTime, targetTime, tooEarly, fullWidthOfSpan );
+//    return  function_to_call( secondsUntilNextTargetTime , countDownVisualisation, tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime );
+//}
+//
+//function get_seconds_until_next_target( targetTime, times ){
+//    let secondsUntilTargetTime = get_seconds_until( targetTime );
+//    let secondsUntilNextTargetTime = 0;
+//    for( let i = 0; i < times.length && secondsUntilNextTargetTime < 1; i++ ){
+//        secondsUntilNextTargetTime = secondsUntilTargetTime + parseInt(times[i]);
+//    }
+//    return secondsUntilNextTargetTime;
+//}
 
 function build_count_down_visualisation_string(secondsUntilTargetTime, targetTime, startArrowMovingAt, fullWidthOfSpan ){
     return display_time_period_from_seconds(secondsUntilTargetTime)
@@ -148,8 +163,8 @@ function build_eta_visualisation_string(secondsLeft, startArrowMovingAt, fullWid
 }
 
 function get_station_code_from_name( station_name, stationCodeToNameMap ){
-    var entries = stationCodeToNameMap.entries();
-    var entry = entries.next();
+    let entries = stationCodeToNameMap.entries();
+    let entry = entries.next();
     while( entry.done === false ){
         if( station_name === entry.value[1] ){
             return entry.value[0];
@@ -160,9 +175,9 @@ function get_station_code_from_name( station_name, stationCodeToNameMap ){
     return "XXX";
 }
 
-function calculate_departure_time_for_bad_api_time_only_value( departureTimeAsString ){
-    var currentTime = new Date();
-    var departureTime =  new Date();
+function calculate_departure_date_time_from_time_only_value( departureTimeAsString ){
+    let currentTime = new Date();
+    let departureTime =  new Date();
     set_time_on_date( departureTime, departureTimeAsString );
     if((currentTime.getHours()-2) > departureTime.getHours() ){
         return new Date( departureTime.getTime() + (TWENTY_FOUR_HOURS * 1000) );
@@ -178,7 +193,7 @@ function update_train_UI( model ){
         startingStationName = model.stationCodeToNameMap.get( commute.from );
         $('#train-travel').append( "<td class='p-3 border align-top'><table id='"+ commute.from +"'></table></td>");
 
-        var station_element_id = "#" + commute.from
+        let station_element_id = "#" + commute.from
 
         $(station_element_id).html(
             '<tr class="">'
@@ -191,9 +206,9 @@ function update_train_UI( model ){
             let train_details = commute.trains[j];
             if( now < train_details.departureTime ){
                 platform = train_details.platform == null ? '': '['+ SPACE_CHARACTER + train_details.platform + '] ';
-                var transportId =  commute.from + '-' + train_details.destination ;
+                let transportId =  commute.from + '-' + train_details.destination ;
                 destination_with_color = colour_special_fields( train_details.destination, commute.to.join("|") );
-                var tableRow =
+                let tableRow =
                     '<tr class="train-departure text-monospace">'
                     +'  <td>'
                     +   	platform

@@ -76,8 +76,8 @@ function set_weather_details( keyString, dateString, temperatureString, weather_
 }
 
 function set_weather_details_for_days( today, keyString ){
-    var dateString = new Date(today.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
-    var temperatureString = Math.round( today.values.temperatureApparent ) + DEGREES_CELSIUS;
+    let dateString = new Date(today.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
+    let temperatureString = Math.round( today.values.temperatureApparent ) + DEGREES_CELSIUS;
     set_weather_details( keyString, dateString, temperatureString, today.values.weatherCode, today.values.grassIndex, today.values.treeIndex );
 }
 
