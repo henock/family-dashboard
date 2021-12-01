@@ -104,21 +104,22 @@ What your runtime-config.json needs to look like
 }
 ```
 
-# Running the dashboard from a webserver process
+# Running the dashboard from a webserver process (python3 example)
 
 ```shell
  git clone https://github.com/henock/family-dashboard.git
+ cd family-dashboard
  cp docs/example-runtime-config.json website/js/runtime-config.json
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
  # Populate it with the keys in the format shown above
- <http-server-process> --website ./website
- 
+ python3 -m http.server    
 ```
 # Running the dashboard from Docker 
+- The version allows for an update to the source repo to be dynamically updated in the dashboard
 ```shell
- git clone https://github.com/henock/family-dashboard.git
+ git clone https://github.com/henock/family-dashboard.git # or your clone.
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
