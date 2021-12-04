@@ -39,6 +39,9 @@ body{
     height: 100px;
 }
 
+th, td {
+  padding: 10px;
+}
 .time-to-run{
     color: yellow;
 }
@@ -52,108 +55,9 @@ body{
     opacity: 0.3;
 }
 
-.sun_rise
-, .sun_set
-, .freezing_rain_heavy
-, .freezing_rain
-, .freezing_rain_light
-, .freezing_drizzle
-, .ice_pellets
-, .light_ice_pellets
-, .heavy_ice_pellets
-, .snow_heavy
-, .snow
-, .light_snow
-, .heavy_snow
-, .flurries
-, .thunderstorm
-, .rain
-, .light_rain
-, .heavy_rain
-, .drizzle
-, .freezing_drizzle
-, .freezing_rain
-, .light_freezing_rain
-, .heavy_freezing_rain
-, .light_fog
-, .wind
-, .light_wind
-, .strong_wind
-, .fog
-, .cloudy
-, .mostly_cloudy
-, .partly_cloudy
-, .mostly_clear
-, .clear{
-    background-image: url('../img/colored_48px_weather_at_1x.png');
-    background-repeat: no-repeat;
-    height: 100px;
+.sunrise-icon {
+    background: #92a0ac;
 }
-
-.clear{
-    background-position: -25px 0px;
-}
-
-.cloudy{
-    background-position: -215px 0px;
-}
-
-.mostly_clear{
-    background-position: -790px -480px;
-}
-
-.partly_cloudy{
-    background-position: -600px -95px;
-}
-
-.mostly_cloudy{
-    background-position: -505px -100px;
-}
-
-.light_fog, .fog{
-    background-position: -311px 10px;
-}
-
-.wind, .light_wind{
-    background-position: -695px -185px;
-}
-
-.strong_wind{
-    background-position: -790px -185px;
-}
-
-.drizzle{
-    background-position: -310px -90px;
-}
-
-.rain{
-    background-position: -120px -190px;
-}
-
-.light_rain{
-    background-position: -790px -385px;
-}
-
-.heavy_rain{
-    background-position: -25px -190px;
-}
-
-.snow, .light_snow, .heavy_snow, .flurries{
-    background-position: -695px  -380px;
-}
-
-.freezing_drizzle, .freezing_rain, .light_freezing_rain, .heavy_freezing_rain, .ice_pellets, .heavy_ice_pellets, .light_ice_pellets {
-    background-position: -310px -90px;
-}
-
-.thunderstorm{
-    background-position: -888px 10px;
-}
-
-.sun_rise {
-    background-position: -595px -480px;
-}
-
-.sun_set {
-    background-position: -695px -480px;
+.sunset-icon {
+    background: #92a0ac;
 }

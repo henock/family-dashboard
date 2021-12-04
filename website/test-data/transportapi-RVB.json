@@ -10,7 +10,7 @@
         "mode": "train",
         "service": "22742000",
         "train_uid": "W77025",
-        "platform": null,
+        "platform": 1,
         "operator": "TL",
         "operator_name": "Thameslink",
         "aimed_departure_time": "22:28",

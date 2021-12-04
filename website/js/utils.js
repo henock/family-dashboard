@@ -55,15 +55,30 @@ function add_message_div_if_missing(){
     }
 }
 
-function write_message( message, a_class, remove_after_seconds ){
-    let removeTime = remove_after_seconds ? now_plus_seconds(remove_after_seconds) : now_plus_seconds( 5 );
+function write_unit_test_result( message, pass ){
+    let aClass = pass ?  'text-success' : 'text-danger';
+    write_message( message, aClass, -1 , true );
+}
+
+function write_html_message( message, aClass, remove_after_seconds ){
+    write_message( message, aClass, remove_after_seconds, true );
+}
+
+function write_message( message, aClass, removeAfterSeconds, asHtml ){
+    let removeTime = removeAfterSeconds ? now_plus_seconds(removeAfterSeconds) : now_plus_seconds( 5 );
     let now = new Date();
-    let timedMessage = ' [' + get_padded_time_seconds( now ) + '] ' + message ;
+    let timedMessage = (' [' + get_padded_time_seconds( now ) + '] ' + message);
     add_message_div_if_missing();
     console.log( timedMessage );
-    $("#user-messages").append(
-        '<li class="'+ a_class + '" remove-time="'+ removeTime +'">' +  timedMessage + '</li>'
-    );
+    let li = '<li class="'+ aClass + '" remove-time="'+ removeTime +'">';
+    if( asHtml ){
+        li += timedMessage;
+    }else{
+        li += '<xmp>' +  timedMessage + '</xmp>'
+    }
+    li += '</li>';
+
+    $("#user-messages").append( li );
 }
 
 function remove_overdue_messages(){

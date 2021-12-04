@@ -26,12 +26,50 @@
     let table = "<table border='1'>";
     for(var i = 0; i < ids.length; i++ ){
         console.log( ids[i] );
-        table += "<tr><td>" + convert_weather_code_to_text( ids[i] ) + "</td><td class='" + convert_weather_code_to_css_class( ids[i] ) + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>" ;
+    table += "<tr><td>" + convert_weather_code_to_text( ids[i] ) + "</td>"
+         + "<td>" + ids[i] + "</td>"
+         + "<td><img width='50px' src='../img/weather-icons/" + convert_weather_code_to_image( ids[i] ) + "'></td>"
+         + "<td><img width='50px' src='../img/weather-icons/" + convert_weather_code_to_image( ids[i] , true ) + "'></td>"
+         + "</tr>" ;
     }
     table += "</table>";
 
     $( '#bob' ).html( table );
 
 </script>
+    <table>
+        <tr><td>clear_night_moon</td><td><img src="../img/weather-icons/clear_night_moon.svg" width="50px"/></td></tr>
+        <tr><td>cloudy_cloud</td><td><img src="../img/weather-icons/cloudy_cloud.svg" width="50px"/></td></tr>
+        <tr><td>day_sleet</td><td><img src="../img/weather-icons/day_sleet.svg" width="50px"/></td></tr>
+        <tr><td>drizzle_rain_snow</td><td><img src="../img/weather-icons/drizzle_rain_snow.svg" width="50px"/></td></tr>
+        <tr><td>fog</td><td><img src="../img/weather-icons/fog.svg" width="50px"/></td></tr>
+        <tr><td>hail_day_sun_cloud</td><td><img src="../img/weather-icons/hail_day_sun_cloud.svg" width="50px"/></td></tr>
+        <tr><td>heavy_rain</td><td><img src="../img/weather-icons/heavy_rain.svg" width="50px"/></td></tr>
+        <tr><td>heavy_rain_day</td><td><img src="../img/weather-icons/heavy_rain_day.svg" width="50px"/></td></tr>
+        <tr><td>heavy_rain_night_cloud_moon</td><td><img src="../img/weather-icons/heavy_rain_night_cloud_moon.svg" width="50px"/></td></tr>
+        <tr><td>heavy_snow</td><td><img src="../img/weather-icons/heavy_snow.svg" width="50px"/></td></tr>
+        <tr><td>heavy_snow_day_sun</td><td><img src="../img/weather-icons/heavy_snow_day_sun.svg" width="50px"/></td></tr>
+        <tr><td>heavy_snow_night_cloud_moon</td><td><img src="../img/weather-icons/heavy_snow_night_cloud_moon.svg" width="50px"/></td></tr>
+        <tr><td>light_snow_day_sun</td><td><img src="../img/weather-icons/light_snow_day_sun.svg" width="50px"/></td></tr>
+        <tr><td>mist</td><td><img src="../img/weather-icons/mist.svg" width="50px"/></td></tr>
+        <tr><td>overcast_cloud</td><td><img src="../img/weather-icons/overcast_cloud.svg" width="50px"/></td></tr>
+        <tr><td>partly_cloudy_day_sun_clouds</td><td><img src="../img/weather-icons/partly_cloudy_day_sun_clouds.svg" width="50px"/></td></tr>
+        <tr><td>partly_cloudy_night_moon</td><td><img src="../img/weather-icons/partly_cloudy_night_moon.svg" width="50px"/></td></tr>
+        <tr><td>rain_day_sun</td><td><img src="../img/weather-icons/rain_day_sun.svg" width="50px"/></td></tr>
+        <tr><td>rain_shower_night_moon</td><td><img src="../img/weather-icons/rain_shower_night_moon.svg" width="50px"/></td></tr>
+        <tr><td>sleet_cloud_rain_snow</td><td><img src="../img/weather-icons/sleet_cloud_rain_snow.svg" width="50px"/></td></tr>
+        <tr><td>sleet_day_cloud_sun_rain_snow</td><td><img src="../img/weather-icons/sleet_day_cloud_sun_rain_snow.svg" width="50px"/></td></tr>
+        <tr><td>sleet_night_snow_rain_raining</td><td><img src="../img/weather-icons/sleet_night_snow_rain_raining.svg" width="50px"/></td></tr>
+        <tr><td>snow_cloud</td><td><img src="../img/weather-icons/snow_cloud.svg" width="50px"/></td></tr>
+        <tr><td>snow_night_moon_cloud_snow</td><td><img src="../img/weather-icons/snow_night_moon_cloud_snow.svg" width="50px"/></td></tr>
+        <tr><td>sunny</td><td><img src="../img/weather-icons/sunny.svg" width="50px"/></td></tr>
+        <tr><td>sunny_day_sun</td><td><img src="../img/weather-icons/sunny_day_sun.svg" width="50px"/></td></tr>
+        <tr><td>thunder_day_cloud_thunderbolt_lightning</td><td><img src="../img/weather-icons/thunder_day_cloud_thunderbolt_lightning.svg" width="50px"/></td></tr>
+        <tr><td>thunder_night_cloud_storm_lightning</td><td><img src="../img/weather-icons/thunder_night_cloud_storm_lightning.svg" width="50px"/></td></tr>
+        <tr><td>thunder_thunderbolt_cloud</td><td><img src="../img/weather-icons/thunder_thunderbolt_cloud.svg" width="50px"/></td></tr>
+        <tr><td>windy_palm_tree</td><td><img src="../img/weather-icons/windy_palm_tree.svg" width="50px"/></td></tr>
+        <tr><td>windy_palm_tree_dark</td><td><img src="../img/weather-icons/windy_palm_tree_dark.svg" width="50px"/></td></tr>
+
+    </table>
 </body>
 </html>
