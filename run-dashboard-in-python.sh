@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-if test ! -f website/js/runtime-config.json; then
-  echo "website/js/runtime-config.json not found - dashboard will not work!"
+if test ! -f website/data/runtime-config.json; then
+  echo "website/data/runtime-config.json not found - dashboard will not work!"
   echo "Exiting.. "
   exit 1
 fi

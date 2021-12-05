@@ -126,7 +126,7 @@ function get_runtime_config(){
                     if(xhr && (xhr.status === 404)) {
                         console.log( "Ignoring 404 for runtime-config.json" );
                     }else{
-                        log_error( ' Error getting js/runtime-config.json ( Unknown error ).');
+                        log_error( ' Error getting data/runtime-config.json ( Unknown error ).');
                     }
                 }
             });
@@ -154,7 +154,7 @@ function get_runtime_config(){
                     if(xhr && (xhr.status === 404)) {
                         console.log( "Ignoring 404 for runtime-config.json" );
                     }else{
-                        log_error( ' Error getting js/runtime-config.json ( Unknown error ).');
+                        log_error( ' Error getting data/runtime-config.json ( Unknown error ).');
                     }
                 }
             });

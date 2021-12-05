@@ -114,7 +114,7 @@ What your runtime-config.json needs to look like
 ```shell
  git clone https://github.com/henock/family-dashboard.git
  cd family-dashboard
- cp docs/example-runtime-config.json website/js/runtime-config.json
+ cp docs/example-runtime-config.json website/data/runtime-config.json
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
@@ -131,7 +131,7 @@ What your runtime-config.json needs to look like
  # Create a local file called <project folder>/config/runtime-config.json
  # Populate it with the keys in the format shown above
  docker build -t henock/family-dashboard .  
- docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/js/runtime-config.json henock/family-dashboard   
+ docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/data/runtime-config.json henock/family-dashboard   
 ``` 
 
 ## Running the dashboard
