@@ -1,4 +1,6 @@
 config/runtime-config.json
 website/js/runtime-config.json
 .idea
-http-server-logs/
+.DS_Store
+TODO.md
+http-server-logs

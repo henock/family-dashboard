@@ -1,0 +1,28 @@
+<svg version="1.1" id="partly_cloudy_day" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="600px"
+	 height="600px" viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+<style type="text/css">
+	.sun{fill:orange;stroke:#000000;stroke-width:12;stroke-miterlimit:10;}
+	.cloud{fill:#F2F2F2;stroke:#000000;stroke-width:12;stroke-miterlimit:10;}
+</style>
+<g>
+	<g>
+		<circle class="sun" cx="303.4" cy="302.1" r="136.8"/>
+		<g>
+			<line class="sun" x1="425.1" y1="179.8" x2="473.4" y2="131.3"/>
+			<line class="sun" x1="183.8" y1="422.2" x2="135.6" y2="470.7"/>
+			<line class="sun" x1="183.3" y1="180.4" x2="134.8" y2="132.1"/>
+			<line class="sun" x1="425.7" y1="421.7" x2="474.1" y2="469.9"/>
+		</g>
+		<line class="sun" x1="303" y1="131" x2="303" y2="63"/>
+		<line class="sun" x1="303" y1="474" x2="303" y2="542"/>
+		<line class="sun" x1="128" y1="302" x2="60" y2="302"/>
+		<line class="sun" x1="471" y1="302" x2="539" y2="302"/>
+	</g>
+</g>
+<g>
+	<path class="cloud" d="M274,418.9c0-31.1,24.6-53.5,55.5-54.5c12.9-46.8,55.8-81.3,106.6-81.3c61.1,0,110.6,48.6,110.6,109.7
+		c25.3,3,44.9,27.8,44.9,53.9c0,28.1-22.8,54.2-50.9,54.2h-263c-25.2,0-40.3-21.9-40.3-41.8C237.3,439.2,254,418.9,274,418.9z"/>
+	<path class="cloud" d="M39.5,184.9c0-25.5,20.3-44,45.6-44.8c10.6-38.4,45.8-66.8,87.6-66.8c50.2,0,90.9,39.9,90.9,90.2
+		c20.8,2.5,36.9,22.7,36.9,44.1c0,23.1-18.7,44.4-41.9,44.4H42.5c-20.7,0-33.2-17.8-33.2-34.2C9.3,201.4,23,184.9,39.5,184.9z"/>
+</g>
+</svg>

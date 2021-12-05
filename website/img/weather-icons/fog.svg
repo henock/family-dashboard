@@ -1,0 +1,16 @@
+<svg version="1.1" id="fog" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="600px"
+	 height="600px" viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+<style type="text/css">
+	.fogbar{fill:none;stroke:#B3B3B3;stroke-width:12;stroke-miterlimit:10;}
+	.cloud{fill:#F2F2F2;stroke:#B3B3B3;stroke-width:12;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="cloud" d="M108.4,255c0-42.4,33.6-73,75.6-74.3c17.6-63.8,76.1-110.8,145.4-110.8c83.3,0,150.9,66.3,150.9,149.6
+		c34.5,4.1,61.2,37.5,61.2,73.1c0,38.4-31.1,73.5-69.5,73.5H113.4c-34.4,0-55-29.4-55-56.6C58.4,282.1,81.2,255,108.4,255z"/>
+</g>
+<g>
+	<line class="fogbar" x1="58" y1="395" x2="542" y2="395"/>
+	<line class="fogbar" x1="58" y1="425" x2="542" y2="425"/>
+	<line class="fogbar" x1="58" y1="455" x2="542" y2="455"/>
+</g>
+</svg>

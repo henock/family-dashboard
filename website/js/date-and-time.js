@@ -91,6 +91,7 @@ function get_seconds_since( date ){
 }
 
 function get_seconds_until( date ){
+    date.getMinutes();
     if( !date || ! (date instanceof Date) ){
         log_error( "get_seconds_until() date was null - using now");
         date = new Date();
@@ -122,22 +123,27 @@ Date.prototype.isDstObserved = function () {
     return this.getTimezoneOffset() < this.stdTimezoneOffset();
 }
 
-function display_time_period_from_seconds( seconds ){
+function display_time_period_from_seconds_into_future( seconds ){
     seconds = Math.abs(seconds);
-    let minutesIntoFuture = (seconds/60);
-    let displayTime;
-    if( minutesIntoFuture > 59 ){
-        let hoursIntoTheFuture = parseFloat(minutesIntoFuture/60).toFixed(2);
-        let minutesLeft = minutesIntoFuture%60;
-        displayTime =  Math.floor(hoursIntoTheFuture) + 'h ' + pad_with_leading_zero(Math.floor(minutesLeft));
-    } else if( minutesIntoFuture > 1 ){
-        seconds = (seconds % 60);
-        displayTime = pad_with_leading_zero(Math.floor(minutesIntoFuture)) + '.' + pad_with_leading_zero(Math.floor(seconds));
+    let hoursIntoFuture = Math.floor((seconds/3600));
+    let minutesIntoFuture = (Math.floor((seconds/60)) % 60 );
+    if( hoursIntoFuture > 0 ){ //not gonna show seconds
+        let hours = pad_with_leading_zero(hoursIntoFuture);
+        if( minutesIntoFuture > 0 ){
+            let mins = pad_with_leading_zero(minutesIntoFuture);
+            return SPACE_CHARACTER + hours + 'h' + SPACE_CHARACTER + mins + 'm';
+        }else{
+            return  SPACE_CHARACTER + SPACE_CHARACTER + SPACE_CHARACTER + SPACE_CHARACTER + SPACE_CHARACTER + hours + 'h';
+        }
     }else{
-        seconds = pad_with_leading_zero(Math.floor(seconds));
-        displayTime = '00.' + seconds;
+        let secs = pad_with_leading_zero((seconds % 60));
+        if( minutesIntoFuture > 0 ){
+            let mins = pad_with_leading_zero(minutesIntoFuture);
+            return  SPACE_CHARACTER +  SPACE_CHARACTER +  SPACE_CHARACTER  + mins + ':' + secs
+        } else {
+            return  SPACE_CHARACTER +  SPACE_CHARACTER +  SPACE_CHARACTER  +  SPACE_CHARACTER + SPACE_CHARACTER +  SPACE_CHARACTER +  secs + 's'
+        }
     }
-    return displayTime;
 }
 
 function set_time_on_date( date, timeAsString ){
@@ -151,14 +157,16 @@ function set_time_on_date( date, timeAsString ){
 }
 
 function update_all_count_down_times(){
-
     $(".transit-departure-time").each(function(index, element){
-        let arrivalTime = new Date($(element).attr("scheduled-time"));
-        let noNeedToLeaveBefore = $(element).attr("noNeedToLeaveBefore");
-        let walkTransitTime = $(element).attr("walkTransitTime");
-        let runTransitTime = $(element).attr("runTransitTime");
-        let driveTransitTime = $(element).attr("driveTransitTime");
-        element.innerHTML = build_transport_eta_html( build_transport_eta_spans, arrivalTime, noNeedToLeaveBefore, walkTransitTime, runTransitTime, driveTransitTime, 5);
+        let timeBoundaries = {}
+        let transportId = new Date($(element).attr("transport-id"));
+        let departureTime = new Date($(element).attr("scheduled-time"));
+        timeBoundaries.tooEarly = $(element).attr("noNeedToLeaveBefore");
+        timeBoundaries.plentyOfTime = $(element).attr("walkTransitTime");
+        timeBoundaries.moveQuickerTime = $(element).attr("runTransitTime");
+        timeBoundaries.almostOutOfTime = $(element).attr("driveTransitTime");
+        timeBoundaries.deadLine = departureTime;
+        element.innerHTML = build_transport_eta_countdown_element( timeBoundaries, transportId );
     });
 
     $(".refresh-time").each(function(index,element){
@@ -167,7 +175,7 @@ function update_all_count_down_times(){
         let refreshPeriodInMillis = $(element).attr("refresh-period-in-seconds") * 1000;
         let futureInMillis = (refreshTime.getTime() - (new Date()).getTime());
         let futureInSeconds = futureInMillis/1000;
-        let nextRefreshTimeForDisplay = display_time_period_from_seconds( futureInSeconds );
+        let nextRefreshTimeForDisplay = display_time_period_from_seconds_into_future( Math.floor(futureInSeconds));
         $(element).html( nextRefreshTimeForDisplay );
         let progressBarPercentage = futureInMillis / refreshPeriodInMillis * 100;
         $(  '#' + id + '-progress-bar' ).attr('style', 'width: ' + (100 - progressBarPercentage) + '%');

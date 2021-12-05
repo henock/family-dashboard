@@ -29,10 +29,6 @@ function call_function_then_set_on_interval_milli_seconds(functionToCall, interv
     setInterval(functionToCall, intervalInMillis);
 }
 
-function run_function_by_the_milli_second() {
-    update_all_count_down_times();
-}
-
 function run_function_by_the_second() {
     set_date_and_time();
     remove_overdue_messages();
@@ -49,25 +45,35 @@ function check_runtime_config_present() {
     }
 }
 
+function switch_off_everything(){
+    familyDashboard.config.timeZone = false;
+    familyDashboard.config.showSchoolRunCountdown = false;
+    familyDashboard.config.weather = false;
+    familyDashboard.config.travel = false;
+    familyDashboard.config.tasks = false;
+}
+
+function hide_everything(){
+    $("#dashboard-main").addClass('d-none');
+    $("#date-time-messages").addClass('d-none');
+    $("#school-run-departure-time").addClass('d-none');
+    $("#weather").addClass('d-none');
+    $("#travel").addClass('d-none');
+    $("#tasks").addClass('d-none');
+}
+
 $(document).ready(function () {
+    //todo tidy up
     if(running_unit_tests()){
         run_all_unit_tests();
+        $("#main-container").removeClass( "border" );
     }else{
         if (!check_runtime_config_present()) {
-            familyDashboard.config.timeZone = false;
-            familyDashboard.config.showSchoolRunCountdown = false;
-            familyDashboard.config.weather = false;
-            familyDashboard.config.travel = false;
-            familyDashboard.config.tasks = false;
-
             $("#dynamic-runtime-config").removeClass('d-none');
-            $("#date-time-messages").addClass('d-none');
-            $("#school-run-departure-time").addClass('d-none');
-            $("#weather").addClass('d-none');
-            $("#travel").addClass('d-none');
-            $("#tasks").addClass('d-none');
-
+            switch_off_everything();
             log_info("Could not get the runtime-config.json.", 10);
+        }else{
+            $("#dashboard-main").removeClass('d-none');
         }
 
         call_function_then_set_on_interval_seconds(set_todo_tasks, 120);
@@ -76,9 +82,8 @@ $(document).ready(function () {
         call_function_then_set_on_interval_seconds(show_or_hide_school_run_departure_time, 1);
         call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_days, 600);
         call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_hours, 600);
-
         call_function_then_set_on_interval_seconds(run_function_by_the_second, 1);
-        call_function_then_set_on_interval_milli_seconds(run_function_by_the_milli_second, 1);
+        call_function_then_set_on_interval_milli_seconds(update_all_count_down_times, 100);
     }
 });
 

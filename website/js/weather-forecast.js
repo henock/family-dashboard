@@ -1,37 +1,3 @@
-function convert_weather_code_to_css_class( code ){
-    switch(code){
-        case 0: return "unknown";
-        case 1000: return  "clear";
-        case 1001: return  "cloudy";
-        case 1100: return  "mostly_clear";
-        case 1101: return  "partly_cloudy";
-        case 1102: return  "mostly_cloudy";
-        case 2000: return  "fog";
-        case 2100: return  "light_fog";
-        case 3000: return  "light_wind";
-        case 3001: return  "wind";
-        case 3002: return  "strong_wind";
-        case 4000: return  "drizzle";
-        case 4001: return  "rain";
-        case 4200: return  "light_rain";
-        case 4201: return  "heavy_rain";
-        case 5000: return  "snow";
-        case 5001: return  "flurries";
-        case 5100: return  "light_snow";
-        case 5101: return  "heavy_snow";
-        case 6000: return  "freezing_drizzle";
-        case 6001: return  "freezing_rain";
-        case 6200: return  "light_freezing_rain";
-        case 6201: return  "heavy_freezing_rain";
-        case 7000: return  "ice_pellets";
-        case 7101: return  "heavy_ice_pellets";
-        case 7102: return  "light_ice_pellets";
-        case 8000: return  "thunderstorm";
-        default:
-            console.log( 'error', "Unexpected code: '" + code + "'" )
-            return "unexpected_code";
-    }
-}
 
 function convert_weather_code_to_text( code ){
     switch(code){
@@ -66,12 +32,108 @@ function convert_weather_code_to_text( code ){
     }
 }
 
+function convert_weather_code_to_image( code, isNightTime ){
+    switch(code){
+        case 1000:  // Clear
+        case 1100:  // Mostly Clear
+            if(isNightTime){
+                return "clear_night_moon.svg"
+            } else {
+                return "sunny.svg"
+            }
+        case 1001:  // Cloudy
+        case 1101:  // Partly Cloudy
+            if(isNightTime){
+                return "partly_cloudy_night_moon.svg";
+            } else {
+                return "partly_cloudy_day_sun_clouds.svg";
+            }
+
+        case 1102:  // Mostly Cloudy
+            if(isNightTime){
+                return "partly_cloudy_night_moon.svg";
+            } else {
+                return "overcast_cloud.svg";
+            }
+
+        case 2100:  // Light Fog
+            return "mist.svg";
+        case 2000:  // Fog
+            return "fog.svg";
+
+        case 3000:  // Light Wind
+        case 3001:  // Wind
+        case 3002:  // Strong Wind
+        case 5001:  // Flurries
+            if(isNightTime){
+                return "windy_palm_tree_dark.svg";
+            } else {
+                return "windy_palm_tree.svg";
+            }
+
+        case 4000:  // Drizzle
+                return "drizzle_rain_snow.svg";
+
+        case 4001:  // Rain
+        case 4200:  // Light Rain
+            if(isNightTime){
+                return "rain_shower_night_moon.svg";
+            } else {
+                return "rain_day_sun.svg";
+            }
+
+        case 4201:  // Heavy Rain
+            if(isNightTime){
+                return "heavy_rain_night_cloud_moon.svg";
+            } else {
+                return "heavy_rain_day.svg";
+            }
+
+        case 5100:  // Light Snow
+        case 5000:  // Snow
+            if(isNightTime){
+                return "snow_night_moon_cloud_snow.svg";
+            } else {
+                return "snow_cloud.svg";
+            }
+        case 5101:  // Heavy Snow
+            if(isNightTime){
+                return "heavy_snow_night_cloud_moon.svg";
+            } else {
+                return "heavy_snow_day_sun.svg";
+            }
+        case 6201:  // Heavy Freezing Rain
+        case 6000:  // Freezing Drizzle
+        case 6200:  // Light Freezing Rain
+        case 6001:  // Freezing Rain
+        case 7000:  // Ice Pellets
+        case 7101:  // Heavy Ice Pellets
+        case 7102:  // Light Ice Pellets
+            if(isNightTime){
+                return "sleet_night_snow_rain_raining.svg";
+            } else {
+                return "sleet_day_cloud_sun_rain_snow.svg";
+            }
+        case 8000:  // Thunderstorm
+            if(isNightTime){
+                return "thunder_night_cloud_storm_lightning.svg";
+            } else {
+                return "thunder_day_cloud_thunderbolt_lightning.svg";
+            }
+        case 0:     // Unknown";
+        default:    // Unexpected code
+            return "system_unknown.png"
+
+    }
+}
+
+
 function set_weather_details( keyString, dateString, temperatureString, weather_code, grassIndex, treeIndex ){
     $("#weather-date-" + keyString ).html(  dateString );
     $("#weather-temp-" + keyString ).html(  temperatureString );
     $("#weather-grassIndex-" + keyString ).html(  grassIndex  );
     $("#weather-treeIndex-" + keyString ).html(  treeIndex );
-    $("#weather-image-" + keyString ).removeClass().addClass(  convert_weather_code_to_css_class( weather_code ));
+    $("#weather-image-" + keyString ).attr(  "src", "img/weather-icons/" + convert_weather_code_to_image( weather_code ) );
     $("#weather-text-" + keyString ).html( convert_weather_code_to_text( weather_code ));
 }
 
@@ -83,8 +145,8 @@ function set_weather_details_for_days( today, keyString ){
 
 function set_weather_for_upcoming_days( result ){
     let today = result.data.timelines[0].intervals[0];
-    $("#weather-text-sun-rise").html( new Date( today.values.sunriseTime).toLocaleString().substring(11,17));
-    $("#weather-text-sun-set").html( new Date( today.values.sunsetTime).toLocaleString().substring(11,17));
+    $("#sun-rise-time").html( new Date( today.values.sunriseTime).toLocaleString().substring(11,17));
+    $("#sun-set-time").html( new Date( today.values.sunsetTime).toLocaleString().substring(11,17));
     $("#current-weather").html("");
     for (var i = 1; i < 6; i++) {
         set_weather_details_for_days( result.data.timelines[0].intervals[i], 'day-' + i );

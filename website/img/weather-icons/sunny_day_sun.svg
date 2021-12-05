@@ -1,0 +1,19 @@
+<svg version="1.1" id="sunny_day" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="600px" height="600px" viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+<style type="text/css">
+	.sun{fill:orange;stroke:#000000;stroke-width:12;stroke-miterlimit:10;}
+</style>
+<g>
+	<circle class="sun" cx="303.4" cy="302.1" r="136.8"/>
+	<g>
+		<line class="sun" x1="425.1" y1="179.8" x2="473.4" y2="131.3"/>
+		<line class="sun" x1="183.8" y1="422.2" x2="135.6" y2="470.7"/>
+		<line class="sun" x1="183.3" y1="180.4" x2="134.8" y2="132.1"/>
+		<line class="sun" x1="425.7" y1="421.7" x2="474.1" y2="469.9"/>
+	</g>
+	<line class="sun" x1="303" y1="131" x2="303" y2="63"/>
+	<line class="sun" x1="303" y1="474" x2="303" y2="542"/>
+	<line class="sun" x1="128" y1="302" x2="60" y2="302"/>
+	<line class="sun" x1="471" y1="302" x2="539" y2="302"/>
+</g>
+</svg>
