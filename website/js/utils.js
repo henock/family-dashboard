@@ -179,3 +179,17 @@ function set_times_from_strings( schoolRunCountDown ){
 }
 
 
+function build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, date ){
+    let deadLine = new Date(date);
+    let timeBoundaries = {}
+    timeBoundaries.tooEarly = tooEarly;
+    timeBoundaries.plentyOfTime = plentyOfTime;
+    timeBoundaries.moveQuickerTime = moveQuickerTime;
+    timeBoundaries.almostOutOfTime = almostOutOfTime;
+    timeBoundaries.deadLine = deadLine;
+    return timeBoundaries;
+}
+
+
+
+

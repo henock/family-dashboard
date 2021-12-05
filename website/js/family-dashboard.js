@@ -32,7 +32,6 @@ function call_function_then_set_on_interval_milli_seconds(functionToCall, interv
 function run_function_by_the_second() {
     set_date_and_time();
     remove_overdue_messages();
-    update_all_count_down_times();
 }
 
 function check_runtime_config_present() {
@@ -84,6 +83,7 @@ $(document).ready(function () {
         call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_days, 600);
         call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_hours, 600);
         call_function_then_set_on_interval_seconds(run_function_by_the_second, 1);
+        call_function_then_set_on_interval_milli_seconds(update_all_count_down_times, 100);
     }
 });
 

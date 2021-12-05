@@ -1,3 +1,9 @@
+const TOO_EARLY = "tooEarly";
+const PLENTY_OF_TIME = "plentyOfTime";
+const MOVE_QUICKER_TIME = "moveQuickerTime";
+const ALMOST_OUT_OF_TIME = "almostOutOfTime";
+const OUT_OF_TIME = "outOfTime";
+
 
 function set_train_arrivals( intervalInSeconds ){
     if( familyDashboard.config.travel ){
@@ -83,93 +89,9 @@ function extract_trains_details( it , stationCodeToNameMap ){
     };
 }
 
-
 function is_week_day( now ){
     let day = now.getDay();
     return day > 0 && day < 6;
-}
-
-
-function get_boundary_window( secondsUntilTargetTime, timeBoundaries ){
-    let boundaryWindow = {};
-     if ( secondsUntilTargetTime > timeBoundaries.tooEarly ) {
-        boundaryWindow.top = secondsUntilTargetTime;
-        boundaryWindow.bottom =  timeBoundaries.tooEarly;
-    } else if( secondsUntilTargetTime > timeBoundaries.plentyOfTime ) {
-        boundaryWindow.top = timeBoundaries.tooEarly;
-        boundaryWindow.bottom =  timeBoundaries.plentyOfTime;
-    } else if( secondsUntilTargetTime > timeBoundaries.moveQuickerTime ) {
-        boundaryWindow.top = timeBoundaries.plentyOfTime;
-        boundaryWindow.bottom =  timeBoundaries.moveQuickerTime;
-    } else if( secondsUntilTargetTime > timeBoundaries.almostOutOfTime ) {
-        boundaryWindow.top = timeBoundaries.moveQuickerTime;
-        boundaryWindow.bottom =  timeBoundaries.almostOutOfTime;
-    } else {
-        boundaryWindow.top = timeBoundaries.almostOutOfTime;
-        boundaryWindow.bottom = 0;
-    }
-    return boundaryWindow;
-}
-
-function build_count_down_visualisation_string(secondsUntilTargetTime, timeBoundaries, fullWidthOfSpan ){
-
-//<div class="row text-monospace text-nowrap">
-//    <div class="col-1"></div>
-//    <div class="col-2"><span class="text-success">BFR</span></div>
-//    <div class="col-8 transit-departure-time p-0" transport-id="RVB-BFR" display-name="BFR" noneedtoleavebefore="2100" walktransittime="1800" runtransittime="900" drivetransittime="600" index="1" scheduled-time="Sat Dec 04 2021 14:58:00 GMT+0000 (Greenwich Mean Time)">
-//    <!-- To create -->
-//        <div class="row">
-//            <div class="col-3 time-to-run">00:18:42</div>
-//            <div class="col-5">
-//                <div class="progress" style="height: 15px;">
-//                    <div id="weather-update-progress-bar" class="progress-bar bg-warning" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 10.796499999999995%"></div>
-//                </div>
-//            </div>
-//            <div class="col-2">14:58 🏃</div>
-//        </div>
-//    <!-- To create -->
-//    </div>
-//</div>
-
-    let boundaryWindow = get_boundary_window( secondsUntilTargetTime, timeBoundaries );
-    return display_time_period_from_seconds_into_future(secondsUntilTargetTime)
-                        + SPACE_CHARACTER
-                        + build_eta_visualisation_string(secondsUntilTargetTime, boundaryWindow, fullWidthOfSpan)
-                        + get_padded_time_minutes(timeBoundaries.deadLine);
-}
-
-function build_eta_visualisation_string(secondsLeft, boundaryWindow, fullWidthOfSpan ){
-    if( secondsLeft < boundaryWindow.top ){
-        let windowSize = boundaryWindow.top - boundaryWindow.bottom;
-        let subSpanSize =  windowSize / fullWidthOfSpan;
-        let arrowPos = Math.floor((boundaryWindow.top - secondsLeft)/ subSpanSize);
-
-//        let progressBarPercentage = futureInMillis / refreshPeriodInMillis * 100;
-//        $(  '#' + id + '-progress-bar' ).attr('style', 'width: ' + (100 - progressBarPercentage) + '%');
-
-//    <!-- To create -->
-//                <div class="progress" style="height: 15px;">
-//                    <div id="weather-update-progress-bar" class="progress-bar bg-warning" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 10.796499999999995%"></div>
-//                </div>
-//    <!-- To create -->
-
-
-
-        str = '';
-        for( var i = 0; i < fullWidthOfSpan; i ++ ){
-            str += '&nbsp;';
-            if( arrowPos == i ){
-                str += '->';
-            }
-        }
-        return str;
-    }else {
-        let str = '->';
-        for( var i = 0; i < fullWidthOfSpan; i ++ ){
-            str += SPACE_CHARACTER;
-        }
-        return str;
-    }
 }
 
 function get_station_code_from_name( station_name, stationCodeToNameMap ){
@@ -222,31 +144,12 @@ function update_train_UI( model ){
             let train_details = commute.trains[j];
             if( now < train_details.departureTime ){
                 platform = train_details.platform == null ? '': '['+ train_details.platform + '] ';
-                let transportId =  commute.from + '-' + train_details.destination ;
+                let transportId =  commute.from + '-' + train_details.destination + '-' + j;
                 destination_with_color = colour_special_fields( train_details.destination, commute.to.join("|") );
 
-                let timeBoundaries = {}
-                timeBoundaries.tooEarly = commute.noNeedToLeaveBefore;
-                timeBoundaries.plentyOfTime = commute.walkTransitTime;
-                timeBoundaries.moveQuickerTime = commute.runTransitTime;
-                timeBoundaries.almostOutOfTime = commute.driveTransitTime;
-                timeBoundaries.deadLine = train_details.departureTime;
-                let transport_eta_html =  build_transport_eta_html( transport_countdown_departure_spans_builder, timeBoundaries, 5 );
-
-
-//    <!-- To create -->
-//        <div class="row">
-//            <div class="col-3 time-to-run">00:18:42</div>
-//            <div class="col-5">
-//                <div class="progress" style="height: 15px;">
-//                    <div id="weather-update-progress-bar" class="progress-bar bg-warning" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 10.796499999999995%"></div>
-//                </div>
-//            </div>
-//            <div class="col-2">14:58 🏃</div>
-//        </div>
-//    <!-- To create -->
-//    </div>
-//</div>
+                let timeBoundaries = build_time_boundaries( commute.noNeedToLeaveBefore, commute.walkTransitTime,
+                                                            commute.runTransitTime, commute.driveTransitTime,
+                                                            train_details.departureTime);
 
 
                 let trainRow =
@@ -262,13 +165,70 @@ function update_train_UI( model ){
                     +'	        driveTransitTime="' + commute.driveTransitTime + '"'
                     +' 	        index="' + j + '"'
                     +'   	    scheduled-time="' + train_details.departureTime + '">'
-                    + 		    transport_eta_html
+                    +           build_transport_eta_countdown_element( timeBoundaries, transportId );
                     +'      </div>'
                     +'</div>';
 
                 $(station_element_id).append( trainRow );
             }
         }
+    }
+}
+
+function build_transport_eta_countdown_element( timeBoundaries, transportId  ){
+    let boundaryWindow = get_boundary_window( timeBoundaries );
+    let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
+    let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( timeBoundaries.deadLine));
+    let paddedTimeMinutes = get_padded_time_minutes(timeBoundaries.deadLine)
+    let div =
+         '          <div class="row">'
+        +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
+        +'              <div class="col-2"></div>'
+        +'              <div class="col-2 text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +' ' + boundaryWindow.travelEmoji + '</div>'
+        +'          </div>'
+
+    if( boundaryWindow.name !== TOO_EARLY && boundaryWindow.name !== OUT_OF_TIME ){
+        div +='     <div class="row">'
+        +'              <div class="col-10">'
+        +'                  <div class="progress" style="height: 15px;">'
+        +'                      <div id="'+ transportId +'" class="progress-bar bg-'+ classForBoundaryWindow +'" role="progressbar"'
+        +'                                              aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: '+
+                                                        boundaryWindow.progressBarPercentage +'%"></div>'
+        +'                  </div>'
+        +'              </div>'
+        +'              <div class="col-2>'
+        +'          </div>'
+    }
+
+    return div;
+}
+
+function build_school_run_countdown_element( timeBoundaries  ){
+    let boundaryWindow = get_boundary_window( timeBoundaries );
+    let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
+    let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( timeBoundaries.deadLine));
+    let paddedTimeMinutes = get_padded_time_minutes(timeBoundaries.deadLine)
+    let div =
+         ' <div class="col text-'+ classForBoundaryWindow +'">🏫'+ countDownTime + ' ' + boundaryWindow.schoolRunEmoji +' </div>'
+        +'   <div class="col align-middle">'
+        +'       <div class="progress" style="height: 105px;">'
+        +'           <div class="progress-bar bg-'+ classForBoundaryWindow +'" role="progressbar" aria-valuenow="75"'
+        +'                                              aria-valuemin="0" aria-valuemax="100" style="width: '+
+                                                        boundaryWindow.progressBarPercentage +'%"></div>'
+        +'       </div>'
+        +'   </div>'
+        +' <div class="col text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +'</div>'
+    return div;
+}
+
+function get_class_for_boundary_window( boundaryWindow ){
+    switch( boundaryWindow.name){
+        case TOO_EARLY: return 'primary';
+        case PLENTY_OF_TIME: return 'success';
+        case MOVE_QUICKER_TIME: return 'warning';
+        case ALMOST_OUT_OF_TIME: return 'danger';
+        case OUT_OF_TIME: return 'secondary';
+        default: return '';
     }
 }
 
@@ -290,47 +250,58 @@ function show_or_hide_school_run_departure_time(){
             timeBoundaries.moveQuickerTime = schoolRunCountDown.finishBreakfastBy;
             timeBoundaries.almostOutOfTime = schoolRunCountDown.putOnShoesBy;
             timeBoundaries.deadLine = schoolRunCountDown.departureTime;
-            departTimeElement.html( build_transport_eta_html( build_school_run_countdown_departure_spans_builder, timeBoundaries , 15));
+            departTimeElement.html( build_school_run_countdown_element( timeBoundaries ));
         } else {
             departTimeElement.addClass('d-none');
         }
     }
 }
 
-function build_transport_eta_html( departure_span_builder, timeBoundaries, fullWidthOfSpan ){
-    let secondsUntilTargetTime = get_seconds_until( timeBoundaries.deadLine );
-    let countDownVisualisation = build_count_down_visualisation_string( secondsUntilTargetTime, timeBoundaries, fullWidthOfSpan );
-    return  departure_span_builder( secondsUntilTargetTime , countDownVisualisation, timeBoundaries );
-}
+function get_boundary_window( timeBoundaries, secondsUntilTargetTime ){
 
-function transport_countdown_departure_spans_builder( secondsUntilArrival , arrivalVisualisationString, timeBoundaries ){
-    if( secondsUntilArrival > timeBoundaries.tooEarly ){
-        return '<span class="text-info">' + arrivalVisualisationString + '</span>';
-    } else if( secondsUntilArrival > timeBoundaries.plentyOfTime ){
-        return '<span class="time-to-walk">' + arrivalVisualisationString + ' 🚶</span>';
-    } else if( secondsUntilArrival > timeBoundaries.moveQuickerTime ){
-        return '<span class="time-to-run">' + arrivalVisualisationString + ' 🏃</span>';
-    } else if(  typeof timeBoundaries.almostOutOfTime !== 'undefined'
-                && secondsUntilArrival > timeBoundaries.almostOutOfTime ){
-        return '<span class="time-to-drive">' + arrivalVisualisationString + ' 🚗</span>';
-    }else if( secondsUntilArrival > 0 ){
-        return '<span class="missed-transport">' + arrivalVisualisationString + '</span>';
+    if( !secondsUntilTargetTime && secondsUntilTargetTime !== 0 ){
+        secondsUntilTargetTime = get_seconds_until( timeBoundaries.deadLine);
+    }
+    let boundaryWindow = {};
+     if ( secondsUntilTargetTime > timeBoundaries.tooEarly ) {
+        boundaryWindow.top = secondsUntilTargetTime;
+        boundaryWindow.bottom =  timeBoundaries.tooEarly;
+        boundaryWindow.name = TOO_EARLY;
+        boundaryWindow.travelEmoji = "";
+        boundaryWindow.schoolRunEmoji = "🛌";
+    } else if( secondsUntilTargetTime > timeBoundaries.plentyOfTime ) {
+        boundaryWindow.top = timeBoundaries.tooEarly;
+        boundaryWindow.bottom =  timeBoundaries.plentyOfTime;
+        boundaryWindow.name = PLENTY_OF_TIME;
+        boundaryWindow.travelEmoji = "🚶";
+        boundaryWindow.schoolRunEmoji = " 👔️";
+    } else if( secondsUntilTargetTime > timeBoundaries.moveQuickerTime ) {
+        boundaryWindow.top = timeBoundaries.plentyOfTime;
+        boundaryWindow.bottom =  timeBoundaries.moveQuickerTime;
+        boundaryWindow.name = MOVE_QUICKER_TIME;
+        boundaryWindow.travelEmoji = "🏃";
+        boundaryWindow.schoolRunEmoji = " 🥣";
+    } else if( secondsUntilTargetTime > timeBoundaries.almostOutOfTime ) {
+        boundaryWindow.top = timeBoundaries.moveQuickerTime;
+        boundaryWindow.bottom =  timeBoundaries.almostOutOfTime;
+        boundaryWindow.name = ALMOST_OUT_OF_TIME;
+        boundaryWindow.travelEmoji = " 🚗";
+        boundaryWindow.schoolRunEmoji = " 👞";
     } else {
-        return '<span class="missed-transport">' + arrivalVisualisationString + '</span>';
-        //Todo remove it from the list.
+        boundaryWindow.top = timeBoundaries.almostOutOfTime;
+        boundaryWindow.bottom = 0;
+        boundaryWindow.name = OUT_OF_TIME;
+        boundaryWindow.travelEmoji = "";
+        boundaryWindow.schoolRunEmoji = "";
     }
-}
 
-function build_school_run_countdown_departure_spans_builder( secondsUntilDeparture , departureString, timeBoundaries ){
-    if( secondsUntilDeparture > timeBoundaries.tooEarly ){
-        return '<span class="text-info">Leave for school ' + departureString + '🛌</span>';
-    } else if( secondsUntilDeparture > timeBoundaries.plentyOfTime  ){
-        return '<span class="time-to-walk">Leave for school ' + departureString + ' 👔️</span>';
-    } else if( secondsUntilDeparture > timeBoundaries.moveQuickerTime ){
-        return '<span class="time-to-run">Leave for school ' + departureString + '  🥣</span>';
-    } else if(  secondsUntilDeparture > timeBoundaries.almostOutOfTime ){
-        return '<span class="time-to-drive">Leave for school ' + departureString + ' 👞</span>';
-    }else {
-        return '<span class="missed-transport">YOU ARE LATE ' + departureString + '</span>';
+    let nominator = (secondsUntilTargetTime - boundaryWindow.bottom  );
+    let deNominator = ( boundaryWindow.top - boundaryWindow.bottom );
+    if( nominator === deNominator || secondsUntilTargetTime < 0 ){
+        boundaryWindow.progressBarPercentage = 0;
+    } else {
+        boundaryWindow.progressBarPercentage = 100 - Math.floor((nominator / deNominator) * 100);
     }
+
+    return boundaryWindow;
 }
