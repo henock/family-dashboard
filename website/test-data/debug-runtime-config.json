@@ -14,16 +14,17 @@
     "apiKey": "<your api key for http://tomorrow.io>",
     "location": "51.414282,-0.017142"
   },
-  "timeZones": {
-    "one": {
-      "id": "America/New_York",
-      "name": "DC"
-    },
-    "two": {
-      "id": "Africa/Nairobi",
-      "name": "Addis"
-    }
+  "timeZones": [ {
+    "id": "America/New_York",
+    "name": "DC",
+    "flag": "\uD83C\uDDFA\uD83C\uDDF8"
   },
+    {
+      "id": "Africa/Nairobi",
+      "name": "Addis",
+      "flag": "\uD83C\uDDEA\uD83C\uDDF9"
+    }
+  ],
   "schoolRunCountDown": {
     "showCountDown": "now+5s",
     "startCountDown": "now+10s",
@@ -38,34 +39,34 @@
     "maximumTrainsToShow": 8,
     "commutes": [
       {
-        "from": "NBC",
+        "from": "New Beckenham",
         "noNeedToLeaveBefore": 2300,
         "walkTransitTime": 2000,
         "runTransitTime": 1800,
         "driveTransitTime": 800,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "CST", "LBG", "CHX" ]
+        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
       },
       {
-        "from": "BKJ",
+        "from": "Beckenham Junction",
         "noNeedToLeaveBefore": 1200,
         "walkTransitTime": 900,
         "runTransitTime": 600,
         "driveTransitTime": 400,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "VIC", "LBG" ]
+        "to": [ "London Victoria", "London Bridge" ]
       },
       {
-        "from": "RVB",
+        "from": "Ravensbourne",
         "noNeedToLeaveBefore": 2100,
         "walkTransitTime": 1800,
         "runTransitTime": 900,
         "driveTransitTime": 600,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "BFR" ]
+        "to": [ "London Blackfriars" ]
       }
     ]
   }

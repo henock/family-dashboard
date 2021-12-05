@@ -14,27 +14,37 @@ function set_date_and_time() {
 }
 
 function update_times_in_different_timezone(){
-    if( familyDashboard.config.timeZone ){
+    if( familyDashboard.config.timeZones ){
         let timeZones = familyDashboard.runtimeConfig.timeZones;
-        set_date_time_for_time_zone(timeZones.one.id, timeZones.one.name, "#time-zone-1")
-        set_date_time_for_time_zone(timeZones.two.id, timeZones.two.name, "#time-zone-2")
+        let timeZoneElements = ''
+        for( var i = 0; i < timeZones.length && i < 4; i++ ){
+            let timeZone = timeZones[i];
+            let time = get_date_time_for_time_zone( timeZone )
+            timeZoneElements +=
+            '<div class="row">'
+                + '<span id="time-zone-1-flag" class="col-2">'+ timeZone.flag+'</span>'
+                + '<span id="time-zone-1-name" class="col-4">'+ timeZone.name+'</span>'
+                + '<span id="time-zone-1-time" class="col-4">'+ timeZone.time +'</span>'
+            + '</div>'
+        }
+        $("#time-zones").html( timeZoneElements );
     }
 }
 
-function set_date_time_for_time_zone( time_zone_id , time_zone_name ,  element_id_prefix ){
+function get_date_time_for_time_zone( timeZone ){
     $.ajax({
-        url: "http://worldtimeapi.org/api/timezone/" + time_zone_id ,
+        url: "http://worldtimeapi.org/api/timezone/" + timeZone.id ,
         type: "GET",
+        async: false,
         success: function( data ) {
             let time = data.datetime.split("T")[1].split('.')[0].substring(0,5);
-            $( element_id_prefix + "-name" ).html( time_zone_name );
-            $( element_id_prefix + "-time").html( time );
+            timeZone.time = time;;
         },
         error: function ( xhr ){
             if( xhr ){
-                log_error( xhr.status +' Error calling worldtimeapi with timezone '+time_zone_id+ ' ('+xhr.responseText +').');
+                log_error( xhr.status +' Error calling worldtimeapi with timezone '+timeZone.id+ ' ('+xhr.responseText +').');
             } else{
-                log_error( 'Error calling worldtimeapi with timezone '+time_zone_id+ ' ( Unknown error ).');
+                log_error( 'Error calling worldtimeapi with timezone '+timeZone.id+ ' ( Unknown error ).');
             }
             return 'api_error';
         }

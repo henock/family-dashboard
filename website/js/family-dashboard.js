@@ -46,11 +46,19 @@ function check_runtime_config_present() {
 }
 
 function switch_off_everything(){
-    familyDashboard.config.timeZone = false;
+    familyDashboard.config.timeZones = false;
     familyDashboard.config.showSchoolRunCountdown = false;
     familyDashboard.config.weather = false;
     familyDashboard.config.travel = false;
     familyDashboard.config.tasks = false;
+}
+
+function switch_on_everything(){
+    familyDashboard.config.timeZones = true;
+    familyDashboard.config.showSchoolRunCountdown = true;
+    familyDashboard.config.weather = true;
+    familyDashboard.config.travel = true;
+    familyDashboard.config.tasks = true;
 }
 
 function hide_everything(){
@@ -74,6 +82,7 @@ $(document).ready(function () {
             log_info("Could not get the runtime-config.json.", 10);
         }else{
             $("#dashboard-main").removeClass('d-none');
+            switch_on_everything();
         }
 
         call_function_then_set_on_interval_seconds(set_todo_tasks, 120);

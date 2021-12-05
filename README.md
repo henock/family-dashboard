@@ -41,63 +41,68 @@ What your runtime-config.json needs to look like
       "apiKey": "<your api key for http://tomorrow.io>",
       "location": "<the GPS coordinates for which you want to display weather data>"
   },
-  "timeZones": {
-    "description": "This section lets you configure two other time zones you can display.",
-    "one": {
-      "id": "America/New_York",
-      "name": "DC"
-    },
-    "two": {
-      "id": "Africa/Nairobi",
-      "name": "Addis"
-    }
+  "timeZones": [ {
+    "id": "America/New_York",
+    "name": "DC",
+    "flag": "\uD83C\uDDFA\uD83C\uDDF8"
   },
+    {
+      "id": "Africa/Nairobi",
+      "name": "Addis",
+      "flag": "\uD83C\uDDEA\uD83C\uDDF9"
+    }
+  ],
   "schoolRunCountDown": {
-    "description": "This section configures a section that appears giving a count down to the time we need to leave for school.",
-    "showCountDown": "07:00",
+    "showCountDown": "10:03",
     "startCountDown": "07:10",
-    "finishGettingDressedBy": "07:20",
-    "finishBreakfastBy": "07:30",
+    "getOutOfBedBy": 3000,
+    "finishGettingDressedBy": 2400,
+    "finishBreakfastBy": 1800,
+    "putOnShoesBy": 300,
     "departureTime": "07:40",
     "stopCountDown": "07:50"
   },
   "transport": {
-    "description": "This section configures the commutes to/from work giving walk/run/drive time windows.",
     "maximumTrainsToShow": 8,
     "commutes": [
       {
-        "from": "NBC",
-        "walkTransitTime": 2000,
-        "runTransitTime": 1800,
-        "driveTransitTime": 800,
+        "from": "London Cannon Street",
+        "noNeedToLeaveBefore": 600,
+        "walkTransitTime": 400,
+        "runTransitTime": 300,
+        "driveTransitTime": 100,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "CST", "LBG", "CHX" ]
+        "to": [
+          "Bromley South",
+          "Hayes (Kent)",
+          "London Charing Cross"
+        ]
       },
       {
-        "from": "BKJ",
+        "from": "Beckenham Junction",
+        "noNeedToLeaveBefore": 1200,
         "walkTransitTime": 900,
         "runTransitTime": 600,
         "driveTransitTime": 400,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "VIC", "LBG" ]
+        "to": [
+          "London Victoria",
+          "London Bridge"
+        ]
       },
       {
-        "from": "CST",
-        "walkTransitTime": 600,
-        "runTransitTime": 300,
-        "direction": "home",
-        "showAllDestinations": false,
-        "to": [ "ORP", "HYS" ]
-      },
-      {
-        "from": "LBG",
-        "walkTransitTime": 1500,
-        "runTransitTime": 800,
-        "direction": "home",
-        "showAllDestinations": false,
-        "to": [ "HYS", "SEV", "ORP", "BKJ" ]
+        "from": "Ravensbourne",
+        "noNeedToLeaveBefore": 2100,
+        "walkTransitTime": 1800,
+        "runTransitTime": 900,
+        "driveTransitTime": 600,
+        "direction": "to-work",
+        "showAllDestinations": true,
+        "to": [
+          "London Blackfriars"
+        ]
       }
     ]
   }

@@ -106,9 +106,9 @@ function colour_special_fields( field, regex ){
 }
 
 
-function get_runtime_config(  ){
+function get_runtime_config(){
 
-    let runtimeConfigUrl = "js/runtime-config.json";
+    let runtimeConfigUrl = "data/runtime-config.json";
 
     if(is_debug_on()){
         runtimeConfigUrl = "test-data/debug-runtime-config.json";
@@ -133,11 +133,22 @@ function get_runtime_config(  ){
     }
     if( runtime_config ){
         $.ajax({
-                url: "js/station-codes.json",
+                url: "data/station-codes.json",
                 type: "GET",
                 async: false,
                 success: function( data ) {
-                    runtime_config.transport.stationCodeToNameMap = data;
+                    let entries = Object.entries(data);
+                    let entry;
+                    let nameToCode = new Map();
+                    let codeToName = new Map();
+
+                    for (var i = 0; i < entries.length; i++ ){
+                        entry = entries[i];
+                        nameToCode.set( entry[0], entry[1] );
+                        codeToName.set( entry[1], entry[0] );
+                    };
+                    runtime_config.transport.stationCodeToNameMap = codeToName;
+                    runtime_config.transport.stationNameToCodeMap = nameToCode;
                 },
                 error: function ( xhr ){
                     if(xhr && (xhr.status === 404)) {

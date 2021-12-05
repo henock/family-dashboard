@@ -1,5 +1,5 @@
 config/runtime-config.json
-website/js/runtime-config.json
+website/data/runtime-config.json
 .idea
 .DS_Store
 TODO.md

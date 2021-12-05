@@ -7,13 +7,13 @@ const OUT_OF_TIME = "outOfTime";
 
 function set_train_arrivals( intervalInSeconds ){
     if( familyDashboard.config.travel ){
-        let stationCodeToNameMap = familyDashboard.runtimeConfig.transport.stationCodeToNameMap;
 
         let model = {};
         model.commutes = familyDashboard.runtimeConfig.transport.commutes;
         model.maximumTrainsToShow = familyDashboard.runtimeConfig.transport.maximumTrainsToShow;
         model.transportApi = familyDashboard.runtimeConfig.transportApi
-        model.stationCodeToNameMap = new Map(Object.entries(stationCodeToNameMap));
+        model.stationCodeToNameMap = familyDashboard.runtimeConfig.transport.stationCodeToNameMap;
+        model.stationNameToCodeMap = familyDashboard.runtimeConfig.transport.stationNameToCodeMap;
 
         for( i = 0; i < model.commutes.length; i++ ){
             set_train_station_arrivals( model.commutes[i], model, familyDashboard.runtimeConfig.transportApi );
@@ -27,7 +27,7 @@ function set_train_arrivals( intervalInSeconds ){
 
 
 function set_train_station_arrivals( commute, model, transportApi ){
-    let startingStationName =  model.stationCodeToNameMap.get( commute.from );
+    let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
     let fullDate = date_with_dashes();
     let fullTime = get_padded_time_minutes();
     let urtToGet = '';
@@ -35,10 +35,10 @@ function set_train_station_arrivals( commute, model, transportApi ){
     commute.trains = [];
 
     if( is_debug_on()){
-        urlToGet = "test-data/transportapi-" + commute.from +".json"
+        urlToGet = "test-data/transportapi-" + startingStationCode +".json"
     } else{
         urlToGet = "http://transportapi.com/v3/uk/train/station/"
-                        + commute.from +"/"
+                        + startingStationCode +"/"
                         + fullDate + "/"
                         + fullTime  + "/timetable.json?app_id="
                         + transportApi.appId + "&app_key="
@@ -55,16 +55,16 @@ function set_train_station_arrivals( commute, model, transportApi ){
                 .each(function(index,it){
                     if( showingTrainsCount < model.maximumTrainsToShow &&
                         ( commute.showAllDestinations ||
-                          is_destination_station( commute, it.destination_name, model.stationCodeToNameMap))){
+                          is_destination_station( commute, it.destination_name, model.stationNameToCodeMap))){
                         showingTrainsCount++;
-                        commute.trains.push(extract_trains_details( it , model.stationCodeToNameMap));
+                        commute.trains.push(extract_trains_details( it , model.stationNameToCodeMap));
                     }
                 });
         },
         error: function ( xhr ){
             if( xhr ){
                 log_error( xhr.status +' Error calling transportapi.com for '
-                            + startingStationName +' timetable (' +xhr.responseText +').');
+                            + startingStationCode +' timetable (' +xhr.responseText +').');
             }else{
                 log_error( ' Error calling transportapi.com for ' + startingStationName +' timetable ( Unknown error ).');
             }
@@ -72,15 +72,15 @@ function set_train_station_arrivals( commute, model, transportApi ){
     });
 }
 
-function is_destination_station( commute, stationName, stationCodeToNameMap ){
-    let stationCode = get_station_code_from_name( stationName, stationCodeToNameMap );
+function is_destination_station( commute, stationName, stationNameToCodeMap ){
+    let stationCode = stationNameToCodeMap.get( stationName );
     return commute.to.includes(stationCode);
 }
 
-function extract_trains_details( it , stationCodeToNameMap ){
+function extract_trains_details( it , stationNameToCodeMap ){
     let platform = it.platform ;
     let departureTime = calculate_departure_date_time_from_time_only( it.aimed_departure_time, new Date() );
-    let destination = get_station_code_from_name( it.destination_name, stationCodeToNameMap );
+    let destination  = stationNameToCodeMap.get( it.destination_name );
 
     return {
         "departureTime" : departureTime,
@@ -92,19 +92,6 @@ function extract_trains_details( it , stationCodeToNameMap ){
 function is_week_day( now ){
     let day = now.getDay();
     return day > 0 && day < 6;
-}
-
-function get_station_code_from_name( station_name, stationCodeToNameMap ){
-    let entries = stationCodeToNameMap.entries();
-    let entry = entries.next();
-    while( entry.done === false ){
-        if( station_name === entry.value[1] ){
-            return entry.value[0];
-        }
-        entry = entries.next();
-    }
-    console.log( "ERROR - Unknown station name: " + station_name );
-    return "XXX";
 }
 
 function calculate_departure_date_time_from_time_only( departureTimeAsString, currentTime ){
@@ -121,7 +108,7 @@ function update_train_UI( model ){
 
     for( i = 0; i < model.commutes.length; i++ ){
         commute = model.commutes[i];
-        startingStationName = model.stationCodeToNameMap.get( commute.from );
+        startingStationCode = model.stationNameToCodeMap.get( commute.from );
         let border = '';
         if( i === 0 ){
             border = 'border-top';
@@ -129,13 +116,13 @@ function update_train_UI( model ){
             border = 'border-top border-left';
         }
 
-        $('#train-travel').append( "<div class='col "+ border +" align-top'><div id='"+ commute.from +"' class='pt-2'></div></div>");
+        $('#train-travel').append( "<div class='col "+ border +" align-top'><div id='"+ startingStationCode +"' class='pt-2'></div></div>");
 
-        let station_element_id = "#" + commute.from
+        let station_element_id = "#" + startingStationCode
 
         $(station_element_id).html(
             '<div class="row">'
-            +'  <div class="col h5 text-center">'+ TRAIN_GLYPH + startingStationName + '</div>'
+            +'  <div class="col h5 text-center">'+ TRAIN_GLYPH + commute.from + '</div>'
             + '</div>'
         );
 
@@ -144,7 +131,7 @@ function update_train_UI( model ){
             let train_details = commute.trains[j];
             if( now < train_details.departureTime ){
                 platform = train_details.platform == null ? '': '['+ train_details.platform + '] ';
-                let transportId =  commute.from + '-' + train_details.destination + '-' + j;
+                let transportId =  startingStationCode + '-' + train_details.destination + '-' + j;
                 destination_with_color = colour_special_fields( train_details.destination, commute.to.join("|") );
 
                 let timeBoundaries = build_time_boundaries( commute.noNeedToLeaveBefore, commute.walkTransitTime,
