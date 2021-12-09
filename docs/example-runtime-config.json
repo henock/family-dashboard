@@ -25,12 +25,13 @@
     }
   },
   "schoolRunCountDown": {
-    "showCountDown": "07:00",
-    "startCountDown": "07:10",
-    "finishGettingDressedBy": "07:20",
-    "finishBreakfastBy": "07:30",
-    "departureTime": "07:40",
-    "stopCountDown": "07:50"
+    "showCountDownStart": "08:00",
+    "showCountDownStop": "08:41",
+    "startCountDown": "08:10",
+    "finishGettingDressedBy": "08:20",
+    "finishBreakfastBy": "08:30",
+    "departureTime": "08:40",
+    "stopCountDown": "08:50"
   },
   "transport": {
     "maximumTrainsToShow": 8,

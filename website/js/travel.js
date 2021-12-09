@@ -94,11 +94,6 @@ function extract_trains_details( trainDetails , stationNameToCodeMap, currentTim
     };
 }
 
-function is_week_day( now ){
-    let day = now.getDay();
-    return day > 0 && day < 6;
-}
-
 function calculate_departure_date_time_from_time_only( departureTimeAsString, currentTime ){
     let departureTime = date_from_string( departureTimeAsString, currentTime );
     if((currentTime.getHours()-2) > departureTime.getHours() ){
@@ -136,7 +131,8 @@ function update_train_UI( model ){
             if( now < train_details.departureTime ){
                 platform = train_details.platform == null ? '': '['+ train_details.platform + '] ';
                 let transportId =  startingStationCode + '-' + train_details.destination + '-' + j;
-                destination_with_color = colour_special_fields( train_details.destination, commute.to.join("|") );
+                let commuteToCodes = convert_station_names_to_codes( commute.to, model.stationNameToCodeMap );
+                destination_with_color = colour_special_fields( train_details.destination, commuteToCodes.join("|") );
 
                 let timeBoundaries = build_time_boundaries( commute.noNeedToLeaveBefore, commute.walkTransitTime,
                                                             commute.runTransitTime, commute.driveTransitTime,
@@ -148,12 +144,12 @@ function update_train_UI( model ){
                     +'      <div class="col-8 transport-departure-time p-0" '
                     +'   	    transport-id="' + transportId + '"'
                     +'	        display-name="' + train_details.destination + '"'
-                    +'	        tooEarly="' + commute.noNeedToLeaveBefore + '"'
-                    +'	        plentyOfTime="' + commute.walkTransitTime + '"'
-                    +'	        moveQuickerTime="' + commute.runTransitTime + '"'
-                    +'	        almostOutOfTime="' + commute.driveTransitTime + '"'
+                    +'	        tooEarly="' + timeBoundaries.tooEarly + '"'
+                    +'	        plentyOfTime="' + timeBoundaries.plentyOfTime + '"'
+                    +'	        moveQuickerTime="' + timeBoundaries.moveQuickerTime + '"'
+                    +'	        almostOutOfTime="' + timeBoundaries.almostOutOfTime + '"'
+                    +'   	    deadLine="' + timeBoundaries.deadLine + '"'
                     +'	        transportType="' + PUBLIC_TRANSPORT + '"'
-                    +'   	    deadLine="' + train_details.departureTime + '"'
                     +' 	        index="' + j + '">'
                     +           build_transport_eta_countdown_element( timeBoundaries, transportId, PUBLIC_TRANSPORT );
                     +'      </div>'
@@ -164,6 +160,15 @@ function update_train_UI( model ){
         }
     }
 }
+
+function convert_station_names_to_codes( commuteTos , stationNameToCodeMap ){
+    let results = [];
+    commuteTos.forEach( function( commute, index  ){
+        results.push( stationNameToCodeMap.get( commute ));
+    });
+    return results;
+}
+
 
 function build_school_run_countdown_element( timeBoundaries  ){
     let boundaryWindow = get_boundary_window( timeBoundaries , SCHOOL_RUN );
@@ -226,19 +231,17 @@ function get_class_for_boundary_window( boundaryWindow ){
 function show_or_hide_school_run_departure_time(){
     if( familyDashboard.config.showSchoolRunCountdown ){
         let schoolRunCountDown = familyDashboard.runtimeConfig.schoolRunCountDown;
+        let timeBoundaries = build_time_boundaries_for_school_run( schoolRunCountDown );
         let schoolRunElement = $("#school-run");
         let departTimeElement = $("#school-run-departure-time");
         let now = new Date();
 
         if( schoolRunElement.hasClass('d-none')) {
-            let showCountdownStart = date_from_string( schoolRunCountDown.showCountDownStart, new Date());
-            let showCountdownStop = date_from_string( schoolRunCountDown.showCountDownStop , new Date());
+            let showCountdownStart = date_from_string( schoolRunCountDown.showCountDownStart, timeBoundaries.deadLine);
+            let showCountdownStop = date_from_string( schoolRunCountDown.showCountDownStop , timeBoundaries.deadLine);
             let weekday = is_week_day( now );
             let inside_school_run_window =  showCountdownStart < now && now < showCountdownStop;
              if( is_debug_on() || (weekday && inside_school_run_window )){
-                let secondsUntilDeparture = get_seconds_until( date_from_string(schoolRunCountDown.departureTime ));
-                let secondsUntilDepartureString = display_time_period_from_seconds_into_future( secondsUntilDeparture );
-                let timeBoundaries = build_time_boundaries_for_school_run( schoolRunCountDown );
                 departTimeElement.attr('transport-id' ,  'schoolRun' );
                 departTimeElement.attr('showCountdownStart' ,  showCountdownStart );
                 departTimeElement.attr('showCountdownStop' ,  showCountdownStop );
@@ -258,37 +261,27 @@ function show_or_hide_school_run_departure_time(){
     }
 }
 
-function build_time_boundaries_for_school_run( schoolRunCountDown ){
-    let timeBoundaries = {}
-    timeBoundaries.tooEarly = get_seconds_until( date_from_string( schoolRunCountDown.getOutOfBedBy));
-    timeBoundaries.plentyOfTime = get_seconds_until( date_from_string( schoolRunCountDown.finishGettingDressedBy ));
-    timeBoundaries.moveQuickerTime = get_seconds_until( date_from_string( schoolRunCountDown.finishBreakfastBy ));
-    timeBoundaries.almostOutOfTime = get_seconds_until( date_from_string( schoolRunCountDown.putOnShoesBy ));
-    timeBoundaries.deadLine =  date_from_string(schoolRunCountDown.departureTime );
-    return timeBoundaries;
-}
-
 function get_boundary_window( timeBoundaries, transportType, secondsUntilTargetTime ){
     if( !secondsUntilTargetTime && secondsUntilTargetTime !== 0 ){
-        secondsUntilTargetTime = get_seconds_until( timeBoundaries.deadLine);
+        secondsUntilTargetTime = get_seconds_until( timeBoundaries.deadLine) * -1;
     }
     let boundaryWindow = {};
-     if ( secondsUntilTargetTime > timeBoundaries.tooEarly ) {
+     if ( secondsUntilTargetTime < timeBoundaries.tooEarly ) {
         boundaryWindow.top = secondsUntilTargetTime;
         boundaryWindow.bottom =  timeBoundaries.tooEarly;
         boundaryWindow.name = TOO_EARLY;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ?  "🛌" :  "");
-    } else if( secondsUntilTargetTime > timeBoundaries.plentyOfTime ) {
+    } else if( secondsUntilTargetTime < timeBoundaries.plentyOfTime ) {
         boundaryWindow.top = timeBoundaries.tooEarly;
         boundaryWindow.bottom =  timeBoundaries.plentyOfTime;
         boundaryWindow.name = PLENTY_OF_TIME;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👔️" : "🚶");
-    } else if( secondsUntilTargetTime > timeBoundaries.moveQuickerTime ) {
+    } else if( secondsUntilTargetTime < timeBoundaries.moveQuickerTime ) {
         boundaryWindow.top = timeBoundaries.plentyOfTime;
         boundaryWindow.bottom =  timeBoundaries.moveQuickerTime;
         boundaryWindow.name = MOVE_QUICKER_TIME;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 🥣" : "🏃");
-    } else if( secondsUntilTargetTime > timeBoundaries.almostOutOfTime ) {
+    } else if( secondsUntilTargetTime < timeBoundaries.almostOutOfTime ) {
         boundaryWindow.top = timeBoundaries.moveQuickerTime;
         boundaryWindow.bottom =  timeBoundaries.almostOutOfTime;
         boundaryWindow.name = ALMOST_OUT_OF_TIME;
@@ -300,9 +293,10 @@ function get_boundary_window( timeBoundaries, transportType, secondsUntilTargetT
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? "" :  "");
     }
 
-    let nominator = (secondsUntilTargetTime - boundaryWindow.bottom  );
-    let deNominator = ( boundaryWindow.top - boundaryWindow.bottom );
-    if( nominator === deNominator || secondsUntilTargetTime < 0 ){
+    let nominator = (boundaryWindow.bottom - secondsUntilTargetTime );
+    let deNominator = ( boundaryWindow.bottom - boundaryWindow.top);
+
+    if( nominator === deNominator || secondsUntilTargetTime > 0 ){
         boundaryWindow.progressBarPercentage = 0;
     } else {
         boundaryWindow.progressBarPercentage = 100 - Math.floor((nominator / deNominator) * 100);

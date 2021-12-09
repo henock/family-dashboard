@@ -162,13 +162,29 @@ function get_runtime_config(){
     return runtime_config;
 }
 
+
+function build_time_boundaries_for_school_run( schoolRunCountDown ){
+    let tooEarly = schoolRunCountDown.getOutOfBedBy;
+    let plentyOfTime = schoolRunCountDown.finishGettingDressedBy;
+    let moveQuickerTime = schoolRunCountDown.finishBreakfastBy;
+    let almostOutOfTime = schoolRunCountDown.putOnShoesBy;
+    let departureTime = date_from_string( schoolRunCountDown.departureTime )
+    let timeBoundaries =  build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, departureTime );
+    return timeBoundaries;
+}
+
+
 function build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, date ){
     let deadLine = new Date(date);
     let timeBoundaries = {}
-    timeBoundaries.tooEarly = tooEarly;
-    timeBoundaries.plentyOfTime = plentyOfTime;
-    timeBoundaries.moveQuickerTime = moveQuickerTime;
-    timeBoundaries.almostOutOfTime = almostOutOfTime;
+    let tooEarlyDate = date_from_string( tooEarly, deadLine );
+    let plentyOfTimeDate = date_from_string( plentyOfTime, deadLine )
+    let moveQuickerTimeDate = date_from_string( moveQuickerTime, deadLine )
+    let almostOutOfTimeDate = date_from_string( almostOutOfTime, deadLine )
+    timeBoundaries.tooEarly = get_seconds_between_dates( tooEarlyDate , deadLine );
+    timeBoundaries.plentyOfTime = get_seconds_between_dates( plentyOfTimeDate , deadLine );
+    timeBoundaries.moveQuickerTime = get_seconds_between_dates( moveQuickerTimeDate , deadLine );
+    timeBoundaries.almostOutOfTime = get_seconds_between_dates( almostOutOfTimeDate , deadLine );
     timeBoundaries.deadLine = deadLine;
     return timeBoundaries;
 }

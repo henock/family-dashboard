@@ -80,11 +80,11 @@ function date_plus_seconds( date, seconds_to_add ){
 }
 
 function get_seconds_between_dates( date_a, date_b ){
-    if( !date_a || ! (date instanceof Date) ){
+    if( !date_a || ! (date_a instanceof Date) ){
         log_error( "get_seconds_between_dates() date_a was null - using now");
         date_a = new Date();
     }
-    if( !date_b || ! (date instanceof Date) ){
+    if( !date_b || ! (date_b instanceof Date) ){
         log_error( "get_seconds_between_dates() date_b was null - using now");
         date_b = new Date();
     }
@@ -202,9 +202,10 @@ function date_with_dashes( date ){
 //str = "now+20s"
 function date_from_string( str , date ){
     date = date ? date : new Date();
-    if( str.includes( "now" )){
+    if( str.includes( "now" ) || str.includes( "departure" )){
         let isPlus = str.includes("+");
-        let amount = str.substring( 4, str.length - 1 );
+        let splitPos = (isPlus ?  str.indexOf('+') : str.indexOf('-'));
+        let amount = str.substring( splitPos +1, str.length-1 );
         let timeStep = str.substring( str.length-1 );
         switch(timeStep){
             case 's': multiple=1;break;
@@ -221,5 +222,9 @@ function date_from_string( str , date ){
     }else{
         return set_time_on_date( date , str );
     }
+}
 
+function is_week_day( now ){
+    let day = now.getDay();
+    return day > 0 && day < 6;
 }

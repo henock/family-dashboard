@@ -25,6 +25,7 @@ function compare_exact(a,b){
     return a === b;
 }
 
+
 function compare_time_to_string(expected,b){
     let bHours = pad_with_leading_zero( b.getHours());
     let bMins = pad_with_leading_zero( b.getMinutes());
@@ -81,8 +82,10 @@ function run_unit_test( function_under_test, comment, compare_function, expected
 function run_all_unit_tests(){
     let result = '<table class="pt-2" border="1">';
     result += '<tr><th>Function under test</th><th>comment</th><th>result</th><th>params passed in</th></th></tr>';
-    result += extract_trains_details_unit_test();
+    result += convert_station_names_to_codes_unit_test();
+    result += build_time_boundaries_unit_test();
     result += date_from_string_unit_test();
+    result += extract_trains_details_unit_test();
     result += is_week_day_unit_test();
     result += get_boundary_window_unit_test();
     result += get_seconds_until_unit_test();
@@ -103,34 +106,36 @@ function display_time_period_from_seconds_into_future_unit_test(){
 }
 
 function get_boundary_window_unit_test(){
-    let timeBoundaries = build_time_boundaries( 100, 80, 60, 50, new Date("2021-12-04T10:33"));
+    let timeBoundaries = build_time_boundaries( "departure-100s", "departure-80s", "departure-60s", "departure-50s", new Date());
     let result = '';
     //get_boundary_window( timeBoundaries, transportType, secondsUntilTargetTime )
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY ', compare_with_stringify, {top:200,bottom:100, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, 200]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY ', compare_with_stringify, {top:110,bottom:100, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, 110]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY ', compare_with_stringify, {top:110,bottom:100, name: TOO_EARLY, emoji: '🛌', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN, 110 ]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME ', compare_with_stringify, {top:100,bottom:80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, 100]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME ', compare_with_stringify, {top:100,bottom:80, name: PLENTY_OF_TIME, emoji:' 👔️', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN , 100]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME ', compare_with_stringify, {top:100,bottom:80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [timeBoundaries, PUBLIC_TRANSPORT, 99]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME ', compare_with_stringify, {top:100,bottom:80, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 5}, [timeBoundaries, SCHOOL_RUN , 99]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME ', compare_with_stringify, {top:100,bottom:80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [timeBoundaries, PUBLIC_TRANSPORT, 81]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME ', compare_with_stringify, {top:100,bottom:80, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 95}, [timeBoundaries, SCHOOL_RUN , 81]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME ', compare_with_stringify, {top:80,bottom:60, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, 80]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME ', compare_with_stringify, {top:80,bottom:60, name: MOVE_QUICKER_TIME, emoji:' 🥣', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN , 80]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME ', compare_with_stringify, {top:60,bottom:50, name: ALMOST_OUT_OF_TIME, emoji: ' 🚗', progressBarPercentage: 90}, [timeBoundaries, PUBLIC_TRANSPORT, 51]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME ', compare_with_stringify, {top:60,bottom:50, name: ALMOST_OUT_OF_TIME, emoji:' 👞', progressBarPercentage: 90}, [timeBoundaries, SCHOOL_RUN , 51]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME start of last boundary (50)', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, 50]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 40', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [timeBoundaries, PUBLIC_TRANSPORT, 40 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 30 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [timeBoundaries, PUBLIC_TRANSPORT, 30 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 20 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [timeBoundaries, PUBLIC_TRANSPORT, 20 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 10 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [timeBoundaries, PUBLIC_TRANSPORT, 10 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 5 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [timeBoundaries, PUBLIC_TRANSPORT, 5 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 4 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [timeBoundaries, PUBLIC_TRANSPORT, 4 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 3 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [timeBoundaries, PUBLIC_TRANSPORT, 3 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 2 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [timeBoundaries, PUBLIC_TRANSPORT, 2 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 1 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [timeBoundaries, PUBLIC_TRANSPORT, 1 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME 0 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [timeBoundaries, PUBLIC_TRANSPORT, 0 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -10 ', compare_with_stringify, {top:50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -10 ]);
+
+
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -200 ', compare_with_stringify, {top:-200,bottom:-100, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -200]);
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110 ', compare_with_stringify, {top:-110,bottom:-100, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -110]);
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110  ', compare_with_stringify, {top:-110,bottom:-100, name: TOO_EARLY, emoji: '🛌', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN, -110 ]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -100]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji:' 👔️', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN , -100]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [timeBoundaries, PUBLIC_TRANSPORT, -99]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 5}, [timeBoundaries, SCHOOL_RUN , -99]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [timeBoundaries, PUBLIC_TRANSPORT, -81]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 95}, [timeBoundaries, SCHOOL_RUN , -81]);
+    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {top:-80,bottom:-60, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -80]);
+    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {top:-80,bottom:-60, name: MOVE_QUICKER_TIME, emoji:' 🥣', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN , -80]);
+    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {top:-60,bottom:-50, name: ALMOST_OUT_OF_TIME, emoji: ' 🚗', progressBarPercentage: 90}, [timeBoundaries, PUBLIC_TRANSPORT, -51]);
+    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {top:-60,bottom:-50, name: ALMOST_OUT_OF_TIME, emoji:' 👞', progressBarPercentage: 90}, [timeBoundaries, SCHOOL_RUN , -51]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME start of last boundary (-50)', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -50]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -40', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [timeBoundaries, PUBLIC_TRANSPORT, -40 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -30 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [timeBoundaries, PUBLIC_TRANSPORT, -30 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -20 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [timeBoundaries, PUBLIC_TRANSPORT, -20 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -10 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [timeBoundaries, PUBLIC_TRANSPORT, -10 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -5 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [timeBoundaries, PUBLIC_TRANSPORT, -5 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -4 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [timeBoundaries, PUBLIC_TRANSPORT, -4 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -3 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [timeBoundaries, PUBLIC_TRANSPORT, -3 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -2 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [timeBoundaries, PUBLIC_TRANSPORT, -2 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -1 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [timeBoundaries, PUBLIC_TRANSPORT, -1 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -0 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [timeBoundaries, PUBLIC_TRANSPORT, 0 ]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME +10 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, +10 ]);
     return result;
 }
 
@@ -152,22 +157,6 @@ function is_week_day_unit_test(){
     result += run_unit_test( "is_week_day", 'Fri', compare_exact, true, [new Date("2021-12-10")] );
     result += run_unit_test( "is_week_day", 'Sat', compare_exact, false, [new Date("2021-12-11")] );
     result += run_unit_test( "is_week_day", 'Sun', compare_exact, false, [new Date("2021-12-12")] );
-    return result;
-}
-
-function date_from_string_unit_test(){
-    let result = '';
-    let date = new Date("2021-12-06T07:00:00.000Z")
-    result += run_unit_test( "date_from_string", 'now+10s is 07:00:10',  compare_with_stringify, '2021-12-06T07:00:10.000Z', ['now+10s', date ] );
-    result += run_unit_test( "date_from_string", 'now+10m is 07:10:00',  compare_with_stringify, '2021-12-06T07:10:00.000Z', ['now+10m', date ] );
-    result += run_unit_test( "date_from_string", 'now+1h is 08:00:00',  compare_with_stringify, '2021-12-06T08:00:00.000Z', ['now+1h', date ] );
-    result += run_unit_test( "date_from_string", 'now+26h is 09:00:00 the next day',  compare_with_stringify, '2021-12-07T09:00:00.000Z', ['now+26h', date ] );
-    result += run_unit_test( "date_from_string", 'now-10s is 06:59:50',  compare_with_stringify, '2021-12-06T06:59:50.000Z', ['now-10s', date ] );
-    result += run_unit_test( "date_from_string", 'now-10m is 06:50:00',  compare_with_stringify, '2021-12-06T06:50:00.000Z', ['now-10m', date ] );
-    result += run_unit_test( "date_from_string", 'now-1h is 06:00:00',  compare_with_stringify, '2021-12-06T06:00:00.000Z', ['now-1h', date ] );
-    result += run_unit_test( "date_from_string", 'now-26h is 05:00:00 the previous day',  compare_with_stringify, '2021-12-05T05:00:00.000Z', ['now-26h', date ] );
-    result += run_unit_test( "date_from_string", '10:10',  compare_with_stringify, '2021-12-06T10:10:00.000Z' , ['10:10', date] );
-    result += run_unit_test( "date_from_string", '24:10',  compare_with_stringify, '2021-12-07T00:10:00.000Z' , ['24:10', date] );
     return result;
 }
 
@@ -213,7 +202,50 @@ function extract_trains_details_unit_test(){
 
 
     //extract_trains_details( trainDetails , stationNameToCodeMap )
-    result += run_unit_test( "extract_trains_details", 'extract departureTime, platfrom, destination, status',  compare_with_stringify, expected_result, [ trainResult, mockStationNameToCodeMap, now] );
+    result += run_unit_test( "extract_trains_details", 'extract departureTime, platform, destination, status',  compare_with_stringify, expected_result, [ trainResult, mockStationNameToCodeMap, now] );
+    return result;
+}
+
+function date_from_string_unit_test(){
+    let result = '';
+    let date = new Date("2021-12-06T07:00:00.000Z")
+    result += run_unit_test( "date_from_string", 'departure-10m is 06:59:50',  compare_with_stringify, '2021-12-06T06:59:50.000Z', ['departure-10s', date ] );
+    result += run_unit_test( "date_from_string", 'departure-10h is 21:00:00',  compare_with_stringify, '2021-12-05T21:00:00.000Z', ['departure-10h', date ] );
+    result += run_unit_test( "date_from_string", 'departure-24h is 07:00:00 the previous day',  compare_with_stringify, '2021-12-05T07:00:00.000Z', ['departure-24h', date ] );
+    result += run_unit_test( "date_from_string", 'departure-25h is 06:00:00',  compare_with_stringify, '2021-12-05T06:00:00.000Z', ['departure-25h', date ] );
+    result += run_unit_test( "date_from_string", 'departure+10s is 07:00:10',  compare_with_stringify, '2021-12-06T07:00:10.000Z', ['departure+10s', date ] );
+    result += run_unit_test( "date_from_string", 'now+10s is 07:00:10',  compare_with_stringify, '2021-12-06T07:00:10.000Z', ['now+10s', date ] );
+    result += run_unit_test( "date_from_string", 'now+10m is 07:10:00',  compare_with_stringify, '2021-12-06T07:10:00.000Z', ['now+10m', date ] );
+    result += run_unit_test( "date_from_string", 'now+1h is 08:00:00',  compare_with_stringify, '2021-12-06T08:00:00.000Z', ['now+1h', date ] );
+    result += run_unit_test( "date_from_string", 'now+26h is 09:00:00 the next day',  compare_with_stringify, '2021-12-07T09:00:00.000Z', ['now+26h', date ] );
+    result += run_unit_test( "date_from_string", 'now-10s is 06:59:50',  compare_with_stringify, '2021-12-06T06:59:50.000Z', ['now-10s', date ] );
+    result += run_unit_test( "date_from_string", 'now-10m is 06:50:00',  compare_with_stringify, '2021-12-06T06:50:00.000Z', ['now-10m', date ] );
+    result += run_unit_test( "date_from_string", 'now-1h is 06:00:00',  compare_with_stringify, '2021-12-06T06:00:00.000Z', ['now-1h', date ] );
+    result += run_unit_test( "date_from_string", 'now-26h is 05:00:00 the previous day',  compare_with_stringify, '2021-12-05T05:00:00.000Z', ['now-26h', date ] );
+    result += run_unit_test( "date_from_string", '10:10',  compare_with_stringify, '2021-12-06T10:10:00.000Z' , ['10:10', date] );
+    result += run_unit_test( "date_from_string", '24:10',  compare_with_stringify, '2021-12-07T00:10:00.000Z' , ['24:10', date] );
+    return result;
+}
+
+function build_time_boundaries_unit_test(){
+    let result = '';
+    let date = new Date()
+    // build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, date )
+    result += run_unit_test( "build_time_boundaries", 'correctly sets the times',  compare_with_stringify, {"tooEarly":-360000,"plentyOfTime":-4800,"moveQuickerTime":-60,"almostOutOfTime":50,"deadLine": date },
+                                                                                          ["departure-100h", "departure-80m", "departure-60s", "departure+50s", date] );
+    result += run_unit_test( "build_time_boundaries", 'correctly sets the times',  compare_with_stringify, {"tooEarly":-40,"plentyOfTime":-30,"moveQuickerTime":-20,"almostOutOfTime":-10,"deadLine": date },
+                                                                                          ["departure-40s", "departure-30s", "departure-20s", "departure-10s", date] );
+    return result;
+}
+
+function convert_station_names_to_codes_unit_test(){
+    let result = '';
+    let stationNameToCodeMap = new Map();
+    stationNameToCodeMap.set("London Cannon Street", "LCS");
+    stationNameToCodeMap.set( "London Charing Cross", "LCX");
+    stationNameToCodeMap.set("London Bridge", "LGB" );
+    let commuteTos = [ "London Cannon Street", "London Charing Cross", "London Bridge" ];
+    result += run_unit_test( "convert_station_names_to_codes", 'returns list of correct codes',  compare_with_stringify, ["LCS", "LCX", "LGB"], [commuteTos, stationNameToCodeMap] );
     return result;
 }
 

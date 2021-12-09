@@ -1,7 +1,7 @@
 [
   {
     "id": "5f26d230f403cc8344529e8a",
-    "name": "Call Leon",
+    "name": "Done task 1",
     "dateLastActivity": "2020-10-24T19:23:37.085Z",
     "labels": [
       {
@@ -14,19 +14,19 @@
   },
   {
     "id": "5f981ee3d6863755054c5e04",
-    "name": "Add emails for Fikir",
+    "name": "Done task 2",
     "dateLastActivity": "2020-11-08T14:41:59.537Z",
     "labels": []
   },
   {
     "id": "5f0ed2f231476f44d03ac58b",
-    "name": "Buy",
+    "name": "Done task 3",
     "dateLastActivity": "2020-08-13T18:53:56.227Z",
     "labels": []
   },
   {
     "id": "5f26d243a5b3d54e63bd242b",
-    "name": "Call estate agents  about month 1 rent",
+    "name": "Done task 4",
     "dateLastActivity": "2020-11-08T14:42:04.722Z",
     "labels": [
       {
@@ -39,7 +39,7 @@
   },
   {
     "id": "5ea48c69d732c76a286ed5a1",
-    "name": "Pay 104 Fee",
+    "name": "Done task 5",
     "dateLastActivity": "2020-08-05T17:17:48.930Z",
     "labels": [
       {
@@ -52,7 +52,7 @@
   },
   {
     "id": "5ec86bcf470bf94aadf8296c",
-    "name": "Start packing ",
+    "name": "Done task 6",
     "dateLastActivity": "2020-08-07T15:49:13.541Z",
     "labels": []
   }

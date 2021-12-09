@@ -39,7 +39,7 @@ What your runtime-config.json needs to look like
   },
   "tomorrowIo": {
     "apiKey": "<your api key for http://tomorrow.io>",
-    "location": "51.414282,-0.017142"
+    "location": "51.4395596,-0.0321616"
   },
   "timeZones": [ {
     "id": "America/New_York",
@@ -53,48 +53,48 @@ What your runtime-config.json needs to look like
     }
   ],
   "schoolRunCountDown": {
-    "showCountDownStart": "06:00",
-    "showCountDownStop": "07:41",
-    "startCountDown": "07:10",
-    "getOutOfBedBy": "07:10",
-    "finishGettingDressedBy": "07:20",
-    "finishBreakfastBy": "07:30",
-    "putOnShoesBy": "07:35",
-    "departureTime": "07:40",
-    "stopCountDown": "07:50"
+    "showCountDownStart": "departure-1m",
+    "startCountDown": "departure-45m",
+    "getOutOfBedBy": "departure-40m",
+    "finishGettingDressedBy": "departure-30m",
+    "finishBreakfastBy": "departure-20m",
+    "putOnShoesBy": "departure-10m",
+    "departureTime": "08:40",
+    "stopCountDown": "departure+5m",
+    "showCountDownStop": "departure+6m"
   },
   "transport": {
     "maximumTrainsToShow": 8,
     "commutes": [
       {
-        "from": "Ravensbourne",
-        "noNeedToLeaveBefore": 2300,
-        "walkTransitTime": 2000,
-        "runTransitTime": 1800,
-        "driveTransitTime": 800,
-        "direction": "to-work",
-        "showAllDestinations": true,
-        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
-      },
-      {
         "from": "New Beckenham",
-        "noNeedToLeaveBefore": 2300,
-        "walkTransitTime": 2000,
-        "runTransitTime": 1800,
-        "driveTransitTime": 800,
+        "noNeedToLeaveBefore": "departure-40m",
+        "walkTransitTime": "departure-30m",
+        "runTransitTime": "departure-25m",
+        "driveTransitTime": "departure-15m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
+        "to": [ "London Cannon Street", "London Charing Cross", "London Bridge" ]
       },
       {
         "from": "Beckenham Junction",
-        "noNeedToLeaveBefore": 2300,
-        "walkTransitTime": 2000,
-        "runTransitTime": 1800,
-        "driveTransitTime": 800,
+        "noNeedToLeaveBefore": "departure-25m",
+        "walkTransitTime": "departure-20m",
+        "runTransitTime": "departure-15m",
+        "driveTransitTime": "departure-10m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
+        "to": [ "London Victoria", "London Bridge" ]
+      },
+      {
+        "from": "Ravensbourne",
+        "noNeedToLeaveBefore": "departure-40m",
+        "walkTransitTime": "departure-30m",
+        "runTransitTime": "departure-25m",
+        "driveTransitTime": "departure-10m",
+        "direction": "to-work",
+        "showAllDestinations": true,
+        "to": [ "London Blackfriars" ]
       }
     ]
   }
