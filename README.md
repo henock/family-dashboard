@@ -15,7 +15,7 @@ A simple web based dashboard - making API calls to other systems and displaying 
 
 ### Resulting family dashboard
 
-![Original Trello board](/docs/2021-11-20-family-dashboard.png)
+![Original Trello board](/docs/2021-12-09-family-dashboard.jpg)
 
 
 ## Configuration and deployment 
@@ -27,19 +27,19 @@ What your runtime-config.json needs to look like
 ```json
 {
   "trello": {
-      "key": "<your key for http://trellow.com>",
-      "token": "<your token for http://trellow.com>",
-      "todoListId": "<your todo list Id from http://trellow.com>",
-      "inProgressListId": "<your in progress list Id from http://trellow.com>",
-      "doneListId": "<your done list Id from http://trellow.com>"
+    "key": "<your key for http://trellow.com>",
+    "token": "<your token for http://trellow.com>",
+    "todoListId": "todo",
+    "inProgressListId": "in-progress",
+    "doneListId": "done"
   },
   "transportApi": {
     "appId": "<your appId for http://transportapi.com here>",
     "appKey": "<your appKey for http://transportapi.com here>"
   },
   "tomorrowIo": {
-      "apiKey": "<your api key for http://tomorrow.io>",
-      "location": "<the GPS coordinates for which you want to display weather data>"
+    "apiKey": "<your api key for http://tomorrow.io>",
+    "location": "51.414282,-0.017142"
   },
   "timeZones": [ {
     "id": "America/New_York",
@@ -53,12 +53,13 @@ What your runtime-config.json needs to look like
     }
   ],
   "schoolRunCountDown": {
-    "showCountDown": "10:03",
+    "showCountDownStart": "06:00",
+    "showCountDownStop": "07:41",
     "startCountDown": "07:10",
-    "getOutOfBedBy": 3000,
-    "finishGettingDressedBy": 2400,
-    "finishBreakfastBy": 1800,
-    "putOnShoesBy": 300,
+    "getOutOfBedBy": "07:10",
+    "finishGettingDressedBy": "07:20",
+    "finishBreakfastBy": "07:30",
+    "putOnShoesBy": "07:35",
     "departureTime": "07:40",
     "stopCountDown": "07:50"
   },
@@ -66,43 +67,34 @@ What your runtime-config.json needs to look like
     "maximumTrainsToShow": 8,
     "commutes": [
       {
-        "from": "London Cannon Street",
-        "noNeedToLeaveBefore": 600,
-        "walkTransitTime": 400,
-        "runTransitTime": 300,
-        "driveTransitTime": 100,
+        "from": "Ravensbourne",
+        "noNeedToLeaveBefore": 2300,
+        "walkTransitTime": 2000,
+        "runTransitTime": 1800,
+        "driveTransitTime": 800,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [
-          "Bromley South",
-          "Hayes (Kent)",
-          "London Charing Cross"
-        ]
+        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
+      },
+      {
+        "from": "New Beckenham",
+        "noNeedToLeaveBefore": 2300,
+        "walkTransitTime": 2000,
+        "runTransitTime": 1800,
+        "driveTransitTime": 800,
+        "direction": "to-work",
+        "showAllDestinations": true,
+        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
       },
       {
         "from": "Beckenham Junction",
-        "noNeedToLeaveBefore": 1200,
-        "walkTransitTime": 900,
-        "runTransitTime": 600,
-        "driveTransitTime": 400,
+        "noNeedToLeaveBefore": 2300,
+        "walkTransitTime": 2000,
+        "runTransitTime": 1800,
+        "driveTransitTime": 800,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [
-          "London Victoria",
-          "London Bridge"
-        ]
-      },
-      {
-        "from": "Ravensbourne",
-        "noNeedToLeaveBefore": 2100,
-        "walkTransitTime": 1800,
-        "runTransitTime": 900,
-        "driveTransitTime": 600,
-        "direction": "to-work",
-        "showAllDestinations": true,
-        "to": [
-          "London Blackfriars"
-        ]
+        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
       }
     ]
   }

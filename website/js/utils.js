@@ -159,36 +159,8 @@ function get_runtime_config(){
                 }
             });
     }
-
-    if(runtime_config){
-        if(is_debug_on()){
-            set_times_from_strings( runtime_config.schoolRunCountDown );
-        } else {
-            update_to_todays_dates( runtime_config.schoolRunCountDown );
-        }
-    }
-
-
     return runtime_config;
 }
-
-function update_to_todays_dates( schoolRunCountDown ){
-    let s = schoolRunCountDown;
-    s.showCountDown = set_time_on_date( new Date(), s.showCountDown );
-    s.startCountDown = set_time_on_date( new Date(), s.startCountDown );
-    s.departureTime = set_time_on_date( new Date(), s.departureTime );
-    s.stopCountDown = set_time_on_date( new Date(), s.stopCountDown );
-}
-
-
-function set_times_from_strings( schoolRunCountDown ){
-    let s = schoolRunCountDown;
-    s.showCountDown = time_from_string( s.showCountDown );
-    s.startCountDown = time_from_string( s.startCountDown );
-    s.departureTime = time_from_string( s.departureTime );
-    s.stopCountDown = time_from_string( s.stopCountDown );
-}
-
 
 function build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, date ){
     let deadLine = new Date(date);

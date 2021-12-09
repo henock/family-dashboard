@@ -101,7 +101,6 @@ function get_seconds_since( date ){
 }
 
 function get_seconds_until( date ){
-    date.getMinutes();
     if( !date || ! (date instanceof Date) ){
         log_error( "get_seconds_until() date was null - using now");
         date = new Date();
@@ -167,16 +166,16 @@ function set_time_on_date( date, timeAsString ){
 }
 
 function update_all_count_down_times(){
-    $(".transit-departure-time").each(function(index, element){
+    $(".transport-departure-time").each(function(index, element){
         let timeBoundaries = {}
-        let transportId = new Date($(element).attr("transport-id"));
-        let departureTime = new Date($(element).attr("scheduled-time"));
-        timeBoundaries.tooEarly = $(element).attr("noNeedToLeaveBefore");
-        timeBoundaries.plentyOfTime = $(element).attr("walkTransitTime");
-        timeBoundaries.moveQuickerTime = $(element).attr("runTransitTime");
-        timeBoundaries.almostOutOfTime = $(element).attr("driveTransitTime");
-        timeBoundaries.deadLine = departureTime;
-        element.innerHTML = build_transport_eta_countdown_element( timeBoundaries, transportId );
+        let transportId = $(element).attr("transport-id");
+        timeBoundaries.tooEarly = $(element).attr("tooEarly");
+        timeBoundaries.plentyOfTime = $(element).attr("plentyOfTime");
+        timeBoundaries.moveQuickerTime = $(element).attr("moveQuickerTime");
+        timeBoundaries.almostOutOfTime = $(element).attr("almostOutOfTime");
+        timeBoundaries.deadLine = new Date($(element).attr("deadLine"));
+        let transportType = $(element).attr("transportType");
+        element.innerHTML = build_transport_eta_countdown_element( timeBoundaries, transportId, transportType );
     });
 
     $(".refresh-time").each(function(index,element){
@@ -201,16 +200,26 @@ function date_with_dashes( date ){
 }
 
 //str = "now+20s"
-function time_from_string( str ){
-    if( str.includes("+")){
-        split = str.split("+");
-        let prefix = split[0];
-        let suffix = split[1];
-        if( suffix.endsWith( 's' )){
-            let seconds = suffix.substring(0, suffix.length-1);
-            if( prefix.toLowerCase() === "now" ){
-                return date_plus_seconds( new Date(), seconds );
+function date_from_string( str , date ){
+    date = date ? date : new Date();
+    if( str.includes( "now" )){
+        let isPlus = str.includes("+");
+        let amount = str.substring( 4, str.length - 1 );
+        let timeStep = str.substring( str.length-1 );
+        switch(timeStep){
+            case 's': multiple=1;break;
+            case 'm': multiple=60;break;
+            case 'h': multiple=3600;break;
+            default: {
+                multiple=1;
+                log_error( 'Invalid string passed into date_from_string function expected "now[+|-]{int}[s|m|h]" got: "' + str + '"' );
             }
         }
+        seconds = (amount * multiple)
+        seconds *= isPlus ? 1 : -1;
+        return date_plus_seconds( date, seconds );
+    }else{
+        return set_time_on_date( date , str );
     }
+
 }

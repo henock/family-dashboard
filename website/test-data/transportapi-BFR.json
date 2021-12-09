@@ -25,7 +25,7 @@
         },
         "status": "LATE",
         "expected_arrival_time": "16:59",
-        "expected_departure_time": "17:00",
+        "expected_departure_time": "now+10m",
         "best_arrival_estimate_mins": 14,
         "best_departure_estimate_mins": 15
       },
@@ -48,7 +48,7 @@
         },
         "status": "LATE",
         "expected_arrival_time": "16:59",
-        "expected_departure_time": "17:00",
+        "expected_departure_time": "now+20m",
         "best_arrival_estimate_mins": 14,
         "best_departure_estimate_mins": 15
       },
@@ -71,7 +71,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "16:47",
-        "expected_departure_time": "16:51",
+        "expected_departure_time": "now+31m",
         "best_arrival_estimate_mins": 2,
         "best_departure_estimate_mins": 6
       },
@@ -94,7 +94,7 @@
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
-        "expected_departure_time": "16:58",
+        "expected_departure_time": "now+48m",
         "best_arrival_estimate_mins": null,
         "best_departure_estimate_mins": 13
       },
@@ -117,7 +117,7 @@
         },
         "status": "LATE",
         "expected_arrival_time": "17:03",
-        "expected_departure_time": "17:04",
+        "expected_departure_time": "now+54m",
         "best_arrival_estimate_mins": 18,
         "best_departure_estimate_mins": 19
       },
@@ -140,7 +140,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:04",
-        "expected_departure_time": "17:05",
+        "expected_departure_time": "now+65m",
         "best_arrival_estimate_mins": 19,
         "best_departure_estimate_mins": 20
       },
@@ -163,7 +163,7 @@
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
-        "expected_departure_time": "17:05",
+        "expected_departure_time": "now+75m",
         "best_arrival_estimate_mins": null,
         "best_departure_estimate_mins": 20
       },
@@ -186,7 +186,7 @@
         },
         "status": "LATE",
         "expected_arrival_time": "17:09",
-        "expected_departure_time": "17:10",
+        "expected_departure_time": "now+80m",
         "best_arrival_estimate_mins": 24,
         "best_departure_estimate_mins": 25
       },
@@ -209,7 +209,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:10",
-        "expected_departure_time": "17:11",
+        "expected_departure_time": "now+91m",
         "best_arrival_estimate_mins": 25,
         "best_departure_estimate_mins": 26
       },
@@ -232,7 +232,7 @@
         },
         "status": "LATE",
         "expected_arrival_time": "17:13",
-        "expected_departure_time": "17:14",
+        "expected_departure_time": "now+114m",
         "best_arrival_estimate_mins": 28,
         "best_departure_estimate_mins": 29
       },
@@ -255,7 +255,7 @@
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
-        "expected_departure_time": "17:12",
+        "expected_departure_time": "now+122m",
         "best_arrival_estimate_mins": null,
         "best_departure_estimate_mins": 27
       },
@@ -278,7 +278,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:17",
-        "expected_departure_time": "17:21",
+        "expected_departure_time": "now+131m",
         "best_arrival_estimate_mins": 32,
         "best_departure_estimate_mins": 36
       },
@@ -301,7 +301,7 @@
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
-        "expected_departure_time": "17:28",
+        "expected_departure_time": "now+148m",
         "best_arrival_estimate_mins": null,
         "best_departure_estimate_mins": 43
       },
@@ -324,7 +324,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:31",
-        "expected_departure_time": "17:32",
+        "expected_departure_time": "now+152m",
         "best_arrival_estimate_mins": 46,
         "best_departure_estimate_mins": 47
       },
@@ -347,7 +347,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:32",
-        "expected_departure_time": "17:33",
+        "expected_departure_time": "now+33m",
         "best_arrival_estimate_mins": 47,
         "best_departure_estimate_mins": 48
       },
@@ -370,7 +370,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:34",
-        "expected_departure_time": "17:35",
+        "expected_departure_time": "now+35m",
         "best_arrival_estimate_mins": 49,
         "best_departure_estimate_mins": 50
       },
@@ -393,7 +393,7 @@
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
-        "expected_departure_time": "17:35",
+        "expected_departure_time": "now+35m",
         "best_arrival_estimate_mins": null,
         "best_departure_estimate_mins": 50
       },
@@ -416,7 +416,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:38",
-        "expected_departure_time": "17:39",
+        "expected_departure_time": "now+39m",
         "best_arrival_estimate_mins": 53,
         "best_departure_estimate_mins": 54
       },
@@ -439,7 +439,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:40",
-        "expected_departure_time": "17:41",
+        "expected_departure_time": "now+41m",
         "best_arrival_estimate_mins": 55,
         "best_departure_estimate_mins": 56
       },
@@ -462,7 +462,7 @@
         },
         "status": "NO REPORT",
         "expected_arrival_time": "17:41",
-        "expected_departure_time": "17:42",
+        "expected_departure_time": "now+42m",
         "best_arrival_estimate_mins": 56,
         "best_departure_estimate_mins": 57
       },
@@ -485,7 +485,7 @@
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
-        "expected_departure_time": "17:42",
+        "expected_departure_time": "now+42m",
         "best_arrival_estimate_mins": null,
         "best_departure_estimate_mins": 57
       },
@@ -508,7 +508,7 @@
         },
         "status": "LATE",
         "expected_arrival_time": "17:46",
-        "expected_departure_time": "17:47",
+        "expected_departure_time": "now+47m",
         "best_arrival_estimate_mins": 61,
         "best_departure_estimate_mins": 62
       },
@@ -531,7 +531,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:47",
-        "expected_departure_time": "17:51",
+        "expected_departure_time": "now+51m",
         "best_arrival_estimate_mins": 62,
         "best_departure_estimate_mins": 66
       },
@@ -554,7 +554,7 @@
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
-        "expected_departure_time": "17:58",
+        "expected_departure_time": "now+58m",
         "best_arrival_estimate_mins": null,
         "best_departure_estimate_mins": 73
       },
@@ -577,7 +577,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "18:02",
-        "expected_departure_time": "18:03",
+        "expected_departure_time": "now+03m",
         "best_arrival_estimate_mins": 77,
         "best_departure_estimate_mins": 78
       }

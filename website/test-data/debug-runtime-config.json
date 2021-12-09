@@ -26,18 +26,29 @@
     }
   ],
   "schoolRunCountDown": {
-    "showCountDown": "now+5s",
-    "startCountDown": "now+10s",
-    "getOutOfBedBy": 40,
-    "finishGettingDressedBy": 30,
-    "finishBreakfastBy": 20,
-    "putOnShoesBy": 10,
-    "departureTime": "now+60s",
-    "stopCountDown": "now+70s"
+    "showCountDownStart": "now+2s",
+    "showCountDownStop": "now+55s",
+    "startCountDown": "now+5s",
+    "getOutOfBedBy": "now+60s",
+    "finishGettingDressedBy": "now+50s",
+    "finishBreakfastBy": "now+40s",
+    "putOnShoesBy": "now+30s",
+    "departureTime": "now+70s",
+    "stopCountDown": "now+80s"
   },
   "transport": {
     "maximumTrainsToShow": 8,
     "commutes": [
+      {
+        "from": "Ravensbourne",
+        "noNeedToLeaveBefore": 2300,
+        "walkTransitTime": 2000,
+        "runTransitTime": 1800,
+        "driveTransitTime": 800,
+        "direction": "to-work",
+        "showAllDestinations": true,
+        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
+      },
       {
         "from": "New Beckenham",
         "noNeedToLeaveBefore": 2300,
@@ -50,23 +61,13 @@
       },
       {
         "from": "Beckenham Junction",
-        "noNeedToLeaveBefore": 1200,
-        "walkTransitTime": 900,
-        "runTransitTime": 600,
-        "driveTransitTime": 400,
+        "noNeedToLeaveBefore": 2300,
+        "walkTransitTime": 2000,
+        "runTransitTime": 1800,
+        "driveTransitTime": 800,
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Victoria", "London Bridge" ]
-      },
-      {
-        "from": "Ravensbourne",
-        "noNeedToLeaveBefore": 2100,
-        "walkTransitTime": 1800,
-        "runTransitTime": 900,
-        "driveTransitTime": 600,
-        "direction": "to-work",
-        "showAllDestinations": true,
-        "to": [ "London Blackfriars" ]
+        "to": [ "London Cannon Street", "London Bridge", "London Charing Cross" ]
       }
     ]
   }

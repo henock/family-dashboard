@@ -29,8 +29,9 @@ function call_function_then_set_on_interval_milli_seconds(functionToCall, interv
     setInterval(functionToCall, intervalInMillis);
 }
 
-function run_function_by_the_second() {
+function run_function_every_100_milli_seconds() {
     set_date_and_time();
+    update_all_count_down_times();
     remove_overdue_messages();
 }
 
@@ -64,7 +65,7 @@ function switch_on_everything(){
 function hide_everything(){
     $("#dashboard-main").addClass('d-none');
     $("#date-time-messages").addClass('d-none');
-    $("#school-run-departure-time").addClass('d-none');
+    $("#school-run").addClass('d-none');
     $("#weather").addClass('d-none');
     $("#travel").addClass('d-none');
     $("#tasks").addClass('d-none');
@@ -91,8 +92,7 @@ $(document).ready(function () {
         call_function_then_set_on_interval_seconds(show_or_hide_school_run_departure_time, 1);
         call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_days, 600);
         call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_hours, 600);
-        call_function_then_set_on_interval_seconds(run_function_by_the_second, 1);
-        call_function_then_set_on_interval_milli_seconds(update_all_count_down_times, 100);
+        call_function_then_set_on_interval_milli_seconds(run_function_every_100_milli_seconds, 100);
     }
 });
 
