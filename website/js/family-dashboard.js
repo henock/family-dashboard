@@ -54,12 +54,12 @@ function switch_off_everything(){
     familyDashboard.config.tasks = false;
 }
 
-function switch_on_everything(){
-    familyDashboard.config.timeZones = true;
-    familyDashboard.config.showSchoolRunCountdown = true;
-    familyDashboard.config.weather = true;
-    familyDashboard.config.travel = true;
-    familyDashboard.config.tasks = true;
+function switch_on_sections_we_have_config_for(){
+    familyDashboard.config.timeZones = ( undefined !=  familyDashboard.runtimeConfig.timeZones);
+    familyDashboard.config.showSchoolRunCountdown = ( undefined !=  familyDashboard.runtimeConfig.showSchoolRunCountdown);
+    familyDashboard.config.weather = ( undefined !=  familyDashboard.runtimeConfig.tomorrowIo);
+    familyDashboard.config.travel = ( undefined !=  familyDashboard.runtimeConfig.transport);
+    familyDashboard.config.tasks = ( undefined !=  familyDashboard.runtimeConfig.trello);
 }
 
 function hide_everything(){
@@ -83,7 +83,7 @@ $(document).ready(function () {
             log_info("Could not get the runtime-config.json.", 10);
         }else{
             $("#dashboard-main").removeClass('d-none');
-            switch_on_everything();
+            switch_on_sections_we_have_config_for();
         }
 
         call_function_then_set_on_interval_seconds(set_todo_tasks, 120);

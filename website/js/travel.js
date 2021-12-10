@@ -57,8 +57,7 @@ function set_train_station_arrivals( commute, model, transportApi ){
             $(data.departures.all)
                 .each(function(index,it){
                     if( showingTrainsCount < model.maximumTrainsToShow &&
-                        ( commute.showAllDestinations ||
-                          is_destination_station( commute, it.destination_name, model.stationNameToCodeMap))){
+                        ( commute.showAllDestinations ||  commute.to.includes( it.destination_name ))){
                         showingTrainsCount++;
                         commute.trains.push(extract_trains_details( it , model.stationNameToCodeMap));
                     }
@@ -75,17 +74,12 @@ function set_train_station_arrivals( commute, model, transportApi ){
     });
 }
 
-function is_destination_station( commute, stationName, stationNameToCodeMap ){
-    let stationCode = stationNameToCodeMap.get( stationName );
-    return commute.to.includes(stationCode);
-}
-
 function extract_trains_details( trainDetails , stationNameToCodeMap, currentTime ){
     currentTime = currentTime ? currentTime : new Date();
     let departureTimeString = trainDetails.expected_departure_time ? trainDetails.expected_departure_time : trainDetails.aimed_departure_time;
     let departureTime = calculate_departure_date_time_from_time_only( departureTimeString, currentTime );
     let destination  = stationNameToCodeMap.get( trainDetails.destination_name );
-
+    if( !destination ){ destination = "XXX"; }
     return {
         "departureTime" : departureTime,
         "platform": trainDetails.platform,
