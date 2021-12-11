@@ -14,8 +14,8 @@ function set_date_and_time() {
 }
 
 function update_times_in_different_timezone(){
-    if( familyDashboard.config.timeZones ){
-        let timeZones = familyDashboard.runtimeConfig.timeZones;
+    if( familyDashboard.config.showTimeZones ){
+        let timeZones = familyDashboard.runtimeConfig.timeZones.zones;
         let timeZoneElements = ''
         for( var i = 0; i < timeZones.length && i < 4; i++ ){
             let timeZone = timeZones[i];

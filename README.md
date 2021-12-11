@@ -20,27 +20,34 @@ A simple web based dashboard - making API calls to other systems and displaying 
 
 ## Configuration and deployment 
 
-All code is present in the repository, however you will need to provide your own runtime-config.json file (full example [here](/docs/example-runtime-config.json)) which is passed in as a volume see the docker run command below.
+All code is present in the repository, however you will need to update the /config/api-keys.json with your own keys, and this is passed in as a volume see the docker run command below.
 
-What your runtime-config.json needs to look like
-
+The api-key.json file will need to be updated  
 ```json
 {
   "trello": {
     "key": "<your key for http://trellow.com>",
-    "token": "<your token for http://trellow.com>",
-    "todoListId": "todo",
-    "inProgressListId": "in-progress",
-    "doneListId": "done"
+    "token": "<your token for http://trellow.com>"
   },
   "transportApi": {
     "appId": "<your appId for http://transportapi.com here>",
     "appKey": "<your appKey for http://transportapi.com here>"
   },
   "tomorrowIo": {
-    "apiKey": "<your api key for http://tomorrow.io>",
-    "location": "51.4395596,-0.0321616"
-  },
+    "apiKey": "<your api key for http://tomorrow.io>"
+  }
+}
+```
+
+
+What your runtime-config.json needs to look like
+
+```json
+{
+  "tasks" :  "show",
+  "travel":  "show",
+  "weather": "show",
+  "location": "<your GPS coordinates>",
   "timeZones": [ {
     "id": "America/New_York",
     "name": "DC",
@@ -53,7 +60,7 @@ What your runtime-config.json needs to look like
     }
   ],
   "schoolRunCountDown": {
-    "showCountDownStart": "departure-1m",
+    "showCountDownStart": "departure-50m",
     "startCountDown": "departure-45m",
     "getOutOfBedBy": "departure-40m",
     "finishGettingDressedBy": "departure-30m",
@@ -103,14 +110,15 @@ What your runtime-config.json needs to look like
 
 # Running the dashboard from a webserver process (python3 example)
 
+Note: Any changes to the remote repo will not be automatically updated locally
+
 ```shell
  git clone https://github.com/henock/family-dashboard.git
  cd family-dashboard
- cp docs/example-runtime-config.json website/data/runtime-config.json
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
- # Populate it with the keys in the format shown above
+ # Populate /website/data/api-kyes.json with the keys in the format shown above
  python3 -m http.server    
 ```
 # Running the dashboard from Docker 
@@ -120,8 +128,7 @@ What your runtime-config.json needs to look like
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
- # Create a local file called <project folder>/config/runtime-config.json
- # Populate it with the keys in the format shown above
+ # Populate /website/data/api-kyes.json with the keys in the format shown above
  docker build -t henock/family-dashboard .  
  docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/data/runtime-config.json henock/family-dashboard   
 ``` 

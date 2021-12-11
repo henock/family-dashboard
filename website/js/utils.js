@@ -13,7 +13,7 @@ const AN_HOUR				= A_MINUTE * 60;
 const TWELVE_HOURS			= AN_HOUR * 12;
 const TWENTY_FOUR_HOURS		= AN_HOUR * 24;
 
-var runtime_config = null;
+var runtimeConfig = null;
 
 function get_request_param( param_id ){
     let paramString = window.location.search.substring(1);
@@ -38,10 +38,12 @@ function log_info( message, remove_after_seconds ){
 }
 
 function log_error( message, remove_after_seconds ){
+    console.trace();
     write_message( message, "text-danger border-top border-bottom p-1", remove_after_seconds  );
 }
 
 function log_warn( message, remove_after_seconds ){
+    console.trace();
     write_message( message, "text-warning", remove_after_seconds  );
 }
 
@@ -114,52 +116,58 @@ function get_runtime_config(){
         runtimeConfigUrl = "test-data/debug-runtime-config.json";
     }
 
-    if( !runtime_config ){
+    if( !runtimeConfig ){
         $.ajax({
                 url: runtimeConfigUrl ,
                 type: "GET",
                 async: false,
                 success: function( data ) {
-                    runtime_config = data;
+                    runtimeConfig = data;
                 },
                 error: function ( xhr ){
-                    if(xhr && (xhr.status === 404)) {
-                        console.log( "Ignoring 404 for runtime-config.json" );
-                    }else{
-                        log_error( ' Error getting data/runtime-config.json ( Unknown error ).');
-                    }
+                    log_error( ' Error getting ' + runtimeConfigUrl + ' errorStatus: ' + xhr.status );
                 }
             });
-    }
-    if( runtime_config ){
-        $.ajax({
-                url: "data/station-codes.json",
-                type: "GET",
-                async: false,
-                success: function( data ) {
-                    let entries = Object.entries(data);
-                    let entry;
-                    let nameToCode = new Map();
-                    let codeToName = new Map();
+        if( runtimeConfig ){
+            let getUrl = "data/station-codes.json";
+            $.ajax({
+                    url: getUrl,
+                    type: "GET",
+                    async: false,
+                    success: function( data ) {
+                        let entries = Object.entries(data);
+                        let entry;
+                        let nameToCode = new Map();
+                        let codeToName = new Map();
 
-                    for (var i = 0; i < entries.length; i++ ){
-                        entry = entries[i];
-                        nameToCode.set( entry[0], entry[1] );
-                        codeToName.set( entry[1], entry[0] );
-                    };
-                    runtime_config.transport.stationCodeToNameMap = codeToName;
-                    runtime_config.transport.stationNameToCodeMap = nameToCode;
-                },
-                error: function ( xhr ){
-                    if(xhr && (xhr.status === 404)) {
-                        console.log( "Ignoring 404 for runtime-config.json" );
-                    }else{
-                        log_error( ' Error getting data/runtime-config.json ( Unknown error ).');
+                        for (var i = 0; i < entries.length; i++ ){
+                            entry = entries[i];
+                            nameToCode.set( entry[0], entry[1] );
+                            codeToName.set( entry[1], entry[0] );
+                        };
+                        runtimeConfig.transport.stationCodeToNameMap = codeToName;
+                        runtimeConfig.transport.stationNameToCodeMap = nameToCode;
+                    },
+                    error: function ( xhr ){
+                        log_error( ' Error getting '+ getUrl + ' errorStatus: ' + xhr.status );
                     }
-                }
-            });
+                });
+
+            getUrl = "data/api-keys.json";
+            $.ajax({
+                    url: getUrl,
+                    type: "GET",
+                    async: false,
+                    success: function( data ) {
+                        runtimeConfig.apiKeys = data;
+                    },
+                    error: function ( xhr ){
+                        log_error( ' Error getting ' + getUrl + ' xhr.status: ' + xhr.status );
+                    }
+                });
+        }
     }
-    return runtime_config;
+    return runtimeConfig;
 }
 
 

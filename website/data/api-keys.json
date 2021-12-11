@@ -1,0 +1,13 @@
+{
+  "trello": {
+    "key": "<your key for http://trellow.com>",
+    "token": "<your token for http://trellow.com>"
+  },
+  "transportApi": {
+    "appId": "<your appId for http://transportapi.com here>",
+    "appKey": "<your appKey for http://transportapi.com here>"
+  },
+  "tomorrowIo": {
+    "apiKey": "<your api key for http://tomorrow.io>"
+  }
+}

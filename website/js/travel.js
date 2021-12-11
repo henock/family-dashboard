@@ -9,7 +9,7 @@ const PUBLIC_TRANSPORT = "publicTransport";
 
 
 function set_train_arrivals( intervalInSeconds ){
-    if( familyDashboard.config.travel ){
+    if( familyDashboard.config.showTravel ){
 
         let model = {};
         model.commutes = familyDashboard.runtimeConfig.transport.commutes;
@@ -19,7 +19,7 @@ function set_train_arrivals( intervalInSeconds ){
         model.stationNameToCodeMap = familyDashboard.runtimeConfig.transport.stationNameToCodeMap;
 
         for( i = 0; i < model.commutes.length; i++ ){
-            set_train_station_arrivals( model.commutes[i], model, familyDashboard.runtimeConfig.transportApi );
+            set_train_station_arrivals( model.commutes[i], model, familyDashboard.runtimeConfig.apiKeys.transportApi );
         }
 
         $('#train-travel').html("");
@@ -132,7 +132,7 @@ function update_train_UI( model ){
                                                             commute.runTransitTime, commute.driveTransitTime,
                                                             train_details.departureTime);
                 let trainRow =
-                     '  <div class="row text-monospace text-nowrap">'
+                     '  <div id="' + transportId + '" class="row text-monospace text-nowrap">'
                     +'      <div class="col-1">'+platform+'</div>'
                     +'      <div class="col-2">' + destination_with_color + '</div>'
                     +'      <div class="col-8 transport-departure-time p-0" '
@@ -189,26 +189,28 @@ function build_transport_eta_countdown_element( timeBoundaries, transportId, tra
     let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
     let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( timeBoundaries.deadLine));
     let paddedTimeMinutes = get_padded_time_minutes(timeBoundaries.deadLine);
-    let div =
-         '          <div class="row">'
-        +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
-        +'              <div class="col-2"></div>'
-        +'              <div class="col-2 text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +' ' + boundaryWindow.emoji + '</div>'
-        +'          </div>'
-    if( boundaryWindow.name !== TOO_EARLY && boundaryWindow.name !== OUT_OF_TIME ){
-        div +='     <div class="row">'
-        +'              <div class="col-10">'
-        +'                  <div class="progress" style="height: 15px;">'
-        +'                      <div id="'+ transportId +'" class="progress-bar bg-'+ classForBoundaryWindow +'" role="progressbar"'
-        +'                                              aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: '+
-                                                        boundaryWindow.progressBarPercentage +'%"></div>'
-        +'                  </div>'
-        +'              </div>'
-        +'              <div class="col-2>'
-        +'          </div>'
+    if( timeBoundaries.deadLine > new Date() ){
+        let div = '          <div class="row">'
+                +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
+                +'              <div class="col-2"></div>'
+                +'              <div class="col-2 text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +' ' + boundaryWindow.emoji + '</div>'
+                +'          </div>'
+            if( boundaryWindow.name !== TOO_EARLY && boundaryWindow.name !== OUT_OF_TIME ){
+                div +='     <div class="row">'
+                +'              <div class="col-10">'
+                +'                  <div class="progress" style="height: 15px;">'
+                +'                      <div id="'+ transportId +'-progress-bar" class="progress-bar bg-'+ classForBoundaryWindow +'" role="progressbar"'
+                +'                                              aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: '+
+                                                                boundaryWindow.progressBarPercentage +'%"></div>'
+                +'                  </div>'
+                +'              </div>'
+                +'              <div class="col-2>'
+                +'          </div>'
+            }
+        return div;
+    }else {
+        $("#" + transportId ).addClass("d-none");
     }
-
-    return div;
 }
 
 function get_class_for_boundary_window( boundaryWindow ){

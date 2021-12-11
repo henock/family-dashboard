@@ -123,10 +123,16 @@ function convert_weather_code_to_image( code, isNightTime ){
         case 0:     // Unknown";
         default:    // Unexpected code
             return "system_unknown.png"
-
     }
 }
 
+
+function show_all_weather(){
+    if( familyDashboard.config.showWeather ){
+        get_and_set_weather_for_upcoming_days();
+        get_and_set_weather_for_upcoming_hours();
+    }
+}
 
 function set_weather_details( keyString, dateString, temperatureString, weather_code, grassIndex, treeIndex ){
     $("#weather-date-" + keyString ).html(  dateString );
@@ -154,31 +160,29 @@ function set_weather_for_upcoming_days( result ){
 }
 
 function get_and_set_weather_for_upcoming_days(){
-    if( familyDashboard.config.weather ){
-        let tomorrowIoConfig = familyDashboard.runtimeConfig.tomorrowIo;
-        let urlToGet = '';
-        if( is_debug_on()){
-            urlToGet = "test-data/tomorrow-timelines-1d.json"
-        } else{
-            // 'apikey', '' from junk.henock
-            // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
-            urlToGet = "https://api.tomorrow.io/v4/timelines"
-                + "?location=" + tomorrowIoConfig.location
-                + "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,sunriseTime,sunsetTime,humidity"
-                + "&units=metric"
-                + "&timesteps=1d"
-                + "&apikey=" + tomorrowIoConfig.apiKey;
-        }
-
-        $.ajax({
-            url: urlToGet,
-            type: "GET",
-            success: set_weather_for_upcoming_days,
-            error: function ( xhr ){
-                log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
-            }
-        });
+    let tomorrowIoConfig = familyDashboard.runtimeConfig.apiKeys.tomorrowIo;
+    let urlToGet = '';
+    if( is_debug_on()){
+        urlToGet = "test-data/tomorrow-timelines-1d.json"
+    } else{
+        // 'apikey', '' from junk.henock
+        // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
+        urlToGet = "https://api.tomorrow.io/v4/timelines"
+            + "?location=" + familyDashboard.runtimeConfig.weather.location
+            + "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,sunriseTime,sunsetTime,humidity"
+            + "&units=metric"
+            + "&timesteps=1d"
+            + "&apikey=" + tomorrowIoConfig.apiKey;
     }
+
+    $.ajax({
+        url: urlToGet,
+        type: "GET",
+        success: set_weather_for_upcoming_days,
+        error: function ( xhr ){
+            log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
+        }
+    });
 }
 
 function set_weather_for_upcoming_hours( daily ){
@@ -200,35 +204,33 @@ function set_weather_for_upcoming_hours( daily ){
 }
 
 function get_and_set_weather_for_upcoming_hours( interval_in_seconds ){
-    if( familyDashboard.config.weather ){
-        let tomorrowIoConfig = familyDashboard.runtimeConfig.tomorrowIo;
-        let urlToGet = '';
-        if( is_debug_on()){
-            urlToGet = "test-data/tomorrow-timelines-1h.json"
-        } else{
-            // 'apikey', from junk.henock
-            // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
-            urlToGet = "https://api.tomorrow.io/v4/timelines"
-                + "?location=" + tomorrowIoConfig.location
-                + "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,humidity"
-                + "&units=metric"
-                + "&timesteps=1h"
-                + "&apikey=" + tomorrowIoConfig.apiKey;
-        }
-
-        $.ajax({
-            url: urlToGet,
-            type: "GET",
-            success: set_weather_for_upcoming_hours,
-            error: function ( xhr ){
-                if( xhr ){
-                    log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
-                } else{
-                    log_error( ' Error calling Climacell for days ( Unknown error ).');
-                }
-            }
-        });
-
-        set_refresh_values( "#weather-update", interval_in_seconds );
+    let tomorrowIoConfig = familyDashboard.runtimeConfig.apiKeys.tomorrowIo;
+    let urlToGet = '';
+    if( is_debug_on()){
+        urlToGet = "test-data/tomorrow-timelines-1h.json"
+    } else{
+        // 'apikey', from junk.henock
+        // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
+        urlToGet = "https://api.tomorrow.io/v4/timelines"
+            + "?location=" + familyDashboard.runtimeConfig.weather.location
+            + "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,humidity"
+            + "&units=metric"
+            + "&timesteps=1h"
+            + "&apikey=" + tomorrowIoConfig.apiKey;
     }
+
+    $.ajax({
+        url: urlToGet,
+        type: "GET",
+        success: set_weather_for_upcoming_hours,
+        error: function ( xhr ){
+            if( xhr ){
+                log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
+            } else{
+                log_error( ' Error calling Climacell for days ( Unknown error ).');
+            }
+        }
+    });
+
+    set_refresh_values( "#weather-update", interval_in_seconds );
 }

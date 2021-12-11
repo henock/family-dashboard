@@ -4,13 +4,11 @@
   },
   "weather": {
     "show": true,
-    "location": "51.414282,-0.017142"
+    "location": "<your gps coordinates>"
   },
   "tasks": {
     "show": true,
-    "todoListId": "todo",
-    "inProgressListId": "in-progress",
-    "doneListId": "done"
+    "todoListId": "<your todoListId>"
   },
   "timeZones": {
     "show": true,
@@ -29,15 +27,15 @@
   },
   "schoolRunCountDown": {
     "show": true,
-    "showCountDownStart": "departure-50s",
-    "startCountDown": "departure-45s",
-    "getOutOfBedBy": "departure-40s",
-    "finishGettingDressedBy": "departure-30s",
-    "finishBreakfastBy": "departure-20s",
-    "putOnShoesBy": "departure-10s",
-    "departureTime": "now+45s",
-    "stopCountDown": "departure+10s",
-    "showCountDownStop": "departure+10s"
+    "showCountDownStart": "departure-50m",
+    "startCountDown": "departure-45m",
+    "getOutOfBedBy": "departure-40m",
+    "finishGettingDressedBy": "departure-30m",
+    "finishBreakfastBy": "departure-20m",
+    "putOnShoesBy": "departure-10m",
+    "departureTime": "07:40",
+    "stopCountDown": "departure+1m",
+    "showCountDownStop": "departure+1m"
   },
   "transport": {
     "maximumTrainsToShow": 8,
@@ -50,7 +48,11 @@
         "driveTransitTime": "departure-15m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Cannon Street", "London Charing Cross", "London Bridge" ]
+        "to": [
+          "London Cannon Street",
+          "London Charing Cross",
+          "London Bridge"
+        ]
       },
       {
         "from": "Beckenham Junction",
@@ -60,7 +62,10 @@
         "driveTransitTime": "departure-10m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Victoria", "London Bridge" ]
+        "to": [
+          "London Victoria",
+          "London Bridge"
+        ]
       },
       {
         "from": "Ravensbourne",
@@ -70,7 +75,9 @@
         "driveTransitTime": "departure-10m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Blackfriars" ]
+        "to": [
+          "London Blackfriars"
+        ]
       }
     ]
   }

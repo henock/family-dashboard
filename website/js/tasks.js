@@ -2,11 +2,10 @@
 
 
 function set_todo_tasks( interval_in_seconds ) {
-    if( familyDashboard.config.tasks ){
-        let trelloConfig = familyDashboard.runtimeConfig.trello;
-        update_tasks_list(trelloConfig, trelloConfig.todoListId,'todo');
-        update_tasks_list(trelloConfig, trelloConfig.inProgressListId,'in-progress' );
-        update_tasks_list(trelloConfig, trelloConfig.doneListId,'done' );
+    if( familyDashboard.config.showTasks ){
+        let trelloKeys = familyDashboard.runtimeConfig.apiKeys.trello;
+        let taskLists = familyDashboard.runtimeConfig.tasks;
+        update_tasks_list(trelloKeys, taskLists.todoListId,'todo');
         set_refresh_values( "#tasks-update", interval_in_seconds );
     }
 }

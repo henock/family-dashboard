@@ -47,19 +47,19 @@ function check_runtime_config_present() {
 }
 
 function switch_off_everything(){
-    familyDashboard.config.timeZones = false;
+    familyDashboard.config.showTimeZones = false;
     familyDashboard.config.showSchoolRunCountdown = false;
-    familyDashboard.config.weather = false;
-    familyDashboard.config.travel = false;
-    familyDashboard.config.tasks = false;
+    familyDashboard.config.showWeather = false;
+    familyDashboard.config.showTravel = false;
+    familyDashboard.config.showTasks = false;
 }
 
 function switch_on_sections_we_have_config_for(){
-    familyDashboard.config.timeZones = ( undefined !=  familyDashboard.runtimeConfig.timeZones);
-    familyDashboard.config.showSchoolRunCountdown = ( undefined !=  familyDashboard.runtimeConfig.showSchoolRunCountdown);
-    familyDashboard.config.weather = ( undefined !=  familyDashboard.runtimeConfig.tomorrowIo);
-    familyDashboard.config.travel = ( undefined !=  familyDashboard.runtimeConfig.transport);
-    familyDashboard.config.tasks = ( undefined !=  familyDashboard.runtimeConfig.trello);
+    familyDashboard.config.showTimeZones = familyDashboard.runtimeConfig.timeZones.show;
+    familyDashboard.config.showSchoolRunCountdown = familyDashboard.runtimeConfig.schoolRunCountDown.show;
+    familyDashboard.config.showTasks =  familyDashboard.runtimeConfig.tasks.show;
+    familyDashboard.config.showTravel = familyDashboard.runtimeConfig.travel.show;
+    familyDashboard.config.showWeather = familyDashboard.runtimeConfig.weather.show;
 }
 
 function hide_everything(){
@@ -74,12 +74,14 @@ function hide_everything(){
 $(document).ready(function () {
     //todo tidy up
     if(running_unit_tests()){
+        hide_everything();
+        switch_off_everything();
         run_all_unit_tests();
         $("#main-container").removeClass( "border" );
     }else{
         if (!check_runtime_config_present()) {
-            $("#dynamic-runtime-config").removeClass('d-none');
             switch_off_everything();
+            $("#dynamic-runtime-config").removeClass('d-none');
             log_info("Could not get the runtime-config.json.", 10);
         }else{
             $("#dashboard-main").removeClass('d-none');
@@ -90,8 +92,7 @@ $(document).ready(function () {
         call_function_then_set_on_interval_seconds(set_train_arrivals, 600);
         call_function_then_set_on_interval_seconds(update_times_in_different_timezone, 60);
         call_function_then_set_on_interval_seconds(show_or_hide_school_run_departure_time, 1);
-        call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_days, 600);
-        call_function_then_set_on_interval_seconds(get_and_set_weather_for_upcoming_hours, 600);
+        call_function_then_set_on_interval_seconds(show_all_weather, 600);
         call_function_then_set_on_interval_milli_seconds(run_function_every_100_milli_seconds, 100);
     }
 });
