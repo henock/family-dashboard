@@ -1,6 +1,7 @@
 {
   "travel": {
-    "show": true
+    "show": true,
+    "updateEvery": "600"
   },
   "weather": {
     "show": true,

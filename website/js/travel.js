@@ -31,8 +31,9 @@ function set_train_arrivals( intervalInSeconds ){
 
 function set_train_station_arrivals( commute, model, transportApi ){
     let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
-    let fullDate = date_with_dashes();
-    let fullTime = get_padded_time_minutes();
+    let now = new Date();
+    let fullDate = date_with_dashes(now);
+    let fullTime = get_padded_time_minutes(now);
     let urtToGet = '';
     let runAsync = false;
     commute.trains = [];
@@ -88,14 +89,7 @@ function extract_trains_details( trainDetails , stationNameToCodeMap, currentTim
     };
 }
 
-function calculate_departure_date_time_from_time_only( departureTimeAsString, currentTime ){
-    let departureTime = date_from_string( departureTimeAsString, currentTime );
-    if((currentTime.getHours()-2) > departureTime.getHours() ){
-        return new Date( departureTime.getTime() + (TWENTY_FOUR_HOURS * 1000) );
-    }else{
-        return departureTime;
-    }
-}
+
 
 function update_train_UI( model ){
 

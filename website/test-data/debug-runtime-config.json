@@ -1,16 +1,18 @@
 {
   "travel": {
-    "show": true
+    "show": true,
+    "updateEvery": "600"
   },
   "weather": {
     "show": true,
-    "location": "51.414282,-0.017142"
+    "showFutureHour": 6,
+    "location": "51.114282,-0.017142",
+    "updateEvery": "1800"
   },
   "tasks": {
     "show": true,
     "todoListId": "todo",
-    "inProgressListId": "in-progress",
-    "doneListId": "done"
+    "updateEvery": "120"
   },
   "timeZones": {
     "show": true,

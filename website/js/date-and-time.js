@@ -109,7 +109,10 @@ function get_seconds_until( date ){
 }
 
 function get_padded_time_minutes( date ){
-    date = date ? date : new Date();
+    if( !date || ! (date instanceof Date) ){
+        log_error( "get_padded_time_minutes() date was null - using now");
+        date = new Date();
+    }
     let time = 	pad_with_leading_zero(date.getHours()) + ':' +
                 pad_with_leading_zero(date.getMinutes());
     return time;
@@ -192,7 +195,10 @@ function update_all_count_down_times(){
 }
 
 function date_with_dashes( date ){
-    date = date ? date : new Date();
+    if( !date || ! (date instanceof Date) ){
+        log_error( "date_with_dashes() date was null - using now");
+        date = new Date();
+    }
     let day = pad_with_leading_zero(date.getDate());
     let month = pad_with_leading_zero(date.getMonth()+1);
     let year = date.getFullYear();

@@ -1,0 +1,13 @@
+{
+  "trello": {
+    "key": "trello-key",
+    "token": "trello-token"
+  },
+  "transportApi": {
+    "appId": "transportApi-appId",
+    "appKey": "transportApi-appKey"
+  },
+  "tomorrowIo": {
+    "apiKey": "tomorrowIo-apiKey"
+  }
+}
