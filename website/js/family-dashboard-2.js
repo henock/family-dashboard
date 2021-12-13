@@ -1,8 +1,5 @@
 var model;
 
-
-
-
 //TODO STARTS HERE
 //test model returned has not changed as its an interface
 // test model retuned from each url call
@@ -85,6 +82,7 @@ function update_model_with_api_keys( model ){
     , function( model2, data ){
         model2.apiKeys = data;
     }, function( model2, xhr, default_process_error){
+        log_error( "Unable to retrieve API keys from: '" + urlToGet + "' - switching off all functionality that requires remote calls.")
         model2.config.showTasks = false;
         model2.config.showWeather =  false;
         model2.config.showTravel =  false;
@@ -144,6 +142,7 @@ function setup_model( debugging, model, overWrite ){
         model = create_empty_model( debugging );
         update_model_with_api_keys( model );
         update_model_with_runtime_config( model );
+        sanitise_dates( model );
         update_model_with_station_to_code_maps( model );
     }else{
         model.isDefaultModel = false;
@@ -180,6 +179,49 @@ function create_empty_model( debugging ){
             }
         }
     }
+}
+
+function sanitise_dates( model, date ){
+    date = date ? date : new Date();
+    sanitise_dates_for_school_run( model, date );
+    sanitise_dates_for_commute_config( model, date );
+    sanitise_dates_for_train_times( model, date);
+}
+
+function sanitise_dates_for_train_times( model, date ){
+    date = date ? date : new Date();
+    model.data.trains.startingStations.forEach(function(station){
+        station.departures.forEach(function(departure){
+            departure.departureTime = date_from_string( departure.departureTime );
+        });
+    });
+    return model;
+}
+
+function sanitise_dates_for_commute_config( model , date ){
+    date = date ? date : new Date();
+    model.runtimeConfig.transport.commute.forEach(function( commute ){
+        commute.noNeedToLeaveBefore = seconds_from_string( commute.noNeedToLeaveBefore );
+        commute.walkTransitTime = seconds_from_string( commute.walkTransitTime );
+        commute.runTransitTime = seconds_from_string( commute.runTransitTime );
+        commute.driveTransitTime = seconds_from_string( commute.driveTransitTime );
+    });
+    return model;
+}
+
+function sanitise_dates_for_school_run( model , date ){
+    date = date ? date : new Date();
+    let schoolRun = model.runtimeConfig.schoolRunCountDown;
+    schoolRun.showCountDownStart = date_from_string( schoolRun.showCountDownStart );
+    schoolRun.startCountDown = date_from_string( schoolRun.startCountDown );
+    schoolRun.getOutOfBedBy = date_from_string( schoolRun.getOutOfBedBy );
+    schoolRun.finishGettingDressedBy = date_from_string( schoolRun.finishGettingDressedBy );
+    schoolRun.finishBreakfastBy = date_from_string( schoolRun.finishBreakfastBy );
+    schoolRun.putOnShoesBy = date_from_string( schoolRun.putOnShoesBy );
+    schoolRun.departureTime = date_from_string( schoolRun.departureTime );
+    schoolRun.stopCountDown = date_from_string( schoolRun.stopCountDown );
+    schoolRun.showCountDownStop = date_from_string( schoolRun.showCountDownStop );
+    return model;
 }
 
 function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){

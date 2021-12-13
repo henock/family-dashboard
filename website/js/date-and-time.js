@@ -153,7 +153,7 @@ function display_time_period_from_seconds_into_future( seconds ){
             let mins = pad_with_leading_zero(minutesIntoFuture);
             return  SPACE_CHARACTER +  SPACE_CHARACTER +  SPACE_CHARACTER  + mins + ':' + secs
         } else {
-            return  SPACE_CHARACTER +  SPACE_CHARACTER +  SPACE_CHARACTER  +  SPACE_CHARACTER + SPACE_CHARACTER +  SPACE_CHARACTER +  secs + 's'
+            return  SPACE_CHARACTER +  SPACE_CHARACTER +  SPACE_CHARACTER  +  SPACE_CHARACTER + SPACE_CHARACTER  +  secs + 's'
         }
     }
 }
@@ -208,7 +208,9 @@ function date_with_dashes( date ){
 //str = "now+20s"
 function date_from_string( str , date ){
     date = date ? date : new Date();
-    if( str.includes( "now" ) || str.includes( "departure" )){
+    if( str instanceof Date ){
+        return str;
+    } else if(str.includes( "now" ) || str.includes( "departure" )){
         let isPlus = str.includes("+");
         let splitPos = (isPlus ?  str.indexOf('+') : str.indexOf('-'));
         let amount = str.substring( splitPos +1, str.length-1 );
@@ -219,7 +221,7 @@ function date_from_string( str , date ){
             case 'h': multiple=3600;break;
             default: {
                 multiple=1;
-                log_error( 'Invalid string passed into date_from_string function expected "now[+|-]{int}[s|m|h]" got: "' + str + '"' );
+                log_error( 'Invalid string passed into date_from_string function expected "[now|departure][+|-]{int}[s|m|h]" got: "' + str + '"' );
             }
         }
         seconds = (amount * multiple)
@@ -227,6 +229,32 @@ function date_from_string( str , date ){
         return date_plus_seconds( date, seconds );
     }else{
         return set_time_on_date( date , str );
+    }
+}
+
+//str = "departure-10m"
+function seconds_from_string( str ){
+    if( str instanceof Date){
+        return str;
+    } else if( str.includes( "now" ) || str.includes( "departure" )){
+        let isPlus = str.includes("+");
+        let splitPos = (isPlus ?  str.indexOf('+') : str.indexOf('-'));
+        let amount = str.substring( splitPos +1, str.length-1 );
+        let timeStep = str.substring( str.length-1 );
+        switch(timeStep){
+            case 's': multiple=1;break;
+            case 'm': multiple=60;break;
+            case 'h': multiple=3600;break;
+            default: {
+                multiple=1;
+                log_error( 'Invalid string passed into date_from_string function expected "[now|departure][+|-]{int}[s|m|h]" got: "' + str + '"' );
+            }
+        }
+        seconds = (amount * multiple)
+        seconds *= isPlus ? 1 : -1;
+        return seconds;
+    }else{
+        return str
     }
 }
 
