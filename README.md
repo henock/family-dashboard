@@ -1,6 +1,6 @@
 # Family dashboard
 
-A simple web based dashboard - making API calls to other systems and displaying the results (weather, our commute and todo list).
+A simple web based dashboard - making API calls to other systems and displaying the results (weather, our commutes and todo list).
  
 > **SECURITY NOTE** 
 > 
@@ -44,35 +44,51 @@ What your runtime-config.json needs to look like
 
 ```json
 {
-  "tasks" :  "show",
-  "travel":  "show",
-  "weather": "show",
-  "location": "<your GPS coordinates>",
-  "timeZones": [ {
-    "id": "America/New_York",
-    "name": "DC",
-    "flag": "\uD83C\uDDFA\uD83C\uDDF8"
+  "trains": {
+    "show": true,
+    "updateEvery": "600"
   },
-    {
-      "id": "Africa/Nairobi",
-      "name": "Addis",
-      "flag": "\uD83C\uDDEA\uD83C\uDDF9"
-    }
-  ],
+  "weather": {
+    "show": true,
+    "showFutureHour": 6,
+    "location": "<your GPS coordinates>",
+    "updateEvery": "1800"
+  },
+  "tasks": {
+    "show": true,
+    "todoListId": "<your Todo list>",
+    "updateEvery": "120"
+  },
+  "timeZones": {
+    "show": true,
+    "zones": [
+      {
+        "id": "America/New_York",
+        "name": "DC",
+        "flag": "\uD83C\uDDFA\uD83C\uDDF8"
+      },
+      {
+        "id": "Africa/Nairobi",
+        "name": "Addis",
+        "flag": "\uD83C\uDDEA\uD83C\uDDF9"
+      }
+    ]
+  },
   "schoolRunCountDown": {
+    "show": true,
     "showCountDownStart": "departure-50m",
     "startCountDown": "departure-45m",
     "getOutOfBedBy": "departure-40m",
     "finishGettingDressedBy": "departure-30m",
     "finishBreakfastBy": "departure-20m",
     "putOnShoesBy": "departure-10m",
-    "departureTime": "08:40",
-    "stopCountDown": "departure+5m",
-    "showCountDownStop": "departure+6m"
+    "departureTime": "07:40",
+    "stopCountDown": "departure+1m",
+    "showCountDownStop": "departure+1m"
   },
   "transport": {
     "maximumTrainsToShow": 8,
-    "commutes": [
+    "commute": [
       {
         "from": "New Beckenham",
         "noNeedToLeaveBefore": "departure-40m",
@@ -81,7 +97,11 @@ What your runtime-config.json needs to look like
         "driveTransitTime": "departure-15m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Cannon Street", "London Charing Cross", "London Bridge" ]
+        "to": [
+          "London Cannon Street",
+          "London Charing Cross",
+          "London Bridge"
+        ]
       },
       {
         "from": "Beckenham Junction",
@@ -91,7 +111,10 @@ What your runtime-config.json needs to look like
         "driveTransitTime": "departure-10m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Victoria", "London Bridge" ]
+        "to": [
+          "London Victoria",
+          "London Bridge"
+        ]
       },
       {
         "from": "Ravensbourne",
@@ -101,7 +124,9 @@ What your runtime-config.json needs to look like
         "driveTransitTime": "departure-10m",
         "direction": "to-work",
         "showAllDestinations": true,
-        "to": [ "London Blackfriars" ]
+        "to": [
+          "London Blackfriars"
+        ]
       }
     ]
   }

@@ -1,4 +1,5 @@
-
+var passedTests = 0;
+var failedTests = 0;
 
 function running_unit_tests(){
     return 'true' === get_url_parameter('testing');
@@ -58,11 +59,13 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
     }
 
     if( testResult.passed ){
+        passedTests++;
         return '<tr><td class="text-success">' +  function_under_test + ' </td><td>'
                 + comment + '</td><td>'
                 + JSON.stringify( testResult.testedValue ) + '</td><td>'
                 + JSON.stringify( testResult.expectedValue ) + '</td></tr>';
     }else{
+        failedTests++;
         return '<tr><td colspan="6" class="text-danger"><table border="1">'
                                 + add_fail_row( 'function',  function_under_test )
                                 + add_fail_row( 'comment',  comment )
@@ -90,7 +93,7 @@ function run_all_unit_tests(){
     result += update_model_with_station_to_code_maps_unit_test();
     result += set_tasks_unit_test();
     result += update_model_with_api_keys_unit_test();
-    result += update_model_with_tasks_unit_test();
+    result += update_model_only_time_update_times_have_expired();
     result += update_model_with_runtime_config_unit_test();
     result += setup_model_unit_test();
     result += convert_station_names_to_codes_unit_test();
@@ -102,7 +105,11 @@ function run_all_unit_tests(){
     result += get_seconds_until_unit_test();
     result += display_time_period_from_seconds_into_future_unit_test();
     result += '</table>';
-    write_message( result , 'text-success', -1 , true );
+
+    let totals = '<table class="p-2 display-2 border-1">'
+                    + '<tr class="text-success"><td>Passed</td><td>' + passedTests + '</td></tr>'
+                    + '<tr class="text-danger"><td> Failed</td><td>' + failedTests + '</td></tr></table>'
+    write_message( totals + result , 'text-success', -1 , true );
 }
 
 // Template for future tests
@@ -197,15 +204,15 @@ function common_get_remote_weather_data_unit_test(){
 function get_train_station_departures_unit_test(){
     let result = '';
     function check_for_trains( expected, model ){
-        let testResult =  (model.data.commutes.startingStations.length > 0);
+        let testResult =  (model.data.trains.startingStations.length > 0);
         return {
             passed: testResult,
-            expectedValue: 'model.data.commutes.startingStations is not null',
-            testedValue:   model.data.commutes.startingStations[0]
+            expectedValue: 'model.data.trains.startingStations is not null',
+            testedValue:   model.data.trains.startingStations[0]
         }
     }
 
-    let commute =  {
+    let startingStation =  {
             from: "New Beckenham",
             noNeedToLeaveBefore: "departure-40m",
             walkTransitTime: "departure-30m",
@@ -216,17 +223,16 @@ function get_train_station_departures_unit_test(){
             to: [ "London Cannon Street", "London Charing Cross", "London Bridge" ]
         };
 
-    let startingStationCode = "CST";
     model = setup_model(true);
     update_model_with_api_keys( model );
     update_model_with_station_to_code_maps(model);
 
-    result += run_unit_test( "get_train_station_departures", 'We get data back from /test-data ',  check_for_trains, {}, [commute, startingStationCode, model] );
+    result += run_unit_test( "get_train_station_departures", 'We get data back from /test-data ',  check_for_trains, {}, [startingStation,  model] );
 
     model = setup_model(false);
     update_model_with_api_keys( model );
     update_model_with_station_to_code_maps(model);
-    result += run_unit_test( "get_train_station_departures", 'We get data back from transportApi ',  check_for_trains, {}, [commute, startingStationCode, model] );
+    result += run_unit_test( "get_train_station_departures", 'We get data back from transportApi ',  check_for_trains, {}, [startingStation, model] );
     return result;
 }
 
@@ -238,7 +244,7 @@ function extract_trains_details_unit_test(){
 
     model = setup_model(false);
     update_model_with_station_to_code_maps(model);
-    let commute = {
+    let startingStation = {
             platform: "2",
             aimed_departure_time: "1:32",
             destination_name: "Cambridge",
@@ -253,16 +259,16 @@ function extract_trains_details_unit_test(){
                           destination: "CBG",
                           status: "LATE" };
 
-    result += run_unit_test( "extract_trains_details", 'expected_departure_time: now+10m',  compare_with_stringify, expectedValue , [ commute, model.stationNameToCodeMap, now] );
+    result += run_unit_test( "extract_trains_details", 'expected_departure_time: now+10m',  compare_with_stringify, expectedValue , [ startingStation, model.stationNameToCodeMap, now] );
 
-    commute.expected_departure_time = "10:11";
+    startingStation.expected_departure_time = "10:11";
     expectedValue.departureTime=  date_with_dashes(now) + "T10:11:00.000Z";
 
-    result += run_unit_test( "extract_trains_details", 'expected_departure_time: 10:11',  compare_with_stringify, expectedValue , [ commute, model.stationNameToCodeMap, now] );
+    result += run_unit_test( "extract_trains_details", 'expected_departure_time: 10:11',  compare_with_stringify, expectedValue , [ startingStation, model.stationNameToCodeMap, now] );
 
-    commute.destination_name = "bob";
+    startingStation.destination_name = "bob";
     expectedValue.destination = "XXX"
-    result += run_unit_test( "extract_trains_details", 'Unknown destination',  compare_with_stringify, expectedValue , [ commute, model.stationNameToCodeMap, now] );
+    result += run_unit_test( "extract_trains_details", 'Unknown destination',  compare_with_stringify, expectedValue , [ startingStation, model.stationNameToCodeMap, now] );
     return result;
 }
 
@@ -328,32 +334,87 @@ function update_model_with_api_keys_unit_test(){
     return result;
 }
 
-function update_model_with_tasks_unit_test(){
+function update_model_only_time_update_times_have_expired(){
 
-    function next_update_time_test_function( expected, actual ){
-        let now = new Date();
-        let testResult = expected  === (now.getTime() > actual.data.tasks.nextUpdateTime.getTime());
+
+    function compare_hours_mins_secs(a, b){
+        return (a.getHours()  === b.getHours()
+                && a.getMinutes()  === b.getMinutes()
+                && a.getSeconds()  === b.getSeconds());
+    }
+
+
+    let result = '';
+
+    let model = setup_model(true);
+    update_model_with_runtime_config( model );
+
+
+    // update_model_with_tasks
+    function next_update_time_for_tasks_test_function( expectedTime, model ){
+        let nextUpdateTime = model.data.tasks.nextUpdateTime;
+        let testResult = compare_hours_mins_secs( expectedTime, nextUpdateTime );
         return {
             passed: testResult,
-            expectedValue: 'now  > model.data.tasks.nextUpdateTime.getTime()',
-            testedValue: now + '> ' + actual.data.tasks.nextUpdateTime
+            expectedValue: 'expected.getTime() === model.data.tasks.nextUpdateTime.getTime()',
+            testedValue: expectedTime + ' === ' + model.data.tasks.nextUpdateTime
         }
     }
 
-    let result = '';
-    var inThePast = now_plus_seconds(-10);
-    var inTheFuture = now_plus_seconds(10);
+    model.data.tasks.nextUpdateTime = now_plus_seconds( -2 );
+    let expectedTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
+    result += run_unit_test( "update_model_with_tasks", 'updates model with tasks because nextUpdateTime has passed'
+                            , next_update_time_for_tasks_test_function, expectedTime, [model] );
 
-    let model = setup_model(true);
-    model.config.debugging = true;
-    update_model_with_runtime_config( model );
-    let nextUpdateTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
 
-    model.config.showTasks = false;
-    result += run_unit_test( "update_model_with_tasks", 'does nothing if showTasks is false', next_update_time_test_function, true, [model] );
+    model.data.tasks.nextUpdateTime = now_plus_seconds(2);
+    expectedTime = model.data.tasks.nextUpdateTime;
+    result += run_unit_test( "update_model_with_tasks", "doesn't updates model with tasks because nextUpdateTime has not passed"
+                            , next_update_time_for_tasks_test_function, expectedTime, [model] );
 
-    model.config.showTasks = true;
-    result += run_unit_test( "update_model_with_tasks", 'updates tasks if showTasks is true',  next_update_time_test_function, false, [model] );
+    ///update_model_with_weather
+    function next_update_time_for_weather_test_function( expectedTime, model ){
+        let nextUpdateTime = model.data.weather.nextUpdateTime;
+        let testResult = compare_hours_mins_secs( expectedTime, nextUpdateTime );
+        return {
+            passed: testResult,
+            expectedValue: 'expected.getTime() === model.data.weather.nextUpdateTime.getTime()',
+            testedValue: expectedTime + ' === ' + model.data.weather.nextUpdateTime
+        }
+    }
+    model.data.weather.nextUpdateTime = now_plus_seconds( -2 );
+    expectedTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
+
+    result += run_unit_test( "update_model_with_weather", 'updates model with weather because nextUpdateTime has passed'
+                            , next_update_time_for_weather_test_function, expectedTime, [model] );
+
+
+    model.data.weather.nextUpdateTime = now_plus_seconds( 2 );
+    expectedTime = model.data.weather.nextUpdateTime;
+    result += run_unit_test( "update_model_with_weather", "doesn't updates model with weather because nextUpdateTime has not passed"
+                            , next_update_time_for_weather_test_function, expectedTime, [model] );
+
+    //update_model_with_trains
+    function next_update_time_for_trains_test_function( expectedTime, model ){
+        let nextUpdateTime = model.data.trains.nextUpdateTime;
+        let testResult = compare_hours_mins_secs( expectedTime, nextUpdateTime );
+        return {
+            passed: testResult,
+            expectedValue: 'expected.getTime() === model.data.trains.nextUpdateTime.getTime()',
+            testedValue: expectedTime + ' === ' + model.data.trains.nextUpdateTime
+        }
+    }
+    model.data.trains.nextUpdateTime = now_plus_seconds( -2 );
+    expectedTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
+
+    result += run_unit_test( "update_model_with_trains", 'updates model with trains data because nextUpdateTime has passed'
+                            , next_update_time_for_trains_test_function, expectedTime, [model] );
+
+
+    model.data.trains.nextUpdateTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery + 2 );
+    expectedTime = model.data.trains.nextUpdateTime;
+    result += run_unit_test( "update_model_with_trains", "doesn't updates model with trains data because nextUpdateTime has not passed"
+                            , next_update_time_for_trains_test_function, expectedTime, [model] );
     return result;
 }
 
@@ -387,11 +448,11 @@ function update_model_with_runtime_config_unit_test(){
     let model = setup_model(true);
 
     function test_for_runtime_config( expectedRuntimeConfig, actual ){
-         let testResult = ( undefined !==  actual.runtimeConfig.travel.show );
+         let testResult = ( undefined !==  actual.runtimeConfig.trains.show );
          return {
                  passed: testResult,
-                 expectedValue: 'model.runtimeConfig.travel.show = ' + actual.runtimeConfig.travel.show,
-                 testedValue: 'model.runtimeConfig.travel.show = '+ actual.runtimeConfig.travel.show
+                 expectedValue: 'model.runtimeConfig.trains.show = ' + actual.runtimeConfig.trains.show,
+                 testedValue: 'model.runtimeConfig.trains.show = '+ actual.runtimeConfig.trains.show
              }
     }
 
@@ -551,8 +612,8 @@ function convert_station_names_to_codes_unit_test(){
     stationNameToCodeMap.set("London Cannon Street", "LCS");
     stationNameToCodeMap.set( "London Charing Cross", "LCX");
     stationNameToCodeMap.set("London Bridge", "LGB" );
-    let commuteTos = [ "London Cannon Street", "London Charing Cross", "London Bridge" ];
-    result += run_unit_test( "convert_station_names_to_codes", 'returns list of correct codes',  compare_with_stringify, ["LCS", "LCX", "LGB"], [commuteTos, stationNameToCodeMap] );
+    let stationNames = [ "London Cannon Street", "London Charing Cross", "London Bridge" ];
+    result += run_unit_test( "convert_station_names_to_codes", 'returns list of correct codes',  compare_with_stringify, ["LCS", "LCX", "LGB"], [stationNames, stationNameToCodeMap] );
     return result;
 }
 

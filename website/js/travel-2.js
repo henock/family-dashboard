@@ -1,27 +1,22 @@
 
-function update_model_with_commutes( model ){
-    if( model.data.commutes.nextUpdateTime < new Date() ){
-        set_commutes( model );
-        model.data.commutes.nextUpdateTime = now_plus_seconds( model.runtimeConfig.commutes.updateEvery );
+function update_model_with_trains( model ){
+    if( model.data.trains.nextUpdateTime < new Date() ){
+        set_trains( model );
+        model.data.trains.nextUpdateTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
+    }
+    return model;
+}
+
+function set_trains( model ){
+    let startingStations = model.runtimeConfig.transport.commute;
+    for( i = 0; i < startingStations.length; i++ ){
+        get_train_station_departures( startingStations[i], model );
     }
 }
 
-function set_commutes( model ){
-    let commutes = model.runtimeConfig.transport.commutes;
-    let stationCodeToNameMap = model.runtimeConfig.transport.stationCodeToNameMap;
-    let stationNameToCodeMap = model.runtimeConfig.transport.stationNameToCodeMap;
-
-    model.data.commutes.startingStations = []
-    for( i = 0; i < commutes.length; i++ ){
-        let commute = model.commutes[i];
-        let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
-        get_train_station_departures( commute, startingStationCode, model );
-    }
-}
-
-function get_train_station_departures( commute, startingStationCode, model ){
+function get_train_station_departures( commute, model ){
     let urlToGet = "";
-
+    let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
     if(model.config.debugging){
         urlToGet = "test-data/transportapi-" + startingStationCode +".json"
     } else{
@@ -37,7 +32,8 @@ function get_train_station_departures( commute, startingStationCode, model ){
                         + transportApi.appId + "&app_key="
                         + transportApi.appKey
     }
-    get_remote_data( urlToGet, false, model, function( model2, data ){
+    get_remote_data( urlToGet, false, model
+    , function( model2, data ){
         let trains = [];
         let showingTrainsCount = 0;
         let maximumTrainsToShow = model.runtimeConfig.transport.maximumTrainsToShow;
@@ -56,7 +52,13 @@ function get_train_station_departures( commute, startingStationCode, model ){
             departures: trains
         }
 
-        model2.data.commutes.startingStations.push( commuteData );
+        model2.data.trains.startingStations.push( commuteData );
+    }, function( model2, xhr, default_process_error ){
+        model2.config.showTasks = false;
+        model2.config.showWeather =  false;
+        model2.config.showTravel =  false;
+        model2.config.showSchoolRunCountdown =  false;
+        default_process_error( xhr );
     });
     return model;
 }

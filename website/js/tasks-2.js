@@ -34,6 +34,9 @@ function set_tasks( model ){
             }
             model2.data.tasks.todo.push( task );
         });
+    }, function( model2, xhr, default_process_error){
+        model2.config.showTasks = false;
+        default_process_error( xhr );
     });
     return model;
 }

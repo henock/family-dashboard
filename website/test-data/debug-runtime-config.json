@@ -1,5 +1,5 @@
 {
-  "travel": {
+  "trains": {
     "show": true,
     "updateEvery": "600"
   },
@@ -43,7 +43,7 @@
   },
   "transport": {
     "maximumTrainsToShow": 8,
-    "commutes": [
+    "commute": [
       {
         "from": "New Beckenham",
         "noNeedToLeaveBefore": "departure-40m",

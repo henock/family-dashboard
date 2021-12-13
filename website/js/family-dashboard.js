@@ -58,7 +58,7 @@ function switch_on_sections_we_have_config_for(){
     familyDashboard.config.showTimeZones = familyDashboard.runtimeConfig.timeZones.show;
     familyDashboard.config.showSchoolRunCountdown = familyDashboard.runtimeConfig.schoolRunCountDown.show;
     familyDashboard.config.showTasks =  familyDashboard.runtimeConfig.tasks.show;
-    familyDashboard.config.showTravel = familyDashboard.runtimeConfig.travel.show;
+    familyDashboard.config.showTravel = familyDashboard.runtimeConfig.trains.show;
     familyDashboard.config.showWeather = familyDashboard.runtimeConfig.weather.show;
 }
 
@@ -71,7 +71,7 @@ function hide_everything(){
     $("#tasks").addClass('d-none');
 }
 
-$(document).ready(function () {
+function old_document_ready() {
     //todo tidy up
     if(running_unit_tests()){
         hide_everything();
@@ -95,5 +95,5 @@ $(document).ready(function () {
         call_function_then_set_on_interval_seconds(show_all_weather, 600);
         call_function_then_set_on_interval_milli_seconds(run_function_every_100_milli_seconds, 100);
     }
-});
+}
 

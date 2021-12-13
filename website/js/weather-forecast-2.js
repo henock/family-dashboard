@@ -5,10 +5,12 @@ function update_model_with_weather( model ){
         update_model_with_weather_now_and_future_hour(model);
         model.data.weather.nextUpdateTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
     }
+    return model;
 }
 
 function update_model_with_weather_now_and_future_hour(model){
-    common_get_remote_weather_data( model, '1h', function( model2, response ){
+    common_get_remote_weather_data( model, '1h'
+    , function( model2, response ){
         let futureHour = model2.runtimeConfig.weather.showFutureHour;
         let now = response.data.timelines[0].intervals[0];
         let inFutureHours = response.data.timelines[0].intervals[futureHour];
@@ -30,12 +32,16 @@ function update_model_with_weather_now_and_future_hour(model){
             treeIndex  : inFutureHours.values.treeIndex,
             weatherCode: inFutureHours.values.weatherCode
         };
+    }, function( model2, xhr, default_process_error ){
+        model2.config.showWeather =  false;
+        default_process_error( xhr );
     });
     return model;
 }
 
 function update_model_with_weather_next_five_days(model){
-     common_get_remote_weather_data( model, '1d', function( model2, response ){
+     common_get_remote_weather_data( model, '1d'
+     , function( model2, response ){
         let today = response.data.timelines[0].intervals[0];
         model2.data.weather.today.sunrise = new Date( today.values.sunriseTime).toLocaleString().substring(11,17);
         model2.data.weather.today.sunset  = new Date( today.values.sunsetTime).toLocaleString().substring(11,17);
@@ -53,11 +59,15 @@ function update_model_with_weather_next_five_days(model){
             }
             model2.data.weather.futureDays.push( day );
         }
+    }, function( model2, xhr, default_process_error ){
+        model2.config.showWeather =  false;
+        default_process_error( xhr );
     });
+
     return model;
 }
 
-function common_get_remote_weather_data( model, timeStep, processResultFunction ){
+function common_get_remote_weather_data( model, timeStep, process_result_function, process_error_function ){
     let urlToGet = '';
     if(model.config.debugging){
         urlToGet = "test-data/tomorrow-timelines-"+ timeStep +".json"
@@ -71,7 +81,7 @@ function common_get_remote_weather_data( model, timeStep, processResultFunction 
             + "&timesteps=" + timeStep
             + "&apikey=" + model.apiKeys.tomorrowIo.apiKey;
     }
-    get_remote_data( urlToGet, false, model, processResultFunction );
+    get_remote_data( urlToGet, false, model, process_result_function, process_error_function );
     return model;
 }
 

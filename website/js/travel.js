@@ -12,7 +12,7 @@ function set_train_arrivals( intervalInSeconds ){
     if( familyDashboard.config.showTravel ){
 
         let model = {};
-        model.commutes = familyDashboard.runtimeConfig.transport.commutes;
+        model.commutes = familyDashboard.runtimeConfig.transport.commute;
         model.maximumTrainsToShow = familyDashboard.runtimeConfig.transport.maximumTrainsToShow;
         model.transportApi = familyDashboard.runtimeConfig.transportApi
         model.stationCodeToNameMap = familyDashboard.runtimeConfig.transport.stationCodeToNameMap;
