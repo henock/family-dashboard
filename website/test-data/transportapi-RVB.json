@@ -21,7 +21,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77025/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77025/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -39,7 +39,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77034/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77034/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -57,7 +57,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77031/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77031/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -75,7 +75,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77039/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77039/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -93,7 +93,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77037/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77037/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -111,7 +111,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77044/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77044/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -129,7 +129,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G45007/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:G45007/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -147,7 +147,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:L67292/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:L67292/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       },
       {
@@ -165,7 +165,7 @@
         "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77047/2021-11-23/timetable.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+          "id": "http://transportapi.com/v3/uk/train/service/train_uid:W77047/2021-11-23/timetable.json?app_id=63561717\u0026app_key=apiKey"
         }
       }
     ]

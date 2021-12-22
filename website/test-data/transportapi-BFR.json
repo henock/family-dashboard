@@ -21,7 +21,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15260/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15260/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "LATE",
         "expected_arrival_time": "16:59",
@@ -44,7 +44,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91833/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91833/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "LATE",
         "expected_arrival_time": "16:59",
@@ -67,7 +67,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76712/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76712/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "16:47",
@@ -90,7 +90,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91777/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91777/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
@@ -113,7 +113,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91718/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91718/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "LATE",
         "expected_arrival_time": "17:03",
@@ -136,7 +136,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75949/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75949/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:04",
@@ -159,7 +159,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15219/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15219/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
@@ -182,7 +182,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G43076/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G43076/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "LATE",
         "expected_arrival_time": "17:09",
@@ -205,7 +205,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75958/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75958/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:10",
@@ -228,7 +228,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91715/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91715/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "LATE",
         "expected_arrival_time": "17:13",
@@ -251,7 +251,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76976/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76976/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
@@ -274,7 +274,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76718/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76718/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:17",
@@ -297,7 +297,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91779/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91779/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
@@ -320,7 +320,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15261/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15261/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:31",
@@ -343,7 +343,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91838/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91838/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:32",
@@ -366,7 +366,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75954/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75954/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:34",
@@ -389,7 +389,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15220/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15220/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
@@ -412,7 +412,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G43077/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G43077/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:38",
@@ -435,7 +435,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75964/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W75964/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:40",
@@ -458,7 +458,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91835/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91835/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "NO REPORT",
         "expected_arrival_time": "17:41",
@@ -481,7 +481,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76982/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76982/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
@@ -504,7 +504,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15304/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:G15304/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "LATE",
         "expected_arrival_time": "17:46",
@@ -527,7 +527,7 @@
         "source": "Network Rail",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76724/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:W76724/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:47",
@@ -550,7 +550,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91781/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91781/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "STARTS HERE",
         "expected_arrival_time": null,
@@ -573,7 +573,7 @@
         "source": "Network Rail",
         "category": "XX",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91720/2021-11-21/timetable.json?app_id=63561717&app_key=db6e1bd787b924216d7f4f7030a33fa6&live=true"
+          "id": "https://transportapi.com/v3/uk/train/service/train_uid:X91720/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
         },
         "status": "ON TIME",
         "expected_arrival_time": "18:02",
