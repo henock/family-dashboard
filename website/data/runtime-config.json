@@ -5,11 +5,14 @@
   },
   "weather": {
     "show": true,
-    "location": "<your gps coordinates>"
+    "showFutureHour": 6,
+    "location": "<your gps coordinates>",
+    "updateEvery": "1800"
   },
   "tasks": {
     "show": true,
-    "todoListId": "<your todoListId>"
+    "todoListId": "<your todoListId>",
+    "updateEvery": "120"
   },
   "timeZones": {
     "show": true,
