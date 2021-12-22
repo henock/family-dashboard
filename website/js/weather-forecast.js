@@ -1,4 +1,137 @@
 
+
+function update_model_with_weather( model, date ){
+    if( model.config.showWeather && model.data.weather.nextDownloadDataTime < date ){
+        update_model_with_weather_next_five_days(model);
+        update_model_with_weather_now_and_future_hour(model);
+        model.data.weather.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
+        model.data.weather.lastUpdatedTime = new Date();
+    }
+    return model;
+}
+
+function update_weather_ui( model, now ){
+    if( model.config.showWeather ){
+        if( model.data.weather.nextRebuildUiTime < now ){
+            set_weather_for_upcoming_days( model );
+            set_weather_for_upcoming_hours( model );
+            model.data.weather.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
+        }
+        let countDown = generate_next_download_count_down_values( model.data.weather.nextDownloadDataTime, model.runtimeConfig.weather.updateEvery );
+        set_next_download_count_down_elements( "weather-update", countDown );
+    }
+}
+
+function set_weather_for_upcoming_days( model ){
+    $("#sun-rise-time").html(  model.data.weather.today.sunrise );
+    $("#sun-set-time").html(  model.data.weather.today.sunset );
+    $("#current-weather").html("");
+    for (var i = 1; i < 6; i++) {
+        set_weather_details( 'day-' + i, model.data.weather.futureDays[0],  );
+    }
+}
+
+function set_weather_for_upcoming_hours( model ){
+    set_weather_details( 'now', model.data.weather.today.now );
+    set_weather_details( 'plus-6hrs', model.data.weather.today.futureHour );
+}
+
+function set_weather_details( keyString, day ){
+    $("#weather-date-" + keyString ).html( day.dateString );
+    $("#weather-temp-" + keyString ).html( day.temperature );
+    $("#weather-grassIndex-" + keyString ).html( day.grassIndex  );
+    $("#weather-treeIndex-" + keyString ).html( day.treeIndex );
+    $("#weather-image-" + keyString ).attr(  "src", "img/weather-icons/" + convert_weather_code_to_image( day.weatherCode ));
+    $("#weather-text-" + keyString ).html( convert_weather_code_to_text( day.weatherCode ));
+}
+
+function update_model_with_weather_now_and_future_hour( model ){
+    common_get_remote_weather_data( model, '1h'
+    , function( model2, response ){
+        let futureHour = model2.runtimeConfig.weather.showFutureHour;
+        let now = response.data.timelines[0].intervals[0];
+        let inFutureHours = response.data.timelines[0].intervals[futureHour];
+
+        model2.data.weather.today.now = {
+            name: 'now',
+            dateString : now.startTime.substring(11,16),
+            temperature: now.values.temperatureApparent  + DEGREES_CELSIUS,
+            grassIndex : now.values.grassIndex,
+            treeIndex  : now.values.treeIndex,
+            weatherCode: now.values.weatherCode
+        };
+
+        model2.data.weather.today.futureHour = {
+            name: 'plus-'+ futureHour +'hrs',
+            dateString : inFutureHours.startTime.substring(11,16),
+            temperature: inFutureHours.values.temperatureApparent  + DEGREES_CELSIUS,
+            grassIndex : inFutureHours.values.grassIndex,
+            treeIndex  : inFutureHours.values.treeIndex,
+            weatherCode: inFutureHours.values.weatherCode
+        };
+    }, function( model2, xhr, default_process_error ){
+        model2.config.showWeather =  false;
+        default_process_error( xhr );
+    });
+    return model;
+}
+
+function update_model_with_weather_next_five_days(model){
+     common_get_remote_weather_data( model, '1d'
+     , function( model2, response ){
+        let today = response.data.timelines[0].intervals[0];
+        model2.data.weather.today.sunrise = new Date( today.values.sunriseTime).toLocaleString().substring(11,17);
+        model2.data.weather.today.sunset  = new Date( today.values.sunsetTime).toLocaleString().substring(11,17);
+        for (var i = 1; i < 6; i++) {
+            let futureDay = response.data.timelines[0].intervals[i];
+            let dateString = new Date(futureDay.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
+            let temperature = Math.round( futureDay.values.temperatureApparent ) + DEGREES_CELSIUS;
+            let day = {
+                index: i,
+                dateString : dateString,
+                temperature: temperature,
+                grassIndex : futureDay.values.grassIndex,
+                treeIndex  : futureDay.values.treeIndex,
+                weatherCode: futureDay.values.weatherCode
+            }
+            model2.data.weather.futureDays.push( day );
+        }
+    }, function( model2, xhr, default_process_error ){
+        model2.config.showWeather =  false;
+        default_process_error( xhr );
+    });
+
+    return model;
+}
+
+function common_get_remote_weather_data( model, timeStep, process_result_function, process_error_function ){
+    let urlToGet = '';
+    if(model.config.debugging){
+        urlToGet = "test-data/tomorrow-timelines-"+ timeStep +".json"
+    } else{
+        // 'apikey', '' from junk.henock
+        // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
+
+        let fields = '';
+        if( timeStep === '1h'){
+            fields = "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,humidity";
+        } else {
+            fields = "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,sunriseTime,sunsetTime,humidity";
+        }
+
+
+        urlToGet = "https://api.tomorrow.io/v4/timelines"
+            + "?location=" + model.runtimeConfig.weather.location
+            + fields
+            + "&units=metric"
+            + "&timesteps=" + timeStep
+            + "&apikey=" + model.apiKeys.tomorrowIo.apiKey;
+    }
+    get_remote_data( urlToGet, false, model, process_result_function, process_error_function );
+    return model;
+}
+
+
 function convert_weather_code_to_text( code ){
     switch(code){
         case 0: return "Unknown";
@@ -124,113 +257,4 @@ function convert_weather_code_to_image( code, isNightTime ){
         default:    // Unexpected code
             return "system_unknown.png"
     }
-}
-
-
-function show_all_weather(){
-    if( familyDashboard.config.showWeather ){
-        get_and_set_weather_for_upcoming_days();
-        get_and_set_weather_for_upcoming_hours();
-    }
-}
-
-function set_weather_details( keyString, dateString, temperatureString, weather_code, grassIndex, treeIndex ){
-    $("#weather-date-" + keyString ).html(  dateString );
-    $("#weather-temp-" + keyString ).html(  temperatureString );
-    $("#weather-grassIndex-" + keyString ).html(  grassIndex  );
-    $("#weather-treeIndex-" + keyString ).html(  treeIndex );
-    $("#weather-image-" + keyString ).attr(  "src", "img/weather-icons/" + convert_weather_code_to_image( weather_code ) );
-    $("#weather-text-" + keyString ).html( convert_weather_code_to_text( weather_code ));
-}
-
-function set_weather_details_for_days( today, keyString ){
-    let dateString = new Date(today.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
-    let temperatureString = Math.round( today.values.temperatureApparent ) + DEGREES_CELSIUS;
-    set_weather_details( keyString, dateString, temperatureString, today.values.weatherCode, today.values.grassIndex, today.values.treeIndex );
-}
-
-function set_weather_for_upcoming_days( result ){
-    let today = result.data.timelines[0].intervals[0];
-    $("#sun-rise-time").html( new Date( today.values.sunriseTime).toLocaleString().substring(11,17));
-    $("#sun-set-time").html( new Date( today.values.sunsetTime).toLocaleString().substring(11,17));
-    $("#current-weather").html("");
-    for (var i = 1; i < 6; i++) {
-        set_weather_details_for_days( result.data.timelines[0].intervals[i], 'day-' + i );
-    }
-}
-
-function get_and_set_weather_for_upcoming_days(){
-    let tomorrowIoConfig = familyDashboard.runtimeConfig.apiKeys.tomorrowIo;
-    let urlToGet = '';
-    if( is_debug_on()){
-        urlToGet = "test-data/tomorrow-timelines-1d.json"
-    } else{
-        // 'apikey', '' from junk.henock
-        // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
-        urlToGet = "https://api.tomorrow.io/v4/timelines"
-            + "?location=" + familyDashboard.runtimeConfig.weather.location
-            + "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,sunriseTime,sunsetTime,humidity"
-            + "&units=metric"
-            + "&timesteps=1d"
-            + "&apikey=" + tomorrowIoConfig.apiKey;
-    }
-
-    $.ajax({
-        url: urlToGet,
-        type: "GET",
-        success: set_weather_for_upcoming_days,
-        error: function ( xhr ){
-            log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
-        }
-    });
-}
-
-function set_weather_for_upcoming_hours( daily ){
-    let now = daily.data.timelines[0].intervals[0];
-    let inSixHours = daily.data.timelines[0].intervals[5];
-
-    set_weather_details( 'now', now.startTime.substring(11,16),
-                        now.values.temperatureApparent  + DEGREES_CELSIUS,
-                        now.values.weatherCode,
-                        now.values.grassIndex,
-                        now.values.treeIndex);
-
-    set_weather_details( 'plus-6hrs', inSixHours.startTime.substring(11,16),
-                        inSixHours.values.temperatureApparent  + DEGREES_CELSIUS,
-                        inSixHours.values.weatherCode ,
-                        inSixHours.values.grassIndex,
-                        inSixHours.values.treeIndex);
-
-}
-
-function get_and_set_weather_for_upcoming_hours( interval_in_seconds ){
-    let tomorrowIoConfig = familyDashboard.runtimeConfig.apiKeys.tomorrowIo;
-    let urlToGet = '';
-    if( is_debug_on()){
-        urlToGet = "test-data/tomorrow-timelines-1h.json"
-    } else{
-        // 'apikey', from junk.henock
-        // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
-        urlToGet = "https://api.tomorrow.io/v4/timelines"
-            + "?location=" + familyDashboard.runtimeConfig.weather.location
-            + "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,humidity"
-            + "&units=metric"
-            + "&timesteps=1h"
-            + "&apikey=" + tomorrowIoConfig.apiKey;
-    }
-
-    $.ajax({
-        url: urlToGet,
-        type: "GET",
-        success: set_weather_for_upcoming_hours,
-        error: function ( xhr ){
-            if( xhr ){
-                log_error( xhr.status +' Error calling Climacell for days ('+xhr.responseText +').');
-            } else{
-                log_error( ' Error calling Climacell for days ( Unknown error ).');
-            }
-        }
-    });
-
-    set_refresh_values( "#weather-update", interval_in_seconds );
 }

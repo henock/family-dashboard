@@ -8,182 +8,94 @@ const SCHOOL_RUN = "schoolRun";
 const PUBLIC_TRANSPORT = "publicTransport";
 
 
-function set_train_arrivals( intervalInSeconds ){
-    if( familyDashboard.config.showTravel ){
 
-        let model = {};
-        model.commutes = familyDashboard.runtimeConfig.transport.commute;
-        model.maximumTrainsToShow = familyDashboard.runtimeConfig.transport.maximumTrainsToShow;
-        model.transportApi = familyDashboard.runtimeConfig.transportApi
-        model.stationCodeToNameMap = familyDashboard.runtimeConfig.transport.stationCodeToNameMap;
-        model.stationNameToCodeMap = familyDashboard.runtimeConfig.transport.stationNameToCodeMap;
+function update_model_with_trains( model , date ){
+    if( model.config.showTravel && model.data.trains.nextDownloadDataTime < date ){
+        set_trains( model );
+        model.data.trains.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
+        model.data.trains.lastUpdatedTime = new Date();
+    }
+    return model;
+}
 
-        for( i = 0; i < model.commutes.length; i++ ){
-            set_train_station_arrivals( model.commutes[i], model, familyDashboard.runtimeConfig.apiKeys.transportApi );
+function update_trains_ui( model, now ){
+    if( model.config.showTravel ){
+        if( model.data.trains.nextRebuildUiTime < now ){
+            insert_all_trains( model );
+            model.data.trains.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
         }
-
-        $('#train-travel').html("");
-        update_train_UI( model );
-        set_refresh_values( "#train-travel-update", intervalInSeconds );
+        update_all_train_count_downs( model );
+        let countDown = generate_next_download_count_down_values( model.data.trains.nextDownloadDataTime, model.runtimeConfig.trains.updateEvery );
+        set_next_download_count_down_elements( "train-travel-update", countDown );
     }
 }
 
-
-function set_train_station_arrivals( commute, model, transportApi ){
-    let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
+function update_all_train_count_downs( model ){
     let now = new Date();
-    let fullDate = date_with_dashes(now);
-    let fullTime = get_padded_time_minutes(now);
-    let urtToGet = '';
-    let runAsync = false;
-    commute.trains = [];
-
-    if( is_debug_on()){
-        urlToGet = "test-data/transportapi-" + startingStationCode +".json"
-    } else{
-        urlToGet = "http://transportapi.com/v3/uk/train/station/"
-                        + startingStationCode +"/"
-                        + fullDate + "/"
-                        + fullTime  + "/timetable.json?app_id="
-                        + transportApi.appId + "&app_key="
-                        + transportApi.appKey
-    }
-
-    $.ajax({
-        url: urlToGet,
-        type: "GET",
-        async: runAsync,
-        success: function( data ) {
-            var showingTrainsCount = 0;
-            $(data.departures.all)
-                .each(function(index,it){
-                    if( showingTrainsCount < model.maximumTrainsToShow &&
-                        ( commute.showAllDestinations ||  commute.to.includes( it.destination_name ))){
-                        showingTrainsCount++;
-                        commute.trains.push(extract_trains_details( it , model.stationNameToCodeMap));
-                    }
-                });
-        },
-        error: function ( xhr ){
-            if( xhr ){
-                log_error( xhr.status +' Error calling transportapi.com for '
-                            + startingStationCode +' timetable (' +xhr.responseText +').');
+    model.data.trains.startingStations.forEach( function(startingStation){
+        startingStation.departures.forEach(function(train, index){
+            let transportId =  build_transport_id( startingStation, train, index);
+            if( now < train.departureTime ){
+                let trainHtml = build_transport_eta_countdown_element( train, transportId, PUBLIC_TRANSPORT );
+                $( '#' + transportId + "-eta").html( trainHtml );
             }else{
-                log_error( ' Error calling transportapi.com for ' + startingStationName +' timetable ( Unknown error ).');
+                $( '#' + transportId ).addClass( 'd-none' );
             }
-        }
+        });
     });
 }
 
-function extract_trains_details( trainDetails , stationNameToCodeMap, currentTime ){
-    currentTime = currentTime ? currentTime : new Date();
-    let departureTimeString = trainDetails.expected_departure_time ? trainDetails.expected_departure_time : trainDetails.aimed_departure_time;
-    let departureTime = calculate_departure_date_time_from_time_only( departureTimeString, currentTime );
-    let destination  = stationNameToCodeMap.get( trainDetails.destination_name );
-    if( !destination ){ destination = "XXX"; }
-    return {
-        "departureTime" : departureTime,
-        "platform": trainDetails.platform,
-        "destination":  destination,
-        "status" : trainDetails.status
-    };
-}
-
-
-
-function update_train_UI( model ){
-
-    for( i = 0; i < model.commutes.length; i++ ){
-        commute = model.commutes[i];
-        startingStationCode = model.stationNameToCodeMap.get( commute.from );
+function insert_all_trains( model ){
+    let isFirst = true;
+    $('#train-travel').html('');
+    model.data.trains.startingStations.forEach( function(startingStation ){
         let border = '';
-        if( i === 0 ){
+        if( isFirst ){
             border = 'border-top';
+            isFirst = false;
         }else{
             border = 'border-top border-left';
         }
 
-        $('#train-travel').append( "<div class='col "+ border +" align-top'><div id='"+ startingStationCode +"' class='pt-2'></div></div>");
-
-        let station_element_id = "#" + startingStationCode
-
-        $(station_element_id).html(
+        $('#train-travel').append( "<div class='col "+ border +" align-top'><div id='"+ startingStation.code +"' class='pt-2'></div></div>");
+        let stationElementId = "#" + startingStation.code
+        $(stationElementId).html(
             '<div class="row">'
-            +'  <div class="col h5 text-center">'+ TRAIN_GLYPH + commute.from + '</div>'
-            + '</div>'
+            +'  <div class="col h5 text-center">'+ TRAIN_GLYPH + startingStation.name + '</div>'
+            +'</div>'
         );
-
-        for( j = 0; j < commute.trains.length; j++ ){
-            let now = new Date();
-            let train_details = commute.trains[j];
-            if( now < train_details.departureTime ){
-                platform = train_details.platform == null ? '': '['+ train_details.platform + '] ';
-                let transportId =  startingStationCode + '-' + train_details.destination + '-' + j;
-                let commuteToCodes = convert_station_names_to_codes( commute.to, model.stationNameToCodeMap );
-                destination_with_color = colour_special_fields( train_details.destination, commuteToCodes.join("|") );
-
-                let timeBoundaries = build_time_boundaries( commute.noNeedToLeaveBefore, commute.walkTransitTime,
-                                                            commute.runTransitTime, commute.driveTransitTime,
-                                                            train_details.departureTime);
-                let trainRow =
-                     '  <div id="' + transportId + '" class="row text-monospace text-nowrap">'
-                    +'      <div class="col-1">'+platform+'</div>'
-                    +'      <div class="col-2">' + destination_with_color + '</div>'
-                    +'      <div class="col-8 transport-departure-time p-0" '
-                    +'   	    transport-id="' + transportId + '"'
-                    +'	        display-name="' + train_details.destination + '"'
-                    +'	        tooEarly="' + timeBoundaries.tooEarly + '"'
-                    +'	        plentyOfTime="' + timeBoundaries.plentyOfTime + '"'
-                    +'	        moveQuickerTime="' + timeBoundaries.moveQuickerTime + '"'
-                    +'	        almostOutOfTime="' + timeBoundaries.almostOutOfTime + '"'
-                    +'   	    deadLine="' + timeBoundaries.deadLine + '"'
-                    +'	        transportType="' + PUBLIC_TRANSPORT + '"'
-                    +' 	        index="' + j + '">'
-                    +           build_transport_eta_countdown_element( timeBoundaries, transportId, PUBLIC_TRANSPORT );
-                    +'      </div>'
-                    +'</div>';
-
-                $(station_element_id).append( trainRow );
+        let now = new Date();
+        startingStation.departures.forEach(function(train, index){
+            if( now < train.departureTime ){
+                $(stationElementId).append( build_train_row( train, startingStation, index ));
             }
-        }
-    }
-}
-
-function convert_station_names_to_codes( commuteTos , stationNameToCodeMap ){
-    let results = [];
-    commuteTos.forEach( function( commute, index  ){
-        results.push( stationNameToCodeMap.get( commute ));
+        });
     });
-    return results;
 }
 
-
-function build_school_run_countdown_element( timeBoundaries  ){
-    let boundaryWindow = get_boundary_window( timeBoundaries , SCHOOL_RUN );
-    let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
-    let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( timeBoundaries.deadLine));
-    let paddedTimeMinutes = get_padded_time_minutes(timeBoundaries.deadLine);
-
-    let div =
-         ' <div class="col text-'+ classForBoundaryWindow +'">🏫'+ countDownTime + ' ' + boundaryWindow.emoji +' </div>'
-        +'   <div class="col align-middle">'
-        +'       <div class="progress" style="height: 105px;">'
-        +'           <div class="progress-bar bg-'+ classForBoundaryWindow +'" role="progressbar" aria-valuenow="75"'
-        +'                                              aria-valuemin="0" aria-valuemax="100" style="width: '+
-                                                        boundaryWindow.progressBarPercentage +'%"></div>'
-        +'       </div>'
-        +'   </div>'
-        +' <div class="col text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +'</div>'
-    return div;
+function build_transport_id( startingStation, train, index ){
+    return startingStation.code + '-' + train.destinationStationCode + '-' + index;;
 }
 
+function build_train_row( train, startingStation, index){
+    platform = train.platform == null ? '': '['+ train.platform + '] ';
+    let transportId =  build_transport_id( startingStation, train, index) ;
+    let destinationStationCodeSpan = highlightCommuteToDestinations( train.destinationStationCode, train.isCommuteToDestination );
+    let trainRow =   '<div id="' + transportId + '" class="row text-monospace text-nowrap">'
+                    +' <div class="col-1">'+platform+'</div>'
+                    +' <div class="col-2">' + destinationStationCodeSpan + '</div>'
+                    +' <div id="' + transportId + '-eta" class="col-8 p-0"></div>'
+                    +'</div>';
+    return trainRow;
+}
 
-function build_transport_eta_countdown_element( timeBoundaries, transportId, transportType ){
-    let boundaryWindow = get_boundary_window( timeBoundaries, transportType );
+function build_transport_eta_countdown_element( train, transportId, transportType, time ){
+    time = time ? time : new Date();
+    let boundaryWindow = get_boundary_window( train, transportType, time );
     let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
-    let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( timeBoundaries.deadLine));
-    let paddedTimeMinutes = get_padded_time_minutes(timeBoundaries.deadLine);
-    if( timeBoundaries.deadLine > new Date() ){
+    let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( train.departureTime));
+    let paddedTimeMinutes = get_padded_time_minutes(train.departureTime);
+    if( train.departureTime > time ){
         let div = '          <div class="row">'
                 +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
                 +'              <div class="col-2"></div>'
@@ -204,7 +116,45 @@ function build_transport_eta_countdown_element( timeBoundaries, transportId, tra
         return div;
     }else {
         $("#" + transportId ).addClass("d-none");
+        return "";
     }
+}
+
+function get_boundary_window( train, transportType, time ){
+    time = time ? time : new Date();
+    let currentTimeStamp = time.getTime();
+    let boundaryWindow = {};
+    if ( currentTimeStamp < train.noNeedToLeaveBeforeTimeStamp ) {
+    boundaryWindow.start = currentTimeStamp;
+    boundaryWindow.end =  train.noNeedToLeaveBeforeTimeStamp;
+    boundaryWindow.name = TOO_EARLY;
+    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ?  "🛌" :  "");
+    } else if( currentTimeStamp < train.walkTransitTimeStamp ) {
+    boundaryWindow.start = train.noNeedToLeaveBeforeTimeStamp;
+    boundaryWindow.end =  train.walkTransitTimeStamp;
+    boundaryWindow.name = PLENTY_OF_TIME;
+    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👔️" : "🚶");
+    } else if( currentTimeStamp < train.runTransitTimeStamp ) {
+    boundaryWindow.start = train.walkTransitTimeStamp;
+    boundaryWindow.end =  train.runTransitTimeStamp;
+    boundaryWindow.name = MOVE_QUICKER_TIME;
+    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 🥣" : "🏃");
+    } else if( currentTimeStamp < train.driveTransitTimeStamp ) {
+    boundaryWindow.start = train.runTransitTimeStamp;
+    boundaryWindow.end =  train.driveTransitTimeStamp;
+    boundaryWindow.name = ALMOST_OUT_OF_TIME;
+    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚗");
+    } else {
+    boundaryWindow.start = train.driveTransitTimeStamp;
+    boundaryWindow.end = train.departureTimeStamp;
+    boundaryWindow.name = OUT_OF_TIME;
+    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? "" :  "");
+    }
+
+
+    boundaryWindow.progressBarPercentage = calculate_progress_bar_percentage(   boundaryWindow.start, boundaryWindow.end, currentTimeStamp );
+
+    return boundaryWindow;
 }
 
 function get_class_for_boundary_window( boundaryWindow ){
@@ -218,79 +168,95 @@ function get_class_for_boundary_window( boundaryWindow ){
     }
 }
 
-function show_or_hide_school_run_departure_time(){
-    if( familyDashboard.config.showSchoolRunCountdown ){
-        let schoolRunCountDown = familyDashboard.runtimeConfig.schoolRunCountDown;
-        let timeBoundaries = build_time_boundaries_for_school_run( schoolRunCountDown );
-        let schoolRunElement = $("#school-run");
-        let departTimeElement = $("#school-run-departure-time");
-        let now = new Date();
-
-        if( schoolRunElement.hasClass('d-none')) {
-            let showCountdownStart = date_from_string( schoolRunCountDown.showCountDownStart, timeBoundaries.deadLine);
-            let showCountdownStop = date_from_string( schoolRunCountDown.showCountDownStop , timeBoundaries.deadLine);
-            let weekday = is_week_day( now );
-            let inside_school_run_window =  showCountdownStart < now && now < showCountdownStop;
-             if( is_debug_on() || (weekday && inside_school_run_window )){
-                departTimeElement.attr('transport-id' ,  'schoolRun' );
-                departTimeElement.attr('showCountdownStart' ,  showCountdownStart );
-                departTimeElement.attr('showCountdownStop' ,  showCountdownStop );
-                departTimeElement.attr('tooEarly' ,  timeBoundaries.tooEarly );
-                departTimeElement.attr('plentyOfTime' ,  timeBoundaries.plentyOfTime );
-                departTimeElement.attr('moveQuickerTime' ,  timeBoundaries.moveQuickerTime );
-                departTimeElement.attr('almostOutOfTime' ,  timeBoundaries.almostOutOfTime );
-                departTimeElement.attr('deadLine' ,  timeBoundaries.deadLine );
-                departTimeElement.attr('transportType', SCHOOL_RUN);
-                departTimeElement.html( build_school_run_countdown_element( timeBoundaries ));
-                schoolRunElement.removeClass('d-none');
-                departTimeElement.addClass('transport-departure-time');
-            }
-        } else if( now > new Date( departTimeElement.attr( 'showCountdownStop' )) ){
-            schoolRunElement.addClass('d-none');
-        }
+function highlightCommuteToDestinations( destinationStationCode, isCommuteToDestination ){
+    if( isCommuteToDestination ){
+        return '<span class="text-success">' + destinationStationCode + '</span>';;
+    }else{
+        return destinationStationCode;
     }
 }
 
-function get_boundary_window( timeBoundaries, transportType, secondsUntilTargetTime ){
-    if( !secondsUntilTargetTime && secondsUntilTargetTime !== 0 ){
-        secondsUntilTargetTime = get_seconds_until( timeBoundaries.deadLine) * -1;
+function set_trains( model ){
+    let startingStations = model.runtimeConfig.transport.commute;
+    model.data.trains.startingStations = [];  //clear previous data
+    for( i = 0; i < startingStations.length; i++ ){
+        get_train_station_departures( startingStations[i], model );
     }
-    let boundaryWindow = {};
-     if ( secondsUntilTargetTime < timeBoundaries.tooEarly ) {
-        boundaryWindow.top = secondsUntilTargetTime;
-        boundaryWindow.bottom =  timeBoundaries.tooEarly;
-        boundaryWindow.name = TOO_EARLY;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ?  "🛌" :  "");
-    } else if( secondsUntilTargetTime < timeBoundaries.plentyOfTime ) {
-        boundaryWindow.top = timeBoundaries.tooEarly;
-        boundaryWindow.bottom =  timeBoundaries.plentyOfTime;
-        boundaryWindow.name = PLENTY_OF_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👔️" : "🚶");
-    } else if( secondsUntilTargetTime < timeBoundaries.moveQuickerTime ) {
-        boundaryWindow.top = timeBoundaries.plentyOfTime;
-        boundaryWindow.bottom =  timeBoundaries.moveQuickerTime;
-        boundaryWindow.name = MOVE_QUICKER_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 🥣" : "🏃");
-    } else if( secondsUntilTargetTime < timeBoundaries.almostOutOfTime ) {
-        boundaryWindow.top = timeBoundaries.moveQuickerTime;
-        boundaryWindow.bottom =  timeBoundaries.almostOutOfTime;
-        boundaryWindow.name = ALMOST_OUT_OF_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚗");
-    } else {
-        boundaryWindow.top = timeBoundaries.almostOutOfTime;
-        boundaryWindow.bottom = 0;
-        boundaryWindow.name = OUT_OF_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? "" :  "");
+}
+
+function get_train_station_departures( commute, model ){
+    let urlToGet = "";
+    let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
+    if(model.config.debugging){
+        urlToGet = "test-data/transportapi-" + startingStationCode +".json"
+    } else{
+        let now = new Date();
+        let fullDate = date_with_dashes( now );
+        let fullTime = get_padded_time_minutes( now );
+        let transportApi = model.apiKeys.transportApi
+
+        urlToGet = "http://transportapi.com/v3/uk/train/station/"
+                        + startingStationCode +"/"
+                        + fullDate + "/"
+                        + fullTime  + "/timetable.json?app_id="
+                        + transportApi.appId + "&app_key="
+                        + transportApi.appKey
     }
+    get_remote_data( urlToGet, false, model
+    , function( model2, data ){
+        let trains = [];
+        let showingTrainsCount = 0;
+        let maximumTrainsToShow = model.runtimeConfig.transport.maximumTrainsToShow;
+        $(data.departures.all)
+            .each(function(index,it){
+                let isCommuteToDestination = commute.to.includes( it.destination_name );
+                if( showingTrainsCount < maximumTrainsToShow &&
+                    ( commute.showAllDestinations || isCommuteToDestination)){
+                    showingTrainsCount++;
+                    trains.push(extract_trains_details( commute, it, isCommuteToDestination, model.stationNameToCodeMap));
+                }
+            });
 
-    let nominator = (boundaryWindow.bottom - secondsUntilTargetTime );
-    let deNominator = ( boundaryWindow.bottom - boundaryWindow.top);
+        let commuteData = {
+            code                : startingStationCode,
+            name                : commute.from,
+            departures          : trains
+        }
 
-    if( nominator === deNominator || secondsUntilTargetTime > 0 ){
-        boundaryWindow.progressBarPercentage = 0;
-    } else {
-        boundaryWindow.progressBarPercentage = 100 - Math.floor((nominator / deNominator) * 100);
+        model2.data.trains.startingStations.push( commuteData );
+    }, function( model2, xhr, default_process_error ){
+        model2.config.showTravel =  false;
+        default_process_error( xhr );
+    });
+    return model;
+}
+
+function extract_trains_details( commute, trainDetails, isCommuteToDestination, stationNameToCodeMap, currentTime ){
+    currentTime = currentTime ? currentTime : new Date();
+    let departureTimeString = trainDetails.expected_departure_time ? trainDetails.expected_departure_time : trainDetails.aimed_departure_time;
+    let departureTime = calculate_departure_date_time_from_time_only( departureTimeString, currentTime );
+    let destinationStationCode  = stationNameToCodeMap.get( trainDetails.destination_name );
+    if( !destinationStationCode ){ destinationStationCode = "XXX"; }
+    let result =  {
+        "departureTime" : departureTime,
+        "departureTimeStamp" : departureTime.getTime(),
+        "platform": trainDetails.platform,
+        "destinationStationCode":  destinationStationCode,
+        "status" : trainDetails.status,
+        "isCommuteToDestination": isCommuteToDestination,
+        "noNeedToLeaveBeforeTimeStamp":  date_plus_seconds( departureTime, commute.noNeedToLeaveBefore ).getTime(),
+        "walkTransitTimeStamp":  date_plus_seconds( departureTime, commute.walkTransitTime ).getTime(),
+        "runTransitTimeStamp":  date_plus_seconds( departureTime, commute.runTransitTime ).getTime(),
+        "driveTransitTimeStamp":  date_plus_seconds( departureTime, commute.driveTransitTime ).getTime()
+    };
+    return result;
+}
+
+function calculate_departure_date_time_from_time_only( departureTimeAsString, currentTime ){
+    let departureTime = date_from_string( departureTimeAsString, currentTime );
+    if((currentTime.getHours()-2) > departureTime.getHours() ){
+        return new Date( departureTime.getTime() + (TWENTY_FOUR_HOURS * 1000) );
+    }else{
+        return departureTime;
     }
-
-    return boundaryWindow;
 }

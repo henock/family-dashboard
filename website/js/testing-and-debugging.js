@@ -4,6 +4,7 @@ var failedTestLinks = [];
 var skippedTests = 0;
 var skippedTestLinks = [];
 var skipRemoteTests = true;
+var testCounter = 0;
 
 function running_unit_tests(){
     return 'true' === get_url_parameter('testing');
@@ -27,6 +28,21 @@ function compare_exact(expected, actual){
     }
 }
 
+function compare_hours_minutes_secs(a, b){
+    return (a.getHours()  === b.getHours()
+            && a.getMinutes()  === b.getMinutes()
+            && a.getSeconds()  === b.getSeconds());
+}
+
+function compare_html( a, b ){
+    let testResult = ( a === b );
+    return {
+        passed: testResult,
+        expectedValue: '<xmp>' + a + '</xmp>',
+        testedValue:    '<xmp>' + b + '</xmp>'
+    }
+}
+
 function compare_with_stringify(expected, actual){
     let testResult = JSON.stringify(expected) === JSON.stringify(actual);
     return {
@@ -40,12 +56,12 @@ function clone_object( o ){
     return JSON.parse(JSON.stringify( o ));
 }
 
-function build_anchor_for( text, aClass ){
-    return '<a class="'+ aClass + '" id="' +  text + '">' +  text + '</a>';
+function build_anchor_for( text, counter, aClass ){
+    return '<a class="'+ aClass + '" id="' +  text + '-' + counter + '">' +  text + '</a>';
 }
 
-function build_link_to_anchor( text, aClass ){
-    return '<a class="'+ aClass + '" href="#' +  text + '">' +  text + '</a>';
+function build_link_to_anchor( text, counter, aClass ){
+    return '<a class="'+ aClass + '" href="#' +  text + '-' + counter + '">' +  text + '</a>';
 }
 
 function build_link_to_anchors( links ){
@@ -59,10 +75,10 @@ function build_link_to_anchors( links ){
 }
 
 
-function skip_unit_test( function_under_test, comment){
+function skip_unit_test( function_under_test, testCounter, comment){
     skippedTests++;
-    skippedTestLinks.push( build_link_to_anchor( function_under_test, "text-warning" ));
-    return '<tr class="text-warning"><td > ' + build_anchor_for( function_under_test, "text-warning" ) + ' </td><td colspan="3">'
+    skippedTestLinks.push( build_link_to_anchor( function_under_test, testCounter, "text-warning" ));
+    return '<tr class="text-warning"><td > ' + build_anchor_for( function_under_test, testCounter, "text-warning" ) + ' </td><td colspan="3">'
             + comment + '</td></tr>';
 }
 
@@ -70,6 +86,7 @@ function skip_unit_test( function_under_test, comment){
 /// UNIT TEST RUNNER /////
 function run_unit_test( function_under_test, comment, test_function, expected_result, parameters ){
     let testResult;
+    testCounter++;
 
     function add_fail_row( field_name, value ){
         return "<tr><th>" + field_name + "</td><td> " + value + "</td></tr>";
@@ -92,16 +109,16 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
 
     if( testResult.passed ){
         passedTests++;
-        return '<tr><td class="text-success">' +  build_anchor_for( function_under_test, "text-success" ) + ' </td><td>'
+        return '<tr><td class="text-success">' +  build_anchor_for( function_under_test, testCounter, "text-success" ) + ' </td><td>'
                 + comment + '</td><td>'
                 + JSON.stringify( testResult.testedValue ) + '</td><td>'
                 + JSON.stringify( testResult.expectedValue ) + '</td></tr>';
     }else{
         failedTests++;
-        failedTestLinks.push( build_link_to_anchor( function_under_test, "text-danger" ));
+        failedTestLinks.push( build_link_to_anchor( function_under_test, testCounter, "text-danger" ));
 
         return '<tr><td colspan="6" class="text-danger"><table border="1">'
-                                + add_fail_row( 'function',  build_anchor_for( function_under_test, "text-danger" ) )
+                                + add_fail_row( 'function',  build_anchor_for( function_under_test, testCounter, "text-danger" ) )
                                 + add_fail_row( 'comment',  comment )
                                 + add_fail_row( 'params',  JSON.stringify( parameters ))
                                 + add_fail_row( 'expected',  JSON.stringify( testResult.expectedValue ))
@@ -115,11 +132,12 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
 ///////////////////  TESTS ////////////////////
 function run_all_unit_tests(){
 
-
-
     let result = '<table class="pt-2" border="1">';
     result += '<tr><th>Function under test</th><th>comment</th><th>result</th><th>params passed in</th></th></tr>';
-//    result += XXX_unit_test();
+    result += calculate_progress_bar_percentage_unit_test();
+    result += generate_next_download_count_down_values_unit_test();
+    result += build_transport_eta_countdown_element_unit_test();
+    result += build_train_row_unit_test();
     result += sanitise_dates_for_school_run_unit_test();
     result += sanitise_dates_for_commute_config_unit_test();
     result += sanitise_dates_for_train_times_unit_test();
@@ -130,15 +148,12 @@ function run_all_unit_tests(){
     result += get_train_station_departures_unit_test();
     result += extract_trains_details_unit_test();
     result += update_model_with_station_to_code_maps_unit_test();
-    result += set_tasks_unit_test();
+    result += download_tasks_unit_test();
     result += update_model_with_api_keys_unit_test();
-    result += update_model_only_time_update_times_have_expired();
+    result += update_model_only_update_times_have_expired();
     result += update_model_with_runtime_config_unit_test();
     result += setup_model_unit_test();
-    result += convert_station_names_to_codes_unit_test();
-    result += build_time_boundaries_unit_test();
     result += date_from_string_unit_test();
-    result += extract_trains_details_unit_test_old();
     result += is_week_day_unit_test();
     result += get_boundary_window_unit_test();
     result += get_seconds_until_unit_test();
@@ -169,12 +184,92 @@ function run_all_unit_tests(){
 //}
 
 
+function calculate_progress_bar_percentage_unit_test(){
+    let result = '';
+    result += run_unit_test( "calculate_progress_bar_percentage", '5%',  compare_exact, 5, [0, 200, 10] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '25%',  compare_exact, 25, [0, 100, 25] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '50%',  compare_exact, 50, [0, 500, 250] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '75%',  compare_exact, 75, [0, 400, 300] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '100% if at the end of the window',  compare_exact, 100, [100, 500, 500] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '0% if at the start of the window',  compare_exact, 0, [100, 500, 100] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '0% if before the start of the window',  compare_exact, 0, [100, 500, 10] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '0% if before the start of the window',  compare_exact, 0, [100, 500, 99] );
+    result += run_unit_test( "calculate_progress_bar_percentage", '0% if after the end of the window',  compare_exact, 0, [100, 500, 501] );
+    return result;
+}
+
+function generate_next_download_count_down_values_unit_test(){
+    let result = '';
+
+    time = new Date();
+    nextDownloadDataTime = date_plus_seconds( time, 60 );
+
+    expectedResult = {
+        timeLeft: "&nbsp;&nbsp;&nbsp;01:00",
+        percentage: 40
+    }
+    result += run_unit_test( "generate_next_download_count_down_values", '',  compare_with_stringify, expectedResult, [nextDownloadDataTime, 100, time] );
+    return result;
+}
+
+function build_transport_eta_countdown_element_unit_test(){
+    let result = '';
+
+    let date = new Date();
+    let dateMinus10s = date_plus_seconds( date, -10 );
+    let dateMinus20s = date_plus_seconds( date, -20 );
+
+    let train = {
+        departureTime : date,
+        noNeedToLeaveBeforeTimeStamp : dateMinus10s.getTime()
+    };
+
+    let transportId = "transportId";
+    let transportType = PUBLIC_TRANSPORT;
+    let timeMinutes = get_padded_time_minutes( date );
+    let expectedResult = '          <div class=\"row\">              <div class=\"col-3 text-primary\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00s</div>              <div class=\"col-2\"></div>              <div class=\"col-2 text-primary\">'+timeMinutes+' </div>          </div>';
+
+    result += run_unit_test( "build_transport_eta_countdown_element", 'eta countdown element',  compare_html, expectedResult, [train, transportId, transportType, dateMinus20s] );
+    return result;
+}
+
+function build_train_row_unit_test(){
+
+    let result = '';
+    let now = new Date();
+    let train = {
+        "platform": 1,
+        "destinationStationCode":  "VIC",
+        "isCommuteToDestination": true,
+    }
+
+    let startingStations = {
+        code: "CST"
+    }
+
+    let expectedResult = "<div id=\"CST-VIC-1\" class=\"row text-monospace text-nowrap\"> " +
+                            "<div class=\"col-1\">[1] </div> <div class=\"col-2\"><span class=\"text-success\">VIC</span></div> " +
+                            "<div id=\"CST-VIC-1-eta\" class=\"col-8 p-0\"></div></div>";
+
+    result += run_unit_test( "build_train_row", 'valid row for commuteTo destination',  compare_html, expectedResult, [train, startingStations, 1] );
+
+
+    expectedResult = "<div id=\"CST-VIC-1\" class=\"row text-monospace text-nowrap\"> " +
+                            "<div class=\"col-1\">[1] </div> <div class=\"col-2\">VIC</div> " +
+                            "<div id=\"CST-VIC-1-eta\" class=\"col-8 p-0\"></div></div>";
+
+    train.isCommuteToDestination = false;
+    result += run_unit_test( "build_train_row", 'valid row for non commuteTo destination',  compare_html, expectedResult, [train, startingStations, 1] );
+    return result;
+}
+
+
 function sanitise_dates_for_school_run_unit_test(){
     let result = '';
 
     function specific_compare_method( expected, model ){
         let actualDate = model.runtimeConfig.schoolRunCountDown.showCountDownStart
-        let testResult = ( expected.getTime() == actualDate.getTime() );
+        let testResult = compare_hours_minutes_secs( expected, actualDate );
         return {
             passed: testResult,
             expectedValue: expected,
@@ -185,17 +280,17 @@ function sanitise_dates_for_school_run_unit_test(){
     model = create_empty_model(true);
     let nowMinus50 = now_plus_seconds( -50 );
     model.runtimeConfig.schoolRunCountDown = {
-                                                    show: true,
-                                                    showCountDownStart: "departure-50s",
-                                                    startCountDown: "departure-45s",
-                                                    getOutOfBedBy: "departure-40s",
-                                                    finishGettingDressedBy: "departure-30s",
-                                                    finishBreakfastBy: "departure-20s",
-                                                    putOnShoesBy: "departure-10s",
-                                                    departureTime: "now+45s",
-                                                    stopCountDown: "departure+10s",
-                                                    showCountDownStop: "departure+10s"
-                                               };
+            show: true,
+            showCountDownStart: "departure-50s",
+            startCountDown: "departure-45s",
+            getOutOfBedBy: "departure-40s",
+            finishGettingDressedBy: "departure-30s",
+            finishBreakfastBy: "departure-20s",
+            putOnShoesBy: "departure-10s",
+            departureTime: "now+45s",
+            stopCountDown: "departure+10s",
+            showCountDownStop: "departure+10s"
+       };
 
     result += run_unit_test( "sanitise_dates_for_school_run", 'departure-50s becomes ' + nowMinus50 ,  specific_compare_method, nowMinus50, [model] );
     return result;
@@ -232,7 +327,7 @@ function sanitise_dates_for_train_times_unit_test(){
 
     function specific_compare_method( expected, model ){
         let actualDate = model.data.trains.startingStations[0].departures[0].departureTime
-        let testResult = ( expected.getTime() == actualDate.getTime() );
+        let testResult = compare_hours_minutes_secs( expected, actualDate );
         return {
             passed: testResult,
             expectedValue: expected,
@@ -240,18 +335,27 @@ function sanitise_dates_for_train_times_unit_test(){
         }
     }
 
-    model = setup_model(true);
-    update_model_with_trains( model );
-    let nowPlus5 = now_plus_seconds(5);
-    model.data.trains.startingStations[0].departures[0].departureTime="now+5s";
-    result += run_unit_test( "sanitise_dates_for_train_times", 'now+5 becomes' + nowPlus5 ,  specific_compare_method, nowPlus5, [model] );
+    let twelveTen = set_time_on_date(new Date(), "12:10");
+    let model = {
+        data: {
+            trains:{
+                startingStations : [ {
+                    departures: [{
+                        departureTime: "12:10"
+                    }]
+                }]
+            }
+
+        }
+    }
+    result += run_unit_test( "sanitise_dates_for_train_times", '12:10 becomes' + twelveTen ,  specific_compare_method, twelveTen, [model] );
     return result;
 }
 
 
 function seconds_from_string_unit_test(){
     let result = '';
-    let date = new Date("2021-12-06T07:00:00.000Z")
+    let date = new Date("2021-12-06T07:00:00.000Z");
     result += run_unit_test( "seconds_from_string", 'departure-10s is -10s',  compare_with_stringify, -10, ['departure-10s', date ] );
     result += run_unit_test( "seconds_from_string", 'departure-10h is -3600h',  compare_with_stringify, -36000, ['departure-10h', date ] );
     result += run_unit_test( "seconds_from_string", 'departure-24h is -86400',  compare_with_stringify, -86400, ['departure-24h', date ] );
@@ -328,7 +432,7 @@ function common_get_remote_weather_data_unit_test(){
                                 check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
 
     if(skipRemoteTests){
-        result += skip_unit_test( "common_get_remote_weather_data", 'a valid response from http://tomorrow.io' );
+        result += skip_unit_test( "common_get_remote_weather_data", testCounter, 'a valid response from http://tomorrow.io' );
     }else{
         model = setup_model(false);
         result += run_unit_test( "common_get_remote_weather_data", 'a valid response from http://tomorrow.io',
@@ -364,7 +468,7 @@ function get_train_station_departures_unit_test(){
     result += run_unit_test( "get_train_station_departures", 'We get data back from /test-data ',  check_for_trains, {}, [startingStation,  model] );
 
     if(skipRemoteTests){
-        result += skip_unit_test( "get_train_station_departures", 'We get data back from transportApi' );
+        result += skip_unit_test( "get_train_station_departures", testCounter, 'We get data back from transportApi' );
     }else{
         model = setup_model(false);
         result += run_unit_test( "get_train_station_departures", 'We get data back from transportApi ',  check_for_trains, {}, [startingStation, model] );
@@ -377,33 +481,65 @@ function extract_trains_details_unit_test(){
     let result = '';
     let now = new Date();
 
+    function create_expected_result_with( departureTime, startingStation, commute, isCommuteToDestination ){
+        return {
+           departureTime               : departureTime,
+           departureTimeStamp          : departureTime.getTime(),
+           platform                    : startingStation.platform,
+           destinationStationCode      : "CST",
+           status                      : startingStation.status,
+           isCommuteToDestination      : isCommuteToDestination,
+           noNeedToLeaveBeforeTimeStamp: date_plus_seconds( departureTime, commute.noNeedToLeaveBefore ).getTime(),
+           walkTransitTimeStamp        : date_plus_seconds( departureTime, commute.walkTransitTime ).getTime(),
+           runTransitTimeStamp         : date_plus_seconds( departureTime, commute.runTransitTime ).getTime(),
+           driveTransitTimeStamp       : date_plus_seconds( departureTime, commute.driveTransitTime ).getTime()
+       }
+    }
 
     model = setup_model(true);
+
+    let commute = {
+        noNeedToLeaveBefore : -40,
+        walkTransitTime     : -30,
+        runTransitTime      : -20,
+        driveTransitTime    : -10
+    };
+
     let startingStation = {
-            platform: "2",
-            aimed_departure_time: "1:32",
-            destination_name: "Cambridge",
-            status: "LATE",
-            expected_departure_time: "1:35",
-            best_arrival_estimate_mins: 14,
-            best_departure_estimate_mins: 15
-        };
+        platform: "2",
+        aimed_departure_time: "1:32",
+        destination_name: "London Cannon Street",
+        expected_departure_time: "1:35"
+    };
 
-    let expectedValue = { departureTime: date_with_dashes(now) + "T01:35:00.000Z",
-                          platform: "2",
-                          destination: "CBG",
-                          status: "LATE" };
+    let departureTime = set_time_on_date( now, startingStation.expected_departure_time );
+    let isCommuteToDestination = true;
 
-    result += run_unit_test( "extract_trains_details", 'expected_departure_time: now+10m',  compare_with_stringify, expectedValue , [ startingStation, model.stationNameToCodeMap, now] );
+    let expectedResult = create_expected_result_with( now, startingStation, commute, isCommuteToDestination );
 
-    startingStation.expected_departure_time = "10:11";
-    expectedValue.departureTime=  date_with_dashes(now) + "T10:11:00.000Z";
 
-    result += run_unit_test( "extract_trains_details", 'expected_departure_time: 10:11',  compare_with_stringify, expectedValue , [ startingStation, model.stationNameToCodeMap, now] );
+    result += run_unit_test( "extract_trains_details", 'expected_departure_time: now+10m',  compare_with_stringify,
+                    expectedResult , [ commute, startingStation, isCommuteToDestination, model.stationNameToCodeMap, now] );
 
+    let newTimeString = "10:11";
+    let newDepartureTime = set_time_on_date( now, newTimeString );
+    startingStation.expected_departure_time = newDepartureTime;
+
+    isCommuteToDestination = false;
+    expectedResult = create_expected_result_with( newDepartureTime, startingStation, commute, isCommuteToDestination );
+
+    result += run_unit_test( "extract_trains_details", 'expected_departure_time: 10:11',  compare_with_stringify,
+                    expectedResult , [ commute, startingStation, isCommuteToDestination, model.stationNameToCodeMap, now] );
+
+    newDepartureTime = set_time_on_date( now, startingStation.aimed_departure_time );
+    startingStation.expected_departure_time = undefined;
     startingStation.destination_name = "bob";
-    expectedValue.destination = "XXX"
-    result += run_unit_test( "extract_trains_details", 'Unknown destination',  compare_with_stringify, expectedValue , [ startingStation, model.stationNameToCodeMap, now] );
+
+    expectedResult = create_expected_result_with( newDepartureTime, startingStation, commute, isCommuteToDestination );
+    expectedResult.destinationStationCode = "XXX";
+
+    result += run_unit_test( "extract_trains_details", 'Unknown destination and using aimed_departure_time of 1.32',  compare_with_stringify,
+                    expectedResult , [ commute, startingStation, isCommuteToDestination, model.stationNameToCodeMap, now] );
     return result;
 }
 
@@ -426,7 +562,7 @@ function update_model_with_station_to_code_maps_unit_test(){
     return result;
 }
 
-function set_tasks_unit_test(){
+function download_tasks_unit_test(){
 
     function check_for_tasks( expected, model ){
         let testResult =  (undefined !== model.data.tasks.todo && model.data.tasks.todo.length > 0 );
@@ -437,16 +573,16 @@ function set_tasks_unit_test(){
         }
     }
 
-    //set_tasks( model )
+    //download_tasks( model )
     let result = '';
     let model = setup_model(true);
-    result += run_unit_test( "set_tasks", 'we get back debugging tasks',  check_for_tasks, 'not used', [model] );
+    result += run_unit_test( "download_tasks", 'we get back debugging tasks',  check_for_tasks, 'not used', [model] );
 
     if(skipRemoteTests){
-        result += skip_unit_test( "set_tasks", 'we get back actual tasks from trello.com' );
+        result += skip_unit_test( "download_tasks", testCounter, 'we get back actual tasks from trello.com' );
     }else{
         model = setup_model(false);
-        result += run_unit_test( "set_tasks", 'we get back actual tasks from trello.com',  check_for_tasks, 'not used', [model] );
+        result += run_unit_test( "download_tasks", 'we get back actual tasks from trello.com',  check_for_tasks, 'not used', [model] );
     }
     return result;
 }
@@ -470,85 +606,76 @@ function update_model_with_api_keys_unit_test(){
     return result;
 }
 
-function update_model_only_time_update_times_have_expired(){
-
-
-    function compare_hours_mins_secs(a, b){
-        return (a.getHours()  === b.getHours()
-                && a.getMinutes()  === b.getMinutes()
-                && a.getSeconds()  === b.getSeconds());
-    }
-
+function update_model_only_update_times_have_expired(){
 
     let result = '';
 
     let model = setup_model(true);
-
     // update_model_with_tasks
     function next_update_time_for_tasks_test_function( expectedTime, model ){
-        let nextUpdateTime = model.data.tasks.nextUpdateTime;
-        let testResult = compare_hours_mins_secs( expectedTime, nextUpdateTime );
+        let nextDownloadDataTime = model.data.tasks.nextDownloadDataTime;
+        let testResult = compare_hours_minutes_secs( expectedTime, nextDownloadDataTime );
         return {
             passed: testResult,
-            expectedValue: 'expected.getTime() === model.data.tasks.nextUpdateTime.getTime()',
-            testedValue: expectedTime + ' === ' + model.data.tasks.nextUpdateTime
+            expectedValue: 'expectedTime === model.data.tasks.nextDownloadDataTime',
+            testedValue: expectedTime + ' === ' + model.data.tasks.nextDownloadDataTime
         }
     }
 
-    model.data.tasks.nextUpdateTime = now_plus_seconds( -2 );
+    model.data.tasks.nextDownloadDataTime = now_plus_seconds( -2 );
     let expectedTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
-    result += run_unit_test( "update_model_with_tasks", 'updates model with tasks because nextUpdateTime has passed'
-                            , next_update_time_for_tasks_test_function, expectedTime, [model] );
+    result += run_unit_test( "update_model_with_tasks", 'updates model with tasks because nextDownloadDataTime has passed'
+                            , next_update_time_for_tasks_test_function, expectedTime, [model, new Date()] );
 
 
-    model.data.tasks.nextUpdateTime = now_plus_seconds(2);
-    expectedTime = model.data.tasks.nextUpdateTime;
-    result += run_unit_test( "update_model_with_tasks", "doesn't updates model with tasks because nextUpdateTime has not passed"
-                            , next_update_time_for_tasks_test_function, expectedTime, [model] );
+    model.data.tasks.nextDownloadDataTime = now_plus_seconds(2);
+    expectedTime = model.data.tasks.nextDownloadDataTime;
+    result += run_unit_test( "update_model_with_tasks", "doesn't updates model with tasks because nextDownloadDataTime has not passed"
+                            , next_update_time_for_tasks_test_function, expectedTime, [model, new Date()] );
 
     ///update_model_with_weather
     function next_update_time_for_weather_test_function( expectedTime, model ){
-        let nextUpdateTime = model.data.weather.nextUpdateTime;
-        let testResult = compare_hours_mins_secs( expectedTime, nextUpdateTime );
+        let nextDownloadDataTime = model.data.weather.nextDownloadDataTime;
+        let testResult = compare_hours_minutes_secs( expectedTime, nextDownloadDataTime );
         return {
             passed: testResult,
-            expectedValue: 'expected.getTime() === model.data.weather.nextUpdateTime.getTime()',
-            testedValue: expectedTime + ' === ' + model.data.weather.nextUpdateTime
+            expectedValue: 'expectedTime === model.data.weather.nextDownloadDataTime',
+            testedValue: expectedTime + ' === ' + model.data.weather.nextDownloadDataTime
         }
     }
-    model.data.weather.nextUpdateTime = now_plus_seconds( -2 );
+    model.data.weather.nextDownloadDataTime = now_plus_seconds( -2 );
     expectedTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
 
-    result += run_unit_test( "update_model_with_weather", 'updates model with weather because nextUpdateTime has passed'
-                            , next_update_time_for_weather_test_function, expectedTime, [model] );
+    result += run_unit_test( "update_model_with_weather", 'updates model with weather because nextDownloadDataTime has passed'
+                            , next_update_time_for_weather_test_function, expectedTime, [model, new Date()] );
 
 
-    model.data.weather.nextUpdateTime = now_plus_seconds( 2 );
-    expectedTime = model.data.weather.nextUpdateTime;
-    result += run_unit_test( "update_model_with_weather", "doesn't updates model with weather because nextUpdateTime has not passed"
-                            , next_update_time_for_weather_test_function, expectedTime, [model] );
+    model.data.weather.nextDownloadDataTime = now_plus_seconds( 2 );
+    expectedTime = model.data.weather.nextDownloadDataTime;
+    result += run_unit_test( "update_model_with_weather", "doesn't updates model with weather because nextDownloadDataTime has not passed"
+                            , next_update_time_for_weather_test_function, expectedTime, [model, new Date()] );
 
     //update_model_with_trains
     function next_update_time_for_trains_test_function( expectedTime, model ){
-        let nextUpdateTime = model.data.trains.nextUpdateTime;
-        let testResult = compare_hours_mins_secs( expectedTime, nextUpdateTime );
+        let nextDownloadDataTime = model.data.trains.nextDownloadDataTime;
+        let testResult = compare_hours_minutes_secs( expectedTime, nextDownloadDataTime );
         return {
             passed: testResult,
-            expectedValue: 'expected.getTime() === model.data.trains.nextUpdateTime.getTime()',
-            testedValue: expectedTime + ' === ' + model.data.trains.nextUpdateTime
+            expectedValue: 'expectedTime === model.data.trains.nextDownloadDataTime',
+            testedValue: expectedTime + ' === ' + model.data.trains.nextDownloadDataTime
         }
     }
-    model.data.trains.nextUpdateTime = now_plus_seconds( -2 );
+    model.data.trains.nextDownloadDataTime = now_plus_seconds( -2 );
     expectedTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
 
-    result += run_unit_test( "update_model_with_trains", 'updates model with trains data because nextUpdateTime has passed'
-                            , next_update_time_for_trains_test_function, expectedTime, [model] );
+    result += run_unit_test( "update_model_with_trains", 'updates model with trains data because nextDownloadDataTime has passed'
+                            , next_update_time_for_trains_test_function, expectedTime, [model, new Date()] );
 
 
-    model.data.trains.nextUpdateTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery + 2 );
-    expectedTime = model.data.trains.nextUpdateTime;
-    result += run_unit_test( "update_model_with_trains", "doesn't updates model with trains data because nextUpdateTime has not passed"
-                            , next_update_time_for_trains_test_function, expectedTime, [model] );
+    model.data.trains.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery + 2 );
+    expectedTime = model.data.trains.nextDownloadDataTime;
+    result += run_unit_test( "update_model_with_trains", "doesn't updates model with trains data because nextDownloadDataTime has not passed"
+                            , next_update_time_for_trains_test_function, expectedTime, [model, new Date()] );
     return result;
 }
 
@@ -594,8 +721,6 @@ function update_model_with_runtime_config_unit_test(){
     return result;
 }
 
-
-
 function display_time_period_from_seconds_into_future_unit_test(){
     let result = '';
     result += run_unit_test("display_time_period_from_seconds_into_future", '10s', compare_exact, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10s', [10]);
@@ -608,35 +733,45 @@ function display_time_period_from_seconds_into_future_unit_test(){
 }
 
 function get_boundary_window_unit_test(){
-    let timeBoundaries = build_time_boundaries( "departure-100s", "departure-80s", "departure-60s", "departure-50s", new Date());
     let result = '';
-    //get_boundary_window( timeBoundaries, transportType, secondsUntilTargetTime )
 
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -200 ', compare_with_stringify, {top:-200,bottom:-100, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -200]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110 ', compare_with_stringify, {top:-110,bottom:-100, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -110]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110  ', compare_with_stringify, {top:-110,bottom:-100, name: TOO_EARLY, emoji: '🛌', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN, -110 ]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -100]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji:' 👔️', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN , -100]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [timeBoundaries, PUBLIC_TRANSPORT, -99]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 5}, [timeBoundaries, SCHOOL_RUN , -99]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [timeBoundaries, PUBLIC_TRANSPORT, -81]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {top:-100,bottom:-80, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 95}, [timeBoundaries, SCHOOL_RUN , -81]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {top:-80,bottom:-60, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -80]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {top:-80,bottom:-60, name: MOVE_QUICKER_TIME, emoji:' 🥣', progressBarPercentage: 0}, [timeBoundaries, SCHOOL_RUN , -80]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {top:-60,bottom:-50, name: ALMOST_OUT_OF_TIME, emoji: ' 🚗', progressBarPercentage: 90}, [timeBoundaries, PUBLIC_TRANSPORT, -51]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {top:-60,bottom:-50, name: ALMOST_OUT_OF_TIME, emoji:' 👞', progressBarPercentage: 90}, [timeBoundaries, SCHOOL_RUN , -51]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME start of last boundary (-50)', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, -50]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -40', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [timeBoundaries, PUBLIC_TRANSPORT, -40 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -30 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [timeBoundaries, PUBLIC_TRANSPORT, -30 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -20 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [timeBoundaries, PUBLIC_TRANSPORT, -20 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -10 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [timeBoundaries, PUBLIC_TRANSPORT, -10 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -5 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [timeBoundaries, PUBLIC_TRANSPORT, -5 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -4 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [timeBoundaries, PUBLIC_TRANSPORT, -4 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -3 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [timeBoundaries, PUBLIC_TRANSPORT, -3 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -2 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [timeBoundaries, PUBLIC_TRANSPORT, -2 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -1 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [timeBoundaries, PUBLIC_TRANSPORT, -1 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -0 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [timeBoundaries, PUBLIC_TRANSPORT, 0 ]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME +10 ', compare_with_stringify, {top:-50,bottom:0, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [timeBoundaries, PUBLIC_TRANSPORT, +10 ]);
+    let departureTime = new Date("2021-12-06T07:00:00.000Z");
+
+    //get_boundary_window( train, transportType )
+    let train = {
+        departureTime : departureTime,
+        departureTimeStamp : departureTime.getTime(),
+        noNeedToLeaveBeforeTimeStamp:  date_plus_seconds( departureTime, -100 ).getTime(),
+        walkTransitTimeStamp:  date_plus_seconds( departureTime, -80 ).getTime(),
+        runTransitTimeStamp:  date_plus_seconds( departureTime, -60 ).getTime(),
+        driveTransitTimeStamp:  date_plus_seconds( departureTime, -50 ).getTime()
+    };
+
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -200 ', compare_with_stringify, {start:1638773800000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -200 )]);
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110 ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -110 )]);
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110  ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '🛌', progressBarPercentage: 0}, [train, SCHOOL_RUN, date_plus_seconds( departureTime, -110  )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -100 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji:' 👔️', progressBarPercentage: 0}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -100 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -99 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 5}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -99 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -81 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 95}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -81 )]);
+    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -80 )]);
+    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji:' 🥣', progressBarPercentage: 0}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -80 )]);
+    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji: ' 🚗', progressBarPercentage: 90}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -51 )]);
+    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji:' 👞', progressBarPercentage: 90}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -51 )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME start of last boundary (-50)', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -50 )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -40', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -40  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -30 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -30  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -20 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -20  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -10  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -5 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -5  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -4 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -4  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -3 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -3  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -2 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -2  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -1 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -1  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -0 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [train, PUBLIC_TRANSPORT,date_plus_seconds( departureTime, 0  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME +10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, +10  )]);
     return result;
 }
 
@@ -661,55 +796,9 @@ function is_week_day_unit_test(){
     return result;
 }
 
-
-function extract_trains_details_unit_test_old(){
-    let result = '';
-
-    let now = new Date();
-
-    let trainResult =   {
-                          mode: "train",
-                          service: "24652005",
-                          train_uid: "L15290",
-                          platform: null,
-                          operator: "SE",
-                          operator_name: "Southeastern",
-                          aimed_departure_time: "NOT-USED",
-                          aimed_arrival_time: "1:41",
-                          aimed_pass_time: null,
-                          origin_name: "Bromley South",
-                          destination_name: "London Victoria",
-                          source: "Network Rail",
-                          category: "OO",
-                          service_timetable: {
-                            id: "https://a-long-url"
-                          },
-                          status: "ON TIME",
-                          expected_arrival_time: "1:41",
-                          expected_departure_time: "now+41m",
-                          best_arrival_estimate_mins: 117,
-                          best_departure_estimate_mins: 117
-                        }
-
-    let expectedDepartureTime = calculate_departure_date_time_from_time_only( "now+41m", now )
-
-    let expected_result = {  departureTime : expectedDepartureTime,
-                             platform: null,
-                             destination:  "VIC",
-                             status: "ON TIME"
-                          }
-
-    let mockStationNameToCodeMap = { get: function(){ return "VIC"} }
-
-
-    //extract_trains_details( trainDetails , stationNameToCodeMap )
-    result += run_unit_test( "extract_trains_details", 'extract departureTime, platform, destination, status',  compare_with_stringify, expected_result, [ trainResult, mockStationNameToCodeMap, now] );
-    return result;
-}
-
 function date_from_string_unit_test(){
     let result = '';
-    let date = new Date("2021-12-06T07:00:00.000Z")
+    let date = new Date("2021-12-06T07:00:00.000Z");
     result += run_unit_test( "date_from_string", 'departure-10m is 06:59:50',  compare_with_stringify, '2021-12-06T06:59:50.000Z', ['departure-10s', date ] );
     result += run_unit_test( "date_from_string", 'departure-10h is 21:00:00',  compare_with_stringify, '2021-12-05T21:00:00.000Z', ['departure-10h', date ] );
     result += run_unit_test( "date_from_string", 'departure-24h is 07:00:00 the previous day',  compare_with_stringify, '2021-12-05T07:00:00.000Z', ['departure-24h', date ] );
@@ -727,26 +816,3 @@ function date_from_string_unit_test(){
     result += run_unit_test( "date_from_string", '24:10',  compare_with_stringify, '2021-12-07T00:10:00.000Z' , ['24:10', date] );
     return result;
 }
-
-function build_time_boundaries_unit_test(){
-    let result = '';
-    let date = new Date()
-    // build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, date )
-    result += run_unit_test( "build_time_boundaries", 'correctly sets the times',  compare_with_stringify, {"tooEarly":-360000,"plentyOfTime":-4800,"moveQuickerTime":-60,"almostOutOfTime":50,"deadLine": date },
-                                                                                          ["departure-100h", "departure-80m", "departure-60s", "departure+50s", date] );
-    result += run_unit_test( "build_time_boundaries", 'correctly sets the times',  compare_with_stringify, {"tooEarly":-40,"plentyOfTime":-30,"moveQuickerTime":-20,"almostOutOfTime":-10,"deadLine": date },
-                                                                                          ["departure-40s", "departure-30s", "departure-20s", "departure-10s", date] );
-    return result;
-}
-
-function convert_station_names_to_codes_unit_test(){
-    let result = '';
-    let stationNameToCodeMap = new Map();
-    stationNameToCodeMap.set("London Cannon Street", "LCS");
-    stationNameToCodeMap.set( "London Charing Cross", "LCX");
-    stationNameToCodeMap.set("London Bridge", "LGB" );
-    let stationNames = [ "London Cannon Street", "London Charing Cross", "London Bridge" ];
-    result += run_unit_test( "convert_station_names_to_codes", 'returns list of correct codes',  compare_with_stringify, ["LCS", "LCX", "LGB"], [stationNames, stationNameToCodeMap] );
-    return result;
-}
-

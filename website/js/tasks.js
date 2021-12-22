@@ -1,52 +1,71 @@
 
-
-
-function set_todo_tasks( interval_in_seconds ) {
-    if( familyDashboard.config.showTasks ){
-        let trelloKeys = familyDashboard.runtimeConfig.apiKeys.trello;
-        let taskLists = familyDashboard.runtimeConfig.tasks;
-        update_tasks_list(trelloKeys, taskLists.todoListId,'todo');
-        set_refresh_values( "#tasks-update", interval_in_seconds );
+function update_tasks_ui( model, now ){
+    if( model.config.showTasks ){
+        if( model.data.tasks.nextRebuildUiTime < now ){
+            set_tasks_into_ui( model );
+            model.data.tasks.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
+        }
+        let countDown = generate_next_download_count_down_values( model.data.tasks.nextDownloadDataTime, model.runtimeConfig.tasks.updateEvery );
+        set_next_download_count_down_elements( "tasks-update", countDown );
     }
 }
 
-//TODO - USE COMMON GET METHOD
-function update_tasks_list( trelloConfig,  listId, statusId ){
-    let urlToGet = '';
-    if( is_debug_on()){
-        urlToGet = 'test-data/trello-list-' + listId + '.json'
-    }else{
-        urlToGet = "https://api.trello.com/1/lists/"
-                    + listId
-                    +"/cards?key=" + trelloConfig.key
-                    +"&token=" + trelloConfig.token
-                    +"&fields=name,dateLastActivity,labels"
-    }
-    $.ajax({
-        url: urlToGet,
-        type: "GET",
-        success: function( data ) {
-            let status_id = '#' + statusId;
-            $(status_id).html("");
-            $(data).each(function(){
-                let now = $.now();
-                let dateTime = Date.parse(this.dateLastActivity); //new Date( "2020-04-01");
-                let diffDate = new Date(now - dateTime);
-                let days = Math.floor( diffDate/1000/60/60/24 );
-                if( this.labels.length > 0 ){
-                    $(status_id).append('<li><span class="'+this.labels[0].name+'">[' + days + '] '+this.name+' </span></li>');
-                }else{
-                    $(status_id).append('<li><span class="no-label">[' + days + '] '+this.name+' </span></li>');
-                }
-            });
-        },
-        error: function ( xhr ){
-            if( xhr ){
-                log_error( xhr.status +' Error calling Trello for '+statusId+ ' ('+xhr.responseText +').');
-            }else{
-                log_error( ' Error calling Trello for '+statusId+ ' ( Unknown error ).');
-            }
-
+function set_tasks_into_ui( model ){
+    let todoElementId = '#todo';
+    $(todoElementId).html("");
+    model.data.tasks.todo.forEach(function( todo ){
+        let now = new Date();
+        let dateTime = Date.parse(todo.dateLastActivity); //new Date( "2020-04-01");
+        let diffInMillis = new Date(now - dateTime);
+        let days = Math.floor( diffInMillis/1000/60/60/24 );
+        if( todo.label ){
+            $(todoElementId).append('<li><span class="'+todo.label+'">[' + days + '] '+todo.name+' </span></li>');
+        }else{
+            $(todoElementId).append('<li><span class="no-label">[' + days + '] '+todo.name+' </span></li>');
         }
     });
+}
+
+function update_model_with_tasks( model, date ){
+    if( model.config.showTasks && model.data.tasks.nextDownloadDataTime < date ){
+         download_tasks( model );
+         model.data.tasks.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
+         model.data.tasks.lastUpdatedTime = new Date();
+    }
+    return model;
+}
+
+function download_tasks( model ){
+    let urlToGet = '';
+    let todoListId = model.runtimeConfig.tasks.todoListId;
+    if(model.config.debugging){
+        urlToGet = 'test-data/trello-list-' + todoListId + '.json'
+    }else{
+        urlToGet = "https://api.trello.com/1/lists/"
+                    + todoListId
+                    +"/cards?key=" + model.apiKeys.trello.key
+                    +"&token=" + model.apiKeys.trello.token
+                    +"&fields=name,dateLastActivity,labels"
+    }
+
+    get_remote_data( urlToGet, false, model, function( model2, data ){
+        model2.data.tasks.todo = [];
+        let now = new Date();
+        $(data).each(function( index, it ){
+            let dateTime = (new Date(it.dateLastActivity)).getTime();
+            let diffInMillis = new Date(now.getTime() - dateTime);
+
+            let task = {}
+            task.dateLastActivity = it.dateLastActivity;
+            task.name = it.name;
+            if( it.labels.length > 0 ){
+                task.label = it.labels[0].name;
+            }
+            model2.data.tasks.todo.push( task );
+        });
+    }, function( model2, xhr, default_process_error){
+        model2.config.showTasks = false;
+        default_process_error( xhr );
+    });
+    return model;
 }

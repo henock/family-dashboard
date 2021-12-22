@@ -107,9 +107,7 @@ function colour_special_fields( field, regex ){
     }
 }
 
-
 function get_runtime_config(){
-
     let runtimeConfigUrl = "data/runtime-config.json";
 
     if(is_debug_on()){
@@ -170,7 +168,6 @@ function get_runtime_config(){
     return runtimeConfig;
 }
 
-
 function build_time_boundaries_for_school_run( schoolRunCountDown ){
     let tooEarly = schoolRunCountDown.getOutOfBedBy;
     let plentyOfTime = schoolRunCountDown.finishGettingDressedBy;
@@ -181,22 +178,47 @@ function build_time_boundaries_for_school_run( schoolRunCountDown ){
     return timeBoundaries;
 }
 
-
-function build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, date ){
+function build_time_boundaries( noNeedToLeaveBeforeTimeStamp, walkTransitTimeStamp, runTransitTimeStamp, driveTransitTimeStamp, date ){
     let deadLine = new Date(date);
     let timeBoundaries = {}
-    let tooEarlyDate = date_from_string( tooEarly, deadLine );
-    let plentyOfTimeDate = date_from_string( plentyOfTime, deadLine )
-    let moveQuickerTimeDate = date_from_string( moveQuickerTime, deadLine )
-    let almostOutOfTimeDate = date_from_string( almostOutOfTime, deadLine )
-    timeBoundaries.tooEarly = get_seconds_between_dates( tooEarlyDate , deadLine );
-    timeBoundaries.plentyOfTime = get_seconds_between_dates( plentyOfTimeDate , deadLine );
-    timeBoundaries.moveQuickerTime = get_seconds_between_dates( moveQuickerTimeDate , deadLine );
-    timeBoundaries.almostOutOfTime = get_seconds_between_dates( almostOutOfTimeDate , deadLine );
+    noNeedToLeaveBeforeTimeStamp = date_from_string( noNeedToLeaveBeforeTimeStamp, deadLine );
+    walkTransitTimeStamp = date_from_string( walkTransitTimeStamp, deadLine )
+    runTransitTimeStamp = date_from_string( runTransitTimeStamp, deadLine )
+    driveTransitTimeStamp = date_from_string( driveTransitTimeStamp, deadLine )
+    timeBoundaries.noNeedToLeaveBeforeTimeStamp = get_seconds_between_dates( noNeedToLeaveBeforeTimeStamp , deadLine );
+    timeBoundaries.walkTransitTimeStamp = get_seconds_between_dates( walkTransitTimeStamp , deadLine );
+    timeBoundaries.runTransitTimeStamp = get_seconds_between_dates( runTransitTimeStamp , deadLine );
+    timeBoundaries.driveTransitTimeStamp = get_seconds_between_dates( driveTransitTimeStamp , deadLine );
     timeBoundaries.deadLine = deadLine;
     return timeBoundaries;
 }
 
+function calculate_progress_bar_percentage( startTimeStamp, endTimeStamp, currentTimeStamp ){
+    if( currentTimeStamp < startTimeStamp || currentTimeStamp > endTimeStamp ){
+        return 0;
+    } else {
+        let deNominator = ( endTimeStamp - startTimeStamp);
+        let nominator = (endTimeStamp - currentTimeStamp );
+        let percentage = 100 - (Math.floor((nominator / deNominator) * 100));
+        return percentage;
+    }
+}
+
+function generate_next_download_count_down_values( nextDownloadDataTime, updateEvery, time ){
+    time = time ? time : new Date();
+    startTimeStamp = date_plus_seconds( nextDownloadDataTime, updateEvery * -1 );
+    let percentage = calculate_progress_bar_percentage( startTimeStamp, nextDownloadDataTime.getTime(), time.getTime() );
+    let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( nextDownloadDataTime ));
+    return {
+        timeLeft: countDownTime,
+        percentage: percentage
+    }
+}
+
+function set_next_download_count_down_elements( elementId, countDown ){
+    $("#" + elementId ).html( countDown.timeLeft );
+    $("#" + elementId + "-progress-bar").attr( "style", "width: " + countDown.percentage + "%" );
+}
 
 
 

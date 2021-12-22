@@ -1,99 +1,236 @@
-let familyDashboard = {
-    runtimeConfig : undefined,
-    config : {
-        timeZone: true,
-        showSchoolRunCountdown: true,
-        weather: true,
-        travel: true,
-        tasks: true
-    }
-}
+var globalModel;
 
-function set_refresh_values(refresh_type_element_id, intervalInSeconds) {
-    if (intervalInSeconds) {
-        $(refresh_type_element_id).attr("refresh-period-in-seconds", intervalInSeconds);
-    } else {
-        intervalInSeconds = $(refresh_type_element_id).attr("refresh-period-in-seconds");
-    }
-
-    let nextRefreshTime = new Date(now_plus_seconds(intervalInSeconds));
-    $(refresh_type_element_id).attr("next-refresh-time", nextRefreshTime);
-}
-
-function call_function_then_set_on_interval_seconds(functionToCall, intervalInSeconds) {
-    call_function_then_set_on_interval_milli_seconds(functionToCall, intervalInSeconds * 1000)
-}
-
-function call_function_then_set_on_interval_milli_seconds(functionToCall, intervalInMillis) {
-    functionToCall(intervalInMillis / 1000);
-    setInterval(functionToCall, intervalInMillis);
-}
-
-function run_function_every_100_milli_seconds() {
-    set_date_and_time();
-    update_all_count_down_times();
-    remove_overdue_messages();
-}
-
-function check_runtime_config_present() {
-    familyDashboard.runtimeConfig = get_runtime_config();
-    if (familyDashboard.runtimeConfig) {
-        console.log('Runtime config is being read fine: ' + familyDashboard.runtimeConfig);
-        return true;
-    } else {
-        console.log('ERROR --- Runtime config is missing: ' + familyDashboard.runtimeConfig);
-        return false;
-    }
-}
-
-function switch_off_everything(){
-    familyDashboard.config.showTimeZones = false;
-    familyDashboard.config.showSchoolRunCountdown = false;
-    familyDashboard.config.showWeather = false;
-    familyDashboard.config.showTravel = false;
-    familyDashboard.config.showTasks = false;
-}
-
-function switch_on_sections_we_have_config_for(){
-    familyDashboard.config.showTimeZones = familyDashboard.runtimeConfig.timeZones.show;
-    familyDashboard.config.showSchoolRunCountdown = familyDashboard.runtimeConfig.schoolRunCountDown.show;
-    familyDashboard.config.showTasks =  familyDashboard.runtimeConfig.tasks.show;
-    familyDashboard.config.showTravel = familyDashboard.runtimeConfig.trains.show;
-    familyDashboard.config.showWeather = familyDashboard.runtimeConfig.weather.show;
-}
-
-function hide_everything(){
-    $("#dashboard-main").addClass('d-none');
-    $("#date-time-messages").addClass('d-none');
-    $("#school-run").addClass('d-none');
-    $("#weather").addClass('d-none');
-    $("#travel").addClass('d-none');
-    $("#tasks").addClass('d-none');
-}
-
-function old_document_ready() {
-    //todo tidy up
-    if(running_unit_tests()){
-        hide_everything();
-        switch_off_everything();
-        run_all_unit_tests();
-        $("#main-container").removeClass( "border" );
+$(document).ready(function () {
+    if( false ){
+        old_document_ready();
     }else{
-        if (!check_runtime_config_present()) {
-            switch_off_everything();
-            $("#dynamic-runtime-config").removeClass('d-none');
-            log_info("Could not get the runtime-config.json.", 10);
-        }else{
-            $("#dashboard-main").removeClass('d-none');
-            switch_on_sections_we_have_config_for();
+        if(running_unit_tests()){
+            run_all_unit_tests();
+        } else {
+            setInterval(update_dashboard, 100 );
         }
+    }
+});
 
-        call_function_then_set_on_interval_seconds(set_todo_tasks, 120);
-        call_function_then_set_on_interval_seconds(set_train_arrivals, 600);
-        call_function_then_set_on_interval_seconds(update_times_in_different_timezone, 60);
-        call_function_then_set_on_interval_seconds(show_or_hide_school_run_departure_time, 1);
-        call_function_then_set_on_interval_seconds(show_all_weather, 600);
-        call_function_then_set_on_interval_milli_seconds(run_function_every_100_milli_seconds, 100);
+function update_dashboard() {
+    globalModel = setup_model( is_debug_on(), globalModel );
+    update_model( globalModel );
+    update_UI( globalModel );
+}
+
+function update_model( model ){
+    update_model_with_tasks( model, new Date() );
+    update_model_with_trains( model, new Date() );
+    update_model_with_weather( model, new Date() );
+}
+
+function update_UI( model ){
+    $("#dashboard-main").removeClass("d-none");
+    let now = new Date();
+    update_date_and_time_ui( model, now );
+    update_timezones_ui( model, now );
+    update_tasks_ui( model, now );
+    update_trains_ui( model, now );
+    update_weather_ui( model, now );
+}
+
+function update_date_and_time_ui( model, now ){
+    let monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - DO THIS LOCAL THING BETTER
+
+    let date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();
+    let time = get_padded_time_seconds( now );
+    let local_time_zone = (now.isDstObserved() ? ' (British Summer Time)' : 'GMT');
+
+    $("#date").html( date );
+    $("#local-time").html( time );
+    $("#local-time-zone").html( local_time_zone );
+}
+
+function update_model_with_api_keys( model ){
+    let urlToGet = "data/api-keys.json";
+
+    if(model.config.debugging){
+        urlToGet = "test-data/debug-api-keys.json";
+    }
+
+    get_remote_data( urlToGet, false, model, function( model2, data ){
+        model2.apiKeys = data;
+    }, function( model2, xhr, default_process_error){
+        log_error( "Unable to retrieve API keys from: '" + urlToGet + "' - switching off all functionality that requires remote calls.")
+        model2.config.showTasks = false;
+        model2.config.showWeather =  false;
+        model2.config.showTravel =  false;
+        model2.config.showTimeZones =  false;
+        default_process_error( xhr );
+    });
+
+    return model;
+}
+
+function update_model_with_station_to_code_maps( model ){
+    if( !model.stationCodeToNameMap ){  //only need it once.
+        let urlToGet = "data/station-codes.json";
+        get_remote_data( urlToGet, false, model
+        , function( model2, data ){
+            let entries = Object.entries(data);
+            let entry;
+            let nameToCode = new Map();
+            let codeToName = new Map();
+
+            for (var i = 0; i < entries.length; i++ ){
+                entry = entries[i];
+                nameToCode.set( entry[0], entry[1] );
+                codeToName.set( entry[1], entry[0] );
+            };
+            model2.stationCodeToNameMap = codeToName;
+            model2.stationNameToCodeMap = nameToCode;
+        }, function( model2, xhr, default_process_error){
+            model2.config.showTravel =  false;
+            default_process_error( xhr );
+        });
+    }
+    return model;
+}
+
+function update_model_with_runtime_config( model ){
+    function success_function( model2, data ){
+        model2.runtimeConfig = data;
+    }
+
+    function error_function( model2, xhr, default_process_error ){
+        model2.config.showTasks = false;
+        model2.config.showWeather =  false;
+        model2.config.showTimeZones =  false;
+        model2.config.showTravel =  false;
+        model2.config.showSchoolRunCountdown =  false;
+        default_process_error( xhr );
+    }
+
+    let urlToGet = "data/runtime-config.json";
+    if(model.config.debugging){
+        urlToGet = "test-data/debug-runtime-config.json";
+    }
+
+    get_remote_data(urlToGet, false, model, success_function, error_function );
+    return model;
+}
+
+function setup_model( debugging, model, overWrite ){
+    if( overWrite || !model ){
+        model = create_empty_model( debugging );
+        update_model_with_api_keys( model );
+        update_model_with_runtime_config( model );
+        sanitise_dates( model );
+        update_model_with_station_to_code_maps( model );
+    }else{
+        model.isDefaultModel = false;
+    }
+    return model;
+}
+
+function create_empty_model( debugging ){
+    let inThePast = now_plus_seconds( -10 );
+    return {
+        isDefaultModel: true,
+        config : {
+            debugging: debugging,
+            showTimeZones: true,
+            showSchoolRunCountdown: true,
+            showWeather: true,
+            showTravel: true,
+            showTasks: true
+        },
+        apiKeys : {},
+        runtimeConfig : {},
+        data : {
+            tasks : {
+                nextDownloadDataTime: inThePast,
+                nextRebuildUiTime: inThePast
+            },
+            timeZones :{
+                insertedTimeElements: false
+            },
+            trains : {
+                nextDownloadDataTime: inThePast,
+                nextRebuildUiTime: inThePast,
+                startingStations: []
+            },
+            weather :{
+                nextDownloadDataTime: inThePast,
+                nextRebuildUiTime: inThePast,
+                today: {},
+                futureDays: []
+            }
+        }
     }
 }
 
+function sanitise_dates( model, date ){
+    date = date ? date : new Date();
+    sanitise_dates_for_school_run( model, date );
+    sanitise_dates_for_commute_config( model, date );
+    sanitise_dates_for_train_times( model, date);
+}
+
+function sanitise_dates_for_train_times( model, date ){
+    date = date ? date : new Date();
+    model.data.trains.startingStations.forEach(function(station){
+        station.departures.forEach(function(departure){
+            departure.departureTime = date_from_string( departure.departureTime );
+        });
+    });
+    return model;
+}
+
+function sanitise_dates_for_commute_config( model , date ){
+    date = date ? date : new Date();
+    model.runtimeConfig.transport.commute.forEach(function( commute ){
+        commute.noNeedToLeaveBefore = seconds_from_string( commute.noNeedToLeaveBefore );
+        commute.walkTransitTime = seconds_from_string( commute.walkTransitTime );
+        commute.runTransitTime = seconds_from_string( commute.runTransitTime );
+        commute.driveTransitTime = seconds_from_string( commute.driveTransitTime );
+    });
+    return model;
+}
+
+function sanitise_dates_for_school_run( model , date ){
+    date = date ? date : new Date();
+    let schoolRun = model.runtimeConfig.schoolRunCountDown;
+    schoolRun.showCountDownStart = date_from_string( schoolRun.showCountDownStart );
+    schoolRun.startCountDown = date_from_string( schoolRun.startCountDown );
+    schoolRun.getOutOfBedBy = date_from_string( schoolRun.getOutOfBedBy );
+    schoolRun.finishGettingDressedBy = date_from_string( schoolRun.finishGettingDressedBy );
+    schoolRun.finishBreakfastBy = date_from_string( schoolRun.finishBreakfastBy );
+    schoolRun.putOnShoesBy = date_from_string( schoolRun.putOnShoesBy );
+    schoolRun.departureTime = date_from_string( schoolRun.departureTime );
+    schoolRun.stopCountDown = date_from_string( schoolRun.stopCountDown );
+    schoolRun.showCountDownStop = date_from_string( schoolRun.showCountDownStop );
+    return model;
+}
+
+function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){
+
+    function process_error( xhr ){
+        if( xhr ){
+            log_error( xhr.status +': Error calling ' + urlToGet + ', got the response  ('+xhr.responseText +').');
+        } else{
+            log_error( ' Error calling ' + urlToGet + ' ( Unknown error ).');
+        }
+    }
+
+    $.ajax({
+        url: urlToGet,
+        type: "GET",
+        async: runAsync,
+        success: function( data ) {
+            return success_response_parser_function( model, data );
+        },
+        error: function ( xhr ){
+            if( fail_response_parser_function ) {
+                fail_response_parser_function( model , xhr , process_error);
+            }else{
+                process_error( xhr );
+            }
+        }
+    });
+}
