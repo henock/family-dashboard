@@ -15,14 +15,14 @@ A simple web based dashboard - making API calls to other systems and displaying 
 
 ### Resulting family dashboard
 
-![Original Trello board](/docs/2021-12-09-family-dashboard.jpg)
+![Original Trello board](/docs/2021-12-22-family-dashboard.jpg)
 
 
 ## Configuration and deployment 
 
 All code is present in the repository, however you will need to update the /config/api-keys.json with your own keys, and this is passed in as a volume see the docker run command below.
 
-The api-key.json file will need to be updated  
+The api-keys.json file will need to be updated  
 ```json
 {
   "trello": {
@@ -51,16 +51,17 @@ What your runtime-config.json needs to look like
   "weather": {
     "show": true,
     "showFutureHour": 6,
-    "location": "<your GPS coordinates>",
+    "location": "<your gps coordinates>",
     "updateEvery": "1800"
   },
   "tasks": {
     "show": true,
-    "todoListId": "<your Todo list>",
+    "todoListId": "<your todoListId>",
     "updateEvery": "120"
   },
   "timeZones": {
     "show": true,
+    "updateEvery": "120",
     "zones": [
       {
         "id": "America/New_York",
@@ -150,17 +151,16 @@ Note: Any changes to the remote repo will not be automatically updated locally
 - The version allows for an update to the source repo to be dynamically updated in the dashboard
 ```shell
  git clone https://github.com/henock/family-dashboard.git # or your clone.
+ cd family-dashboard
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
  # Populate /website/data/api-kyes.json with the keys in the format shown above
- docker build -t henock/family-dashboard .  
- docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/data/runtime-config.json henock/family-dashboard   
+docker build -t henock/family-dashboard .
+docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/data/runtime-config.json henock/family-dashboard
 ``` 
-
-## Running the dashboard
-
-Once you have started docker container locally you open 
+If you are using docker to run the dashboard it will check the github repository for changes and download them.
+It logs this behaviour in a 10 day rolling logs files (see below)
 
 | description | link                                                                                         |
 | :---        | :---                                                                                         |
