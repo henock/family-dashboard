@@ -1,12 +1,17 @@
 
 function update_tasks_ui( model, now ){
     if( model.config.showTasks ){
+        $("#date-travel-weather").removeClass( "col").addClass("col-8");
         if( model.data.tasks.nextRebuildUiTime < now ){
             set_tasks_into_ui( model );
             model.data.tasks.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
         }
         let countDown = generate_next_download_count_down_values( model.data.tasks.nextDownloadDataTime, model.runtimeConfig.tasks.updateEvery );
         set_next_download_count_down_elements( "tasks-update", countDown );
+        $(".task-element").removeClass( "d-none");
+    }else{
+        $(".task-element").addClass( "d-none");
+        $("#date-travel-weather").removeClass( "col-8").addClass("col");
     }
 }
 

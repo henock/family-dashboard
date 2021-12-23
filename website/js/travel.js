@@ -27,6 +27,9 @@ function update_trains_ui( model, now ){
         update_all_train_count_downs( model );
         let countDown = generate_next_download_count_down_values( model.data.trains.nextDownloadDataTime, model.runtimeConfig.trains.updateEvery );
         set_next_download_count_down_elements( "train-travel-update", countDown );
+        $(".travel-element").removeClass("d-none");
+    }else{
+        $(".travel-element").addClass("d-none");
     }
 }
 
@@ -125,35 +128,33 @@ function get_boundary_window( train, transportType, time ){
     let currentTimeStamp = time.getTime();
     let boundaryWindow = {};
     if ( currentTimeStamp < train.noNeedToLeaveBeforeTimeStamp ) {
-    boundaryWindow.start = currentTimeStamp;
-    boundaryWindow.end =  train.noNeedToLeaveBeforeTimeStamp;
-    boundaryWindow.name = TOO_EARLY;
-    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ?  "🛌" :  "");
+        boundaryWindow.start = currentTimeStamp;
+        boundaryWindow.end =  train.noNeedToLeaveBeforeTimeStamp;
+        boundaryWindow.name = TOO_EARLY;
+        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ?  "🛌" :  "");
     } else if( currentTimeStamp < train.walkTransitTimeStamp ) {
-    boundaryWindow.start = train.noNeedToLeaveBeforeTimeStamp;
-    boundaryWindow.end =  train.walkTransitTimeStamp;
-    boundaryWindow.name = PLENTY_OF_TIME;
-    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👔️" : "🚶");
+        boundaryWindow.start = train.noNeedToLeaveBeforeTimeStamp;
+        boundaryWindow.end =  train.walkTransitTimeStamp;
+        boundaryWindow.name = PLENTY_OF_TIME;
+        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👔️" : "🚶");
     } else if( currentTimeStamp < train.runTransitTimeStamp ) {
-    boundaryWindow.start = train.walkTransitTimeStamp;
-    boundaryWindow.end =  train.runTransitTimeStamp;
-    boundaryWindow.name = MOVE_QUICKER_TIME;
-    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 🥣" : "🏃");
+        boundaryWindow.start = train.walkTransitTimeStamp;
+        boundaryWindow.end =  train.runTransitTimeStamp;
+        boundaryWindow.name = MOVE_QUICKER_TIME;
+        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 🥣" : "🏃");
     } else if( currentTimeStamp < train.driveTransitTimeStamp ) {
-    boundaryWindow.start = train.runTransitTimeStamp;
-    boundaryWindow.end =  train.driveTransitTimeStamp;
-    boundaryWindow.name = ALMOST_OUT_OF_TIME;
-    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚗");
+        boundaryWindow.start = train.runTransitTimeStamp;
+        boundaryWindow.end =  train.driveTransitTimeStamp;
+        boundaryWindow.name = ALMOST_OUT_OF_TIME;
+        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚗");
     } else {
-    boundaryWindow.start = train.driveTransitTimeStamp;
-    boundaryWindow.end = train.departureTimeStamp;
-    boundaryWindow.name = OUT_OF_TIME;
-    boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? "" :  "");
+        boundaryWindow.start = train.driveTransitTimeStamp;
+        boundaryWindow.end = train.departureTimeStamp;
+        boundaryWindow.name = OUT_OF_TIME;
+        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? "" :  "");
     }
 
-
     boundaryWindow.progressBarPercentage = calculate_progress_bar_percentage(   boundaryWindow.start, boundaryWindow.end, currentTimeStamp );
-
     return boundaryWindow;
 }
 

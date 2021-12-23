@@ -34,25 +34,24 @@ function log_debug(  message, remove_after_seconds ){
 }
 
 function log_info( message, remove_after_seconds ){
-    write_message( message, "text-info", remove_after_seconds  );
+    write_message( message, "text-info", remove_after_seconds, false );
 }
 
 function log_error( message, remove_after_seconds ){
     console.trace();
-    write_message( message, "text-danger border-top border-bottom p-1", remove_after_seconds  );
+    write_message( message, "text-danger border-top border-bottom p-1", remove_after_seconds, false );
 }
 
 function log_warn( message, remove_after_seconds ){
     console.trace();
-    write_message( message, "text-warning", remove_after_seconds  );
+    write_message( message, "text-warning", remove_after_seconds, false  );
 }
 
 
 function add_message_div_if_missing(){
-    let userMessagesDiv = $("#user-messages");
-    if( userMessagesDiv.length === 0 ){
-        let messageDiv = $("#user-messages-div");
-        messageDiv.removeClass('d-none');
+    let messageDiv = $("#user-messages-div");
+    messageDiv.removeClass('d-none');
+    if( messageDiv.length === 0 ){
         messageDiv.html(  '<ul class="list-unstyled" id="user-messages"/>' );
     }
 }
@@ -84,15 +83,15 @@ function write_message( message, aClass, removeAfterSeconds, asHtml ){
 }
 
 function remove_overdue_messages(){
-    let userMessage = $("#user-messages");
-    userMessage.children().each( function( index, it ){
+    let userMessageList = $("#user-messages");
+    userMessageList.children().each( function( index, it ){
         let removeTime = new Date( $(it).attr("remove-time"));
         let secondsSince = get_seconds_since(removeTime);
         if( secondsSince > 0 ){
             it.remove();
         }
     });
-    if( userMessage.children().length === 0 ){
+    if( userMessageList.children().length === 0 ){
         let userMessageDiv = $("#user-messages-div");
         userMessageDiv.html('');
         userMessageDiv.addClass('d-none');

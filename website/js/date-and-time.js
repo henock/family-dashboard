@@ -248,6 +248,9 @@ function update_timezones_ui( model, now ){
         for( var i = 0; i < timeZones.length && i < 4; i++ ){
             $("#time-zone-"+ i +"-time").html( convert_to_time_zone(now, timeZones[i].id ));
         }
+        $(".time-zone-element").removeClass("d-none");
+    }else{
+        $(".time-zone-element").addClass("d-none");
     }
 }
 

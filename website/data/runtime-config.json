@@ -16,7 +16,6 @@
   },
   "timeZones": {
     "show": true,
-    "updateEvery": "120",
     "zones": [
       {
         "id": "America/New_York",

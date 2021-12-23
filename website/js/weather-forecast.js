@@ -19,6 +19,9 @@ function update_weather_ui( model, now ){
         }
         let countDown = generate_next_download_count_down_values( model.data.weather.nextDownloadDataTime, model.runtimeConfig.weather.updateEvery );
         set_next_download_count_down_elements( "weather-update", countDown );
+        $(".weather-element").removeClass("d-none");
+    } else{
+        $(".weather-element").addClass("d-none");
     }
 }
 

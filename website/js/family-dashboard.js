@@ -13,7 +13,17 @@ $(document).ready(function () {
 });
 
 function update_dashboard() {
-    globalModel = setup_model( is_debug_on(), globalModel );
+    if( !globalModel ){
+        if(is_debug_on()){
+            globalModel = setup_model( true );
+            log_error( "Test error removed in 10 seconds...", 10 );
+            write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds...</b>", 5 );
+        }else{
+            globalModel = setup_model( false );
+        }
+    }else{
+        globalModel.isDefaultModel = false;
+    }
     update_model( globalModel );
     update_UI( globalModel );
 }
@@ -32,6 +42,7 @@ function update_UI( model ){
     update_tasks_ui( model, now );
     update_trains_ui( model, now );
     update_weather_ui( model, now );
+    remove_overdue_messages();
 }
 
 function update_date_and_time_ui( model, now ){
@@ -48,7 +59,6 @@ function update_date_and_time_ui( model, now ){
 
 function update_model_with_api_keys( model ){
     let urlToGet = "data/api-keys.json";
-
     if(model.config.debugging){
         urlToGet = "test-data/debug-api-keys.json";
     }
@@ -95,6 +105,11 @@ function update_model_with_station_to_code_maps( model ){
 function update_model_with_runtime_config( model ){
     function success_function( model2, data ){
         model2.runtimeConfig = data;
+        model2.config.showTasks = data.tasks.show
+        model2.config.showTravel = data.trains.show
+        model2.config.showWeather = data.weather.show
+        model2.config.showTimeZones = data.timeZones.show
+        model2.config.showSchoolRunCountDown = data.schoolRunCountDown.show
     }
 
     function error_function( model2, xhr, default_process_error ){
@@ -102,7 +117,7 @@ function update_model_with_runtime_config( model ){
         model2.config.showWeather =  false;
         model2.config.showTimeZones =  false;
         model2.config.showTravel =  false;
-        model2.config.showSchoolRunCountdown =  false;
+        model2.config.showSchoolRunCountDown =  false;
         default_process_error( xhr );
     }
 
@@ -115,16 +130,12 @@ function update_model_with_runtime_config( model ){
     return model;
 }
 
-function setup_model( debugging, model, overWrite ){
-    if( overWrite || !model ){
-        model = create_empty_model( debugging );
-        update_model_with_api_keys( model );
-        update_model_with_runtime_config( model );
-        sanitise_dates( model );
-        update_model_with_station_to_code_maps( model );
-    }else{
-        model.isDefaultModel = false;
-    }
+function setup_model( debugging, overWrite ){
+    model = create_empty_model( debugging );
+    update_model_with_api_keys( model );
+    update_model_with_runtime_config( model );
+    sanitise_dates( model );
+    update_model_with_station_to_code_maps( model );
     return model;
 }
 
@@ -135,7 +146,7 @@ function create_empty_model( debugging ){
         config : {
             debugging: debugging,
             showTimeZones: true,
-            showSchoolRunCountdown: true,
+            showSchoolRunCountDown: true,
             showWeather: true,
             showTravel: true,
             showTasks: true
@@ -210,7 +221,7 @@ function sanitise_dates_for_school_run( model , date ){
 
 function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){
 
-    function process_error( xhr ){
+    function default_process_error( xhr ){
         if( xhr ){
             log_error( xhr.status +': Error calling ' + urlToGet + ', got the response  ('+xhr.responseText +').');
         } else{
@@ -227,7 +238,7 @@ function get_remote_data( urlToGet, runAsync, model, success_response_parser_fun
         },
         error: function ( xhr ){
             if( fail_response_parser_function ) {
-                fail_response_parser_function( model , xhr , process_error);
+                fail_response_parser_function( model , xhr , default_process_error);
             }else{
                 process_error( xhr );
             }
