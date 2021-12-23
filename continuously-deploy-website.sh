@@ -5,6 +5,7 @@ set -euo pipefail
 
 TODAY="$(date -I)"
 SOURCE_FOLDER="/source"
+SECRETS_FOLDER="/secrets"
 RUNTIME_CONFIG_FILE="runtime-config.json"
 LOG_PREFIX="deployments-on-"
 LOG_SUFFIX=".log.txt"                                         # .txt suffix allows the log files to be viewed in the browser
@@ -35,6 +36,7 @@ show_all_variables(){
   log "================================================"
   log "LOG_DIR=$LOG_DIR"
   log "SOURCE_FOLDER=$SOURCE_FOLDER"
+  log "SECRETS_FOLDER=$SECRETS_FOLDER"
   log "RUNTIME_CONFIG_FILE=$RUNTIME_CONFIG_FILE"
   log "FAMILY_DASHBOARD_FOLDER=$FAMILY_DASHBOARD_FOLDER"
   log "GIT_FOLDER=$GIT_FOLDER"
@@ -74,6 +76,7 @@ copy_files_to_website(){
 
   log "Copying source files ($WEBSITE_FOLDER/* -> $NGINX_WEBSITE_FOLDER)."
   cp -Rvf "$WEBSITE_FOLDER/"* "$NGINX_WEBSITE_FOLDER"
+  cp -Rvf "$SECRETS_FOLDER/"* "$NGINX_WEBSITE_FOLDER/data"
   log "Site update complete."
 }
 
