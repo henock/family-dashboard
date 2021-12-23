@@ -2,7 +2,11 @@
 
 A simple browser only based dashboard, that gathers remote data via API calls out to three external websites and displays the results on a monitor in our kitchen.
 
-![Original Trello board](/docs/2021-12-22-family-dashboard.jpg)
+## Full dashboard.
+![Family Dashboard](/docs/2021-12-23-family-dashboard.jpg)
+
+## Train times count down explained.
+![Count down explained](/docs/2021-12-23-train-countdown-explained.jpg)
 
 ## Configuration and deployment 
 
@@ -27,7 +31,7 @@ You will need to sign up and get Api keys and token from the remote websites tha
 
 
 - [http://transportapi.com](https://developer.transportapi.com/signup) - to get data on train departure times.
-- [http://tomorrow.io](https://app.tomorrow.io/signup?planid=60d46beae90c3b3549a59ff3) - to get data on weather forecasts for a GPS coordinate.
+- [http://tomorrow.io](https://app.tomorrow.io/signup) - to get data on weather forecasts for a GPS coordinate.
 - [http://trello.com](https://trello.com/signup) - to get data on a todo or tasks list (we maintain the task list via the trello mobile app )
 
 
@@ -205,7 +209,7 @@ Note: Any changes to the remote repo will not be automatically updated locally
 ```
 
 | description | link                                                             |
-| :---        |:-----------------------------------------------------------------|
+|:------------|:-----------------------------------------------------------------|
 | website     | [http://localhost:8000/website/](http://localhost:8000/website/) |
 
 # Running the dashboard from Docker 
@@ -223,7 +227,7 @@ docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html
 If you are using docker to run the dashboard it will check the github repository for changes and download them.
 It logs this behaviour in a 10 day rolling logs files (see below)
 
-| description | link                                                                                         |
-| :---        | :---                                                                                         |
-| website     | [http://localhost:8080/family-dashboard/](http://localhost:8080/family-dashboard/)           |
-| logs        | [http://localhost:8080/family-dashboard/logs/](http://localhost:8080/family-dashboard/logs/) |
+| description | link                                                                                          |
+|:------------|:----------------------------------------------------------------------------------------------|
+| website     | [http://localhost:8080/family-dashboard/](http://localhost:8080/family-dashboard/)            |
+| logs        | [http://localhost:8080/family-dashboard/logs/](http://localhost:8080/family-dashboard/logs/)  |

@@ -3,7 +3,6 @@ var failedTests = 0;
 var failedTestLinks = [];
 var skippedTests = 0;
 var skippedTestLinks = [];
-var skipRemoteTests = true;
 var testCounter = 0;
 
 function running_unit_tests(){
@@ -12,6 +11,10 @@ function running_unit_tests(){
 
 function is_debug_on(){
     return 'true' === get_url_parameter('debug');
+}
+
+function is_running_remote_tests(){
+    return 'true' === get_url_parameter('doNotSkipRemoteTests');
 }
 
 function get_url_parameter( paramToGet ){
@@ -71,6 +74,12 @@ function build_link_to_anchors( links ){
     });
     linksList += '</ol>';
 
+    return linksList;
+}
+function build_link_toggle_remote_tests(){
+    let runningRemoteTests = is_running_remote_tests();
+    let linksList ='<a href="?testing=true&doNotSkipRemoteTests='+ (!runningRemoteTests)+ '">' +(runningRemoteTests?"":"Dont") +
+                                                                                        ' run remote test.</a>';
     return linksList;
 }
 
@@ -162,8 +171,11 @@ function run_all_unit_tests(){
 
     let totals = '<table class="p-2 border-1">'
                     + '<tr class="text-success"><td class="display-2">Passed</td><td class="display-2">' + passedTests + '</td></tr>'
-                    + '<tr class="text-warning"><td class="display-2">Skipped</td><td class="display-2">' + skippedTests + '</td><td>'+ build_link_to_anchors( skippedTestLinks )+'</td></tr>'
-                    + '<tr class="text-danger"><td class="display-2">Failed</td><td class="display-2">' + failedTests + '</td><td>'+ build_link_to_anchors( failedTestLinks )+'</td></tr></table>'
+                    + '<tr class="text-warning"><td class="display-2">Skipped</td><td class="display-2">' + skippedTests + '</td><td>'+
+                                                    build_link_to_anchors( skippedTestLinks )+'<br/>'+
+                                                    build_link_toggle_remote_tests() +'</td></tr>'
+                    + '<tr class="text-danger"><td class="display-2">Failed</td><td class="display-2">' + failedTests + '</td><td>'+
+                                                    build_link_to_anchors( failedTestLinks )+'</td></tr></table>'
     write_message( totals + result , 'text-success', -1 , true );
 }
 
@@ -174,8 +186,8 @@ function run_all_unit_tests(){
 //        let testResult = ();
 //        return {
 //            passed: testResult,
-//            expectedValue: 'model.data.tasks.todo is not null',
-//            testedValue:   model.data.tasks
+//            expectedValue: 'THIS_HAS_NOT_BEEN_SET_YET',
+//            testedValue:   'THIS_HAS_NOT_BEEN_SET_YET'
 //        }
 //    }
 //    model = setup_model(true);
@@ -431,7 +443,7 @@ function common_get_remote_weather_data_unit_test(){
     result += run_unit_test( "common_get_remote_weather_data", 'a valid response from local data/tomorrow-timelines-1d',
                                 check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
 
-    if(skipRemoteTests){
+    if(is_running_remote_tests()){
         result += skip_unit_test( "common_get_remote_weather_data", testCounter, 'a valid response from http://tomorrow.io' );
     }else{
         model = setup_model(false);
@@ -467,7 +479,7 @@ function get_train_station_departures_unit_test(){
 
     result += run_unit_test( "get_train_station_departures", 'We get data back from /test-data ',  check_for_trains, {}, [startingStation,  model] );
 
-    if(skipRemoteTests){
+    if(is_running_remote_tests()){
         result += skip_unit_test( "get_train_station_departures", testCounter, 'We get data back from transportApi' );
     }else{
         model = setup_model(false);
@@ -578,7 +590,7 @@ function download_tasks_unit_test(){
     let model = setup_model(true);
     result += run_unit_test( "download_tasks", 'we get back debugging tasks',  check_for_tasks, 'not used', [model] );
 
-    if(skipRemoteTests){
+    if(is_running_remote_tests()){
         result += skip_unit_test( "download_tasks", testCounter, 'we get back actual tasks from trello.com' );
     }else{
         model = setup_model(false);
@@ -684,7 +696,7 @@ function update_model_only_update_times_have_expired(){
 function setup_model_unit_test(){
 
     function test_model_setup( expected, model ){
-        let testResult = (expected === model.isDefaultModel)
+        let testResult = (expected === model.config.debugging )
         return {
             passed: testResult,
             expectedValue: 'expected === model.isDefaultModel',
@@ -693,13 +705,10 @@ function setup_model_unit_test(){
     }
 
     let result = '';
-    result += run_unit_test( "setup_model", 'returns the default model when its undefined',  test_model_setup, true, [true] );
+    result += run_unit_test( "setup_model", 'returns the default model with debugging on',  test_model_setup, true, [true] );
 
     model = setup_model( true );
-    result += run_unit_test( "setup_model", 'return current model when its already defined',  test_model_setup, false, [true,model] );
-
-    model = setup_model( true);
-    result += run_unit_test( "setup_model", 'return the default model overwrite is true',  test_model_setup, true, [true, model, true ] );
+    result += run_unit_test( "setup_model", 'return the default model with debugging off',  test_model_setup, false, [false] );
 
     return result;
 }

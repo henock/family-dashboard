@@ -130,7 +130,7 @@ function update_model_with_runtime_config( model ){
     return model;
 }
 
-function setup_model( debugging, overWrite ){
+function setup_model( debugging ){
     model = create_empty_model( debugging );
     update_model_with_api_keys( model );
     update_model_with_runtime_config( model );
