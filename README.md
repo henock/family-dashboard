@@ -53,9 +53,9 @@ You will need to sign up and get Api keys and token from the remote websites tha
 
 ### runtime-config.json
 
-What your /data/runtime-config.json is used to configure what your dashboard will display and how it behaves.
+The /data/runtime-config.json is used to configure what your dashboard will display and how it behaves.
 
-The first section configures whether a section (ie trains/weather etc.) is working or not.
+The first fragment configures whether a section (ie trains/weather etc.) is shown or not, and if shown how often the data is retrieved.
 
 ```json
 ...  
@@ -85,7 +85,7 @@ The first section configures whether a section (ie trains/weather etc.) is worki
 | *.updateEvery          | How often to in seconds to call the respective api for new data. <br/>*Note*:You should not exceed the rate limit. |                 |
 | weather.showFutureHour | Today's weather is shown as it is now and this number of hours in the future.                                      |            1-23 |
 | weather.location       | The GPS coordinates for the location for which you want to see the weather, sunrise and sunset times.              |                 |
-| task.todoListId        | The Id of your trello do list.                                                                                     |                 |
+| task.todoListId        | The Id of your trello to list.                                                                                     |                 |
 
 
 ```json
@@ -116,7 +116,7 @@ The first section configures whether a section (ie trains/weather etc.) is worki
 | show | Configures if the different time zone clocks are shown                                                                                          |              true OR false |
 | id   | The international time zone id you want to display <br/> [this](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) is the full list. |           "Africa/Nairobi" |
 | name | The name you would like displayed                                                                                                               |              Addis / Mum   |
-| flag | The flag emoji you would like displayed [here](https://emojipedia.org/flags/) is the full list.                                                 | "\uD83C\uDDEA\uD83C\uDDF9" | 
+| flag | The flag emoji you would like displayed [here](https://emojipedia.org/flags/) is the full list (copy/paste the emoji).                          | "\uD83C\uDDEA\uD83C\uDDF9" | 
 
 
 ```json
@@ -204,6 +204,7 @@ Note: Any changes to the remote repo will not be automatically updated locally
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
  # Populate /website/data/api-kyes.json with the keys in the format shown above
+ # Update /website/data/runtime-config.json with your preferred stations, GPS coordinates etc.
  python3 -m http.server    
 ```
 
@@ -220,10 +221,11 @@ Note: Any changes to the remote repo will not be automatically updated locally
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
  # Populate /website/data/api-kyes.json with the keys in the format shown above
+ # Update /website/data/runtime-config.json with your preferred stations, GPS coordinates etc.
 docker build -t henock/family-dashboard .
 docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/data/runtime-config.json henock/family-dashboard
 ``` 
-If you are using docker to run the dashboard it will check the github repository for changes and download them.
+If you are using docker to run the dashboard, it will check the github repository for changes once a minute and download them.
 It logs this behaviour in a 10 day rolling logs files (see below)
 
 | description | link                                                                                          |
