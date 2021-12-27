@@ -24,7 +24,7 @@ You will need to sign up and get Api keys and token from the remote websites tha
 
 > **SECURITY NOTE**
 >
-> This is not supposed to be running out on the internet, but instead on a local server running in our kitchen.
+> This dashboard as it is configured currently is not supposed to be running out on the internet, but instead on a local server running in our kitchen.
 >
 > This is because your /data/api-keys.json would expose all of your API keys
 
