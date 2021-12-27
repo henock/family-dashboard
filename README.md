@@ -200,11 +200,13 @@ Note: Any changes to the remote repo will not be automatically updated locally
 ```shell
  git clone https://github.com/henock/family-dashboard.git
  cd family-dashboard
+ 
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
  # Populate /website/data/api-kyes.json with the keys in the format shown above
  # Update /website/data/runtime-config.json with your preferred stations, GPS coordinates etc.
+ 
  python3 -m http.server    
 ```
 
@@ -217,11 +219,13 @@ Note: Any changes to the remote repo will not be automatically updated locally
 ```shell
  git clone https://github.com/henock/family-dashboard.git # or your clone.
  cd family-dashboard
+ 
  # Register with http://www.trello.com, create a dashboard with todo, In progress, done lists & get an API key
  # Register with http://www.tomrrow.io and get an API key
  # Register with http://www.transportapi.com and get an API key
  # Populate /website/data/api-kyes.json with the keys in the format shown above
  # Update /website/data/runtime-config.json with your preferred stations, GPS coordinates etc.
+ 
 docker build -t henock/family-dashboard .
 docker run -p 8080:80 -v $(pwd)/config/runtime-config.json:/usr/share/nginx/html/family-dashboard/data/runtime-config.json henock/family-dashboard
 ``` 
