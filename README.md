@@ -21,18 +21,17 @@ The dashboard is configured via two configuration files
 ### api-keys.json  
 You will need to sign up and get Api keys and token from the remote websites that provide this data.  
 
+- [http://transportapi.com](https://developer.transportapi.com/signup) - to get data on train departure times.
+- [http://tomorrow.io](https://app.tomorrow.io/signup) - to get data on weather forecasts for a GPS coordinate.
+- [http://trello.com](https://trello.com/signup) - to get data on a todo or tasks list (we maintain the task list via the trello mobile app )
+
+
 
 > **SECURITY NOTE**
 >
 > This dashboard as it is configured currently is not supposed to be running out on the internet, but instead on a local server running in our kitchen.
 >
 > This is because your /data/api-keys.json would expose all of your API keys
-
-
-
-- [http://transportapi.com](https://developer.transportapi.com/signup) - to get data on train departure times.
-- [http://tomorrow.io](https://app.tomorrow.io/signup) - to get data on weather forecasts for a GPS coordinate.
-- [http://trello.com](https://trello.com/signup) - to get data on a todo or tasks list (we maintain the task list via the trello mobile app )
 
 
 ```json
