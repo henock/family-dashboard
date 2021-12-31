@@ -29,8 +29,8 @@ function set_weather_for_upcoming_days( model ){
     $("#sun-rise-time").html(  model.data.weather.today.sunrise );
     $("#sun-set-time").html(  model.data.weather.today.sunset );
     $("#current-weather").html("");
-    for (var i = 1; i < 6; i++) {
-        set_weather_details( 'day-' + i, model.data.weather.futureDays[0],  );
+    for (var i = 0; i < 5; i++) {
+        set_weather_details( 'day-' + i, model.data.weather.futureDays[i],  );
     }
 }
 
