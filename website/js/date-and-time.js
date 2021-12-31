@@ -70,6 +70,14 @@ function get_padded_time_minutes( date ){
     return time;
 }
 
+function get_padded_time_milli_seconds( date ){
+    date = date ? date : new Date();
+    let time = 	get_padded_time_minutes(date) + ':' +
+                pad_with_leading_zero(date.getSeconds()) + ':' +
+                date.getMilliseconds();
+    return time;
+}
+
 function get_padded_time_seconds( date ){
     date = date ? date : new Date();
     let time = 	get_padded_time_minutes(date) + ':' +

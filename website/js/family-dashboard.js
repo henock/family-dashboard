@@ -1,25 +1,21 @@
 var globalModel;
 
 $(document).ready(function () {
-    if( false ){
-        old_document_ready();
-    }else{
-        if(running_unit_tests()){
-            run_all_unit_tests();
-        } else {
-            setInterval(update_dashboard, 100 );
-        }
+    if(running_unit_tests()){
+        run_all_unit_tests();
+    } else {
+        setInterval(update_dashboard, 100 );
     }
 });
 
 function update_dashboard() {
     if( !globalModel ){
         if(is_debug_on()){
-            globalModel = setup_model( true );
+            globalModel = setup_model( true, false );
             log_error( "Test error removed in 10 seconds after: " + get_padded_time_seconds(now_plus_seconds(10)), 10 );
             write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds after: "+ get_padded_time_seconds(now_plus_seconds(5))+"</b>", 5 );
         }else{
-            globalModel = setup_model( false );
+            globalModel = setup_model( false, true );
         }
     }else{
         globalModel.isDefaultModel = false;
@@ -52,13 +48,13 @@ function reload_dashboard(){
 }
 
 function download_last_code_update_file( model ){
-
     let urlToGet = 'data/last-code-update.json';
+    let callAsync = model.config.callAsync;
     if(model.config.debugging){
         urlToGet = 'test-data/last-code-update.json';
     }
 
-    get_remote_data( urlToGet, false, model, function( model2, data ){
+    get_remote_data( urlToGet, callAsync, model, function( model2, data ){
         model2.data.reloadDashboardCheck.lastCodeUpdate = date_from_string_only( data.lastCodeUpdate );
     }, function( model2, xhr, default_process_error){
         log_error( "Unable to retrieve last-code-update.json from: '" + urlToGet + "'.")
@@ -94,11 +90,12 @@ function update_date_and_time_ui( model, now ){
 
 function update_model_with_api_keys( model ){
     let urlToGet = "data/api-keys.json";
+    let callAsync = model.config.callAsync;
     if(model.config.debugging){
         urlToGet = "test-data/debug-api-keys.json";
     }
 
-    get_remote_data( urlToGet, false, model, function( model2, data ){
+    get_remote_data( urlToGet, callAsync, model, function( model2, data ){
         model2.apiKeys = data;
     }, function( model2, xhr, default_process_error){
         log_error( "Unable to retrieve API keys from: '" + urlToGet + "' - switching off all functionality that requires remote calls.")
@@ -145,6 +142,8 @@ function update_model_with_runtime_config( model ){
         model2.config.showWeather = data.weather.show
         model2.config.showTimeZones = data.timeZones.show
         model2.config.showSchoolRunCountDown = data.schoolRunCountDown.show
+        sanitise_dates_for_school_run( model2.runtimeConfig.schoolRunCountDown, new Date() );
+        sanitise_dates_for_commute_config( model2.runtimeConfig.transport.commute, new Date() );
     }
 
     function error_function( model2, xhr, default_process_error ){
@@ -157,16 +156,17 @@ function update_model_with_runtime_config( model ){
     }
 
     let urlToGet = "data/runtime-config.json";
+    let callAsync = model.config.callAsync;
     if(model.config.debugging){
         urlToGet = "test-data/debug-runtime-config.json";
     }
 
-    get_remote_data(urlToGet, false, model, success_function, error_function );
+    get_remote_data(urlToGet, callAsync, model, success_function, error_function );
     return model;
 }
 
-function setup_model( debugging ){
-    model = create_empty_model( debugging );
+function setup_model( debugging, callAsync ){
+    model = create_empty_model( debugging, callAsync );
     update_model_with_api_keys( model );
     update_model_with_runtime_config( model );
     download_last_code_update_file( model );
@@ -175,18 +175,19 @@ function setup_model( debugging ){
     return model;
 }
 
-function create_empty_model( debugging ){
+function create_empty_model( debugging, callAsync ){
     let inThePast = now_plus_seconds( -10 );
     let nextReloadDashboardCheck = now_plus_seconds( 300 );
     return {
         isDefaultModel: true,
         config : {
             debugging: debugging,
-            showTimeZones: true,
-            showSchoolRunCountDown: true,
-            showWeather: true,
-            showTravel: true,
-            showTasks: true
+            callAsync: callAsync,
+            showTimeZones: false,
+            showSchoolRunCountDown: false,
+            showWeather: false,
+            showTravel: false,
+            showTasks: false
         },
         apiKeys : {},
         runtimeConfig : {},
@@ -195,18 +196,23 @@ function create_empty_model( debugging ){
                 nextDownloadDataTime: nextReloadDashboardCheck
             },
             tasks : {
+                dataDownloaded: false,
                 nextDownloadDataTime: inThePast,
                 nextRebuildUiTime: inThePast
             },
             timeZones :{
+                dataDownloaded: false,
                 insertedTimeElements: false
             },
             trains : {
+                dataDownloaded: 0,
                 nextDownloadDataTime: inThePast,
                 nextRebuildUiTime: inThePast,
                 startingStations: []
             },
             weather :{
+                todaysDataDownloaded: false,
+                futureDataDownloaded: false,
                 nextDownloadDataTime: inThePast,
                 nextRebuildUiTime: inThePast,
                 today: {},
@@ -218,35 +224,21 @@ function create_empty_model( debugging ){
 
 function sanitise_dates( model, date ){
     date = date ? date : new Date();
-    sanitise_dates_for_school_run( model, date );
-    sanitise_dates_for_commute_config( model, date );
-    sanitise_dates_for_train_times( model, date);
 }
 
-function sanitise_dates_for_train_times( model, date ){
+function sanitise_dates_for_commute_config( commutes , date ){
     date = date ? date : new Date();
-    model.data.trains.startingStations.forEach(function(station){
-        station.departures.forEach(function(departure){
-            departure.departureTime = date_from_string( departure.departureTime );
-        });
-    });
-    return model;
-}
-
-function sanitise_dates_for_commute_config( model , date ){
-    date = date ? date : new Date();
-    model.runtimeConfig.transport.commute.forEach(function( commute ){
+    commutes.forEach(function( commute ){
         commute.noNeedToLeaveBefore = seconds_from_string( commute.noNeedToLeaveBefore );
         commute.walkTransitTime = seconds_from_string( commute.walkTransitTime );
         commute.runTransitTime = seconds_from_string( commute.runTransitTime );
         commute.driveTransitTime = seconds_from_string( commute.driveTransitTime );
     });
-    return model;
+    return commutes;
 }
 
-function sanitise_dates_for_school_run( model , date ){
+function sanitise_dates_for_school_run( schoolRun , date ){
     date = date ? date : new Date();
-    let schoolRun = model.runtimeConfig.schoolRunCountDown;
     schoolRun.showCountDownStart = date_from_string( schoolRun.showCountDownStart );
     schoolRun.startCountDown = date_from_string( schoolRun.startCountDown );
     schoolRun.getOutOfBedBy = date_from_string( schoolRun.getOutOfBedBy );
@@ -256,7 +248,7 @@ function sanitise_dates_for_school_run( model , date ){
     schoolRun.departureTime = date_from_string( schoolRun.departureTime );
     schoolRun.stopCountDown = date_from_string( schoolRun.stopCountDown );
     schoolRun.showCountDownStop = date_from_string( schoolRun.showCountDownStop );
-    return model;
+    return schoolRun;
 }
 
 function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){

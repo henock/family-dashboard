@@ -134,9 +134,13 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
                                 + add_fail_row( 'actual',  JSON.stringify( testResult.testedValue ))
                                 + '</table></td></tr>';
     }
-
-
 }
+
+function write_unit_test_result( message, pass ){
+    let aClass = pass ?  'text-success' : 'text-danger';
+    write_message( message, aClass, -1 , true );
+}
+
 
 ///////////////////  TESTS ////////////////////
 function run_all_unit_tests(){
@@ -191,7 +195,7 @@ function run_all_unit_tests(){
 //            testedValue:   'THIS_HAS_NOT_BEEN_SET_YET'
 //        }
 //    }
-//    model = setup_model(true);
+//    model = setup_model(true, false);
 //    result += run_unit_test( "XXX", '💔',  compare_exact, 'expected_result', [model] );
 //    return result;
 //}
@@ -208,7 +212,7 @@ function check_for_new_code_unit_test(){
         }
     }
 
-    let model = setup_model(true);
+    let model = setup_model(true, false);
     model.reloadFunctionHasBeenCalled = false;
 
     function mock_reload_function(){
@@ -310,8 +314,8 @@ function build_train_row_unit_test(){
 function sanitise_dates_for_school_run_unit_test(){
     let result = '';
 
-    function specific_compare_method( expected, model ){
-        let actualDate = model.runtimeConfig.schoolRunCountDown.showCountDownStart
+    function specific_compare_method( expected, schoolRunCountDown ){
+        let actualDate = schoolRunCountDown.showCountDownStart;
         let testResult = compare_hours_minutes_secs( expected, actualDate );
         return {
             passed: testResult,
@@ -320,9 +324,8 @@ function sanitise_dates_for_school_run_unit_test(){
         }
     }
 
-    model = create_empty_model(true);
     let nowMinus50 = now_plus_seconds( -50 );
-    model.runtimeConfig.schoolRunCountDown = {
+    let schoolRunCountDown = {
             show: true,
             showCountDownStart: "departure-50s",
             startCountDown: "departure-45s",
@@ -335,15 +338,15 @@ function sanitise_dates_for_school_run_unit_test(){
             showCountDownStop: "departure+10s"
        };
 
-    result += run_unit_test( "sanitise_dates_for_school_run", 'departure-50s becomes ' + nowMinus50 ,  specific_compare_method, nowMinus50, [model] );
+    result += run_unit_test( "sanitise_dates_for_school_run", 'departure-50s becomes ' + nowMinus50 ,  specific_compare_method, nowMinus50, [schoolRunCountDown] );
     return result;
 }
 
 function sanitise_dates_for_commute_config_unit_test(){
     let result = '';
 
-    function specific_compare_method( expected, model ){
-        let actualDate = model.runtimeConfig.transport.commute[0].noNeedToLeaveBefore
+    function specific_compare_method( expected, commute ){
+        let actualDate = commute[0].noNeedToLeaveBefore
         let testResult = ( expected == actualDate );
         return {
             passed: testResult,
@@ -352,24 +355,22 @@ function sanitise_dates_for_commute_config_unit_test(){
         }
     }
 
-    model = create_empty_model(true);
-    model.runtimeConfig.transport = {};
-    model.runtimeConfig.transport.commute = [{
+    let commute = [{
         noNeedToLeaveBefore : "now+5s",
         walkTransitTime : "depart-10m",
         runTransitTime : "depart-5m",
         driveTransitTime : "depart-2m"
     }];
 
-    result += run_unit_test( "sanitise_dates_for_commute_config", 'now+5 becomes 5' ,  specific_compare_method, 5, [model] );
+    result += run_unit_test( "sanitise_dates_for_commute_config", 'now+5 becomes 5' ,  specific_compare_method, 5, [commute] );
     return result;
 }
 
 function sanitise_dates_for_train_times_unit_test(){
     let result = '';
 
-    function specific_compare_method( expected, model ){
-        let actualDate = model.data.trains.startingStations[0].departures[0].departureTime
+    function specific_compare_method( expected, departures ){
+        let actualDate = departures[0].departureTime
         let testResult = compare_hours_minutes_secs( expected, actualDate );
         return {
             passed: testResult,
@@ -379,19 +380,8 @@ function sanitise_dates_for_train_times_unit_test(){
     }
 
     let twelveTen = set_time_on_date(new Date(), "12:10");
-    let model = {
-        data: {
-            trains:{
-                startingStations : [ {
-                    departures: [{
-                        departureTime: "12:10"
-                    }]
-                }]
-            }
-
-        }
-    }
-    result += run_unit_test( "sanitise_dates_for_train_times", '12:10 becomes' + twelveTen ,  specific_compare_method, twelveTen, [model] );
+    let departures =  [{  departureTime: "12:10" }]
+    result += run_unit_test( "sanitise_dates_for_train_times", '12:10 becomes' + twelveTen ,  specific_compare_method, twelveTen, [departures] );
     return result;
 }
 
@@ -428,7 +418,7 @@ function update_model_with_weather_next_five_days_unit_test(){
         }
     }
 
-    model = setup_model(true);
+    model = setup_model(true, false);
     result += run_unit_test( "update_model_with_weather_next_five_days", "getting future weather from local",  check_for_weather, 'expected_result', [model] );
     return result;
 }
@@ -444,7 +434,7 @@ function update_model_with_weather_now_and_future_hour_unit_test(){
         }
     }
 
-    model = setup_model(true);
+    model = setup_model(true, false);
     result += run_unit_test( "update_model_with_weather_now_and_future_hour", "getting today's weather from local",  check_for_weather, 'expected_result', [model] );
     return result;
 }
@@ -470,14 +460,14 @@ function common_get_remote_weather_data_unit_test(){
         }
     }
 
-    model = setup_model(true);
+    model = setup_model(true, false);
     result += run_unit_test( "common_get_remote_weather_data", 'a valid response from local data/tomorrow-timelines-1d',
                                 check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
 
     if(is_running_remote_tests()){
         result += skip_unit_test( "common_get_remote_weather_data", testCounter, 'a valid response from http://tomorrow.io' );
     }else{
-        model = setup_model(false);
+        model = setup_model(false, false);
         result += run_unit_test( "common_get_remote_weather_data", 'a valid response from http://tomorrow.io',
                                     check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
     }
@@ -506,14 +496,14 @@ function get_train_station_departures_unit_test(){
             to: [ "London Cannon Street", "London Charing Cross", "London Bridge" ]
         };
 
-    model = setup_model(true);
+    model = setup_model(true, false);
 
     result += run_unit_test( "get_train_station_departures", 'We get data back from /test-data ',  check_for_trains, {}, [startingStation,  model] );
 
     if(is_running_remote_tests()){
         result += skip_unit_test( "get_train_station_departures", testCounter, 'We get data back from transportApi' );
     }else{
-        model = setup_model(false);
+        model = setup_model(false, false);
         result += run_unit_test( "get_train_station_departures", 'We get data back from transportApi ',  check_for_trains, {}, [startingStation, model] );
     }
     return result;
@@ -539,7 +529,7 @@ function extract_trains_details_unit_test(){
        }
     }
 
-    model = setup_model(true);
+    model = setup_model(true, false);
 
     let commute = {
         noNeedToLeaveBefore : -40,
@@ -600,7 +590,7 @@ function update_model_with_station_to_code_maps_unit_test(){
                            '<br/>London Cannon Street => ' + model.stationNameToCodeMap.get("London Cannon Street")
         }
     }
-    model = setup_model(true);
+    model = setup_model(true, false);
     result += run_unit_test( "update_model_with_station_to_code_maps", 'returns station codes from /data/station-codes.json',  check_for_maps, 'not used', [model] );
     return result;
 }
@@ -618,13 +608,13 @@ function download_tasks_unit_test(){
 
     //download_tasks( model )
     let result = '';
-    let model = setup_model(true);
+    let model = setup_model(true, false);
     result += run_unit_test( "download_tasks", 'we get back debugging tasks',  check_for_tasks, 'not used', [model] );
 
     if(is_running_remote_tests()){
         result += skip_unit_test( "download_tasks", testCounter, 'we get back actual tasks from trello.com' );
     }else{
-        model = setup_model(false);
+        model = setup_model(false, false);
         result += run_unit_test( "download_tasks", 'we get back actual tasks from trello.com',  check_for_tasks, 'not used', [model] );
     }
     return result;
@@ -643,7 +633,7 @@ function update_model_with_api_keys_unit_test(){
     }
 
     let result = '';
-    let model = setup_model(true);
+    let model = setup_model(true, false);
     result += run_unit_test( "update_model_with_api_keys", 'we get the debug api keys',  api_key_test_function, 'not used', [model] );
 
     return result;
@@ -653,7 +643,7 @@ function update_model_only_update_times_have_expired(){
 
     let result = '';
 
-    let model = setup_model(true);
+    let model = setup_model(true, false);
     // update_model_with_tasks
     function next_update_time_for_tasks_test_function( expectedTime, model ){
         let nextDownloadDataTime = model.data.tasks.nextDownloadDataTime;
@@ -736,16 +726,16 @@ function setup_model_unit_test(){
     }
 
     let result = '';
-    result += run_unit_test( "setup_model", 'returns the default model with debugging on',  test_model_setup, true, [true] );
+    result += run_unit_test( "setup_model", 'returns the default model with debugging on',  test_model_setup, true, [true, false] );
 
-    result += run_unit_test( "setup_model", 'return the default model with debugging off',  test_model_setup, false, [false] );
+    result += run_unit_test( "setup_model", 'return the default model with debugging off',  test_model_setup, false, [false, false] );
 
     return result;
 }
 
 function update_model_with_runtime_config_unit_test(){
     let result = '';
-    let model = setup_model(true);
+    let model = setup_model(true, false);
 
     function test_for_runtime_config( expectedRuntimeConfig, actual ){
          let testResult = ( undefined !==  actual.runtimeConfig.trains.show );

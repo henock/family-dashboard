@@ -27,8 +27,7 @@ function get_request_param( param_id ){
 }
 
 function log_debug(  message, remove_after_seconds ){
-    let debugging = get_request_param('debug');
-    if(debugging){
+    if(is_debug_on()){
         log_info( 'DEBUG: ' + message, remove_after_seconds );
     }
 }
@@ -56,14 +55,15 @@ function add_message_div_if_missing(){
     }
 }
 
-function write_unit_test_result( message, pass ){
-    let aClass = pass ?  'text-success' : 'text-danger';
-    write_message( message, aClass, -1 , true );
-}
-
 function write_html_message( message, aClass, remove_after_seconds ){
     write_message( message, aClass, remove_after_seconds, true );
 }
+
+function write_to_console( message ){
+    let timedMessage = (' [' + get_padded_time_milli_seconds( new Date() ) + '] ' + message);
+    console.log( timedMessage );
+}
+
 
 function write_message( message, aClass, removeAfterSeconds, asHtml ){
     let removeTime = removeAfterSeconds ? now_plus_seconds(removeAfterSeconds) : now_plus_seconds( 5 );

@@ -1,6 +1,6 @@
 
 function update_tasks_ui( model, now ){
-    if( model.config.showTasks ){
+    if( model.config.showTasks && model.data.tasks.dataDownloaded ){
         $("#date-travel-weather").removeClass( "col").addClass("col-8");
         if( model.data.tasks.nextRebuildUiTime < now ){
             set_tasks_into_ui( model );
@@ -12,6 +12,7 @@ function update_tasks_ui( model, now ){
     }else{
         $(".task-element").addClass( "d-none");
         $("#date-travel-weather").removeClass( "col-8").addClass("col");
+        write_to_console( 'tasks.dataDownloaded=' + model.data.tasks.dataDownloaded );
     }
 }
 
@@ -42,6 +43,7 @@ function update_model_with_tasks( model, date ){
 
 function download_tasks( model ){
     let urlToGet = '';
+    let callAsync = model.config.callAsync;
     let todoListId = model.runtimeConfig.tasks.todoListId;
     if(model.config.debugging){
         urlToGet = 'test-data/trello-list-' + todoListId + '.json'
@@ -53,7 +55,7 @@ function download_tasks( model ){
                     +"&fields=name,dateLastActivity,labels"
     }
 
-    get_remote_data( urlToGet, false, model, function( model2, data ){
+    get_remote_data( urlToGet, callAsync, model, function( model2, data ){
         model2.data.tasks.todo = [];
         let now = new Date();
         $(data).each(function( index, it ){
@@ -68,8 +70,9 @@ function download_tasks( model ){
             }
             model2.data.tasks.todo.push( task );
         });
+        model2.data.tasks.dataDownloaded = true;
+        write_to_console( 'model2.data.tasks.dataDownloaded=true' );
     }, function( model2, xhr, default_process_error){
-        model2.config.showTasks = false;
         default_process_error( xhr );
     });
     return model;

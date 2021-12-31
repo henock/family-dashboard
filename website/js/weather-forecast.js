@@ -11,32 +11,44 @@ function update_model_with_weather( model, date ){
 }
 
 function update_weather_ui( model, now ){
-    if( model.config.showWeather ){
+    if( model.config.showWeather && ( model.data.weather.todaysDataDownloaded || model.data.weather.futureDataDownloaded )){
         if( model.data.weather.nextRebuildUiTime < now ){
             set_weather_for_upcoming_days( model );
-            set_weather_for_upcoming_hours( model );
-            model.data.weather.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
+            set_weather_for_today( model );
+            if( model.data.weather.todaysDataDownloaded && model.data.weather.futureDataDownloaded ){
+                model.data.weather.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
+            }
         }
         let countDown = generate_next_download_count_down_values( model.data.weather.nextDownloadDataTime, model.runtimeConfig.weather.updateEvery );
         set_next_download_count_down_elements( "weather-update", countDown );
         $(".weather-element").removeClass("d-none");
     } else{
         $(".weather-element").addClass("d-none");
+        write_to_console( 'weather.todaysDataDownloaded=' + model.data.weather.todaysDataDownloaded +
+                            ' weather.futureDataDownloaded=' + model.data.weather.futureDataDownloaded );
     }
 }
 
 function set_weather_for_upcoming_days( model ){
-    $("#sun-rise-time").html(  model.data.weather.today.sunrise );
-    $("#sun-set-time").html(  model.data.weather.today.sunset );
-    $("#current-weather").html("");
-    for (var i = 0; i < 5; i++) {
-        set_weather_details( 'day-' + i, model.data.weather.futureDays[i],  );
+    if( model.data.weather.futureDataDownloaded ){
+        $("#current-weather").html("");
+        for (var i = 0; i < 5; i++) {
+            set_weather_details( 'day-' + i, model.data.weather.futureDays[i],  );
+        }
+    }else{
+        write_to_console( 'weather.futureDataDownloaded=false' );
     }
 }
 
-function set_weather_for_upcoming_hours( model ){
-    set_weather_details( 'now', model.data.weather.today.now );
-    set_weather_details( 'plus-6hrs', model.data.weather.today.futureHour );
+function set_weather_for_today( model ){
+    if( model.data.weather.todaysDataDownloaded ){
+        $("#sun-rise-time").html(  model.data.weather.today.sunrise );
+        $("#sun-set-time").html(  model.data.weather.today.sunset );
+        set_weather_details( 'now', model.data.weather.today.now );
+        set_weather_details( 'plus-Xhrs', model.data.weather.today.futureHour );
+    }else{
+        write_to_console( 'weather.todaysDataDownloaded=false' );
+    }
 }
 
 function set_weather_details( keyString, day ){
@@ -72,8 +84,9 @@ function update_model_with_weather_now_and_future_hour( model ){
             treeIndex  : inFutureHours.values.treeIndex,
             weatherCode: inFutureHours.values.weatherCode
         };
+        model2.data.weather.todaysDataDownloaded =  true;
+        write_to_console( 'model2.data.weather.todaysDataDownloaded=true' );
     }, function( model2, xhr, default_process_error ){
-        model2.config.showWeather =  false;
         default_process_error( xhr );
     });
     return model;
@@ -99,8 +112,9 @@ function update_model_with_weather_next_five_days(model){
             }
             model2.data.weather.futureDays.push( day );
         }
+        model2.data.weather.futureDataDownloaded = true;
+        write_to_console( 'model2.data.weather.futureDataDownloaded=true' );
     }, function( model2, xhr, default_process_error ){
-        model2.config.showWeather =  false;
         default_process_error( xhr );
     });
 
@@ -109,8 +123,9 @@ function update_model_with_weather_next_five_days(model){
 
 function common_get_remote_weather_data( model, timeStep, process_result_function, process_error_function ){
     let urlToGet = '';
+    let callAsync = model.config.callAsync;
     if(model.config.debugging){
-        urlToGet = "test-data/tomorrow-timelines-"+ timeStep +".json"
+        urlToGet = "test-data/tomorrow-timelines-"+ timeStep +".json";
     } else{
         // 'apikey', '' from junk.henock
         // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
@@ -130,7 +145,7 @@ function common_get_remote_weather_data( model, timeStep, process_result_functio
             + "&timesteps=" + timeStep
             + "&apikey=" + model.apiKeys.tomorrowIo.apiKey;
     }
-    get_remote_data( urlToGet, false, model, process_result_function, process_error_function );
+    get_remote_data( urlToGet, callAsync, model, process_result_function, process_error_function );
     return model;
 }
 

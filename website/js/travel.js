@@ -19,10 +19,12 @@ function update_model_with_trains( model , date ){
 }
 
 function update_trains_ui( model, now ){
-    if( model.config.showTravel ){
+    if( model.config.showTravel && model.data.trains.dataDownloaded > 0 ){
         if( model.data.trains.nextRebuildUiTime < now ){
             insert_all_trains( model );
-            model.data.trains.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
+            if( model.data.trains.dataDownloaded >= model.runtimeConfig.transport.commute.length ){
+                model.data.trains.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
+            }
         }
         update_all_train_count_downs( model );
         let countDown = generate_next_download_count_down_values( model.data.trains.nextDownloadDataTime, model.runtimeConfig.trains.updateEvery );
@@ -30,6 +32,7 @@ function update_trains_ui( model, now ){
         $(".travel-element").removeClass("d-none");
     }else{
         $(".travel-element").addClass("d-none");
+        write_to_console( 'trains.dataDownloaded=' + model.data.trains.dataDownloaded );
     }
 }
 
@@ -187,9 +190,10 @@ function set_trains( model ){
 
 function get_train_station_departures( commute, model ){
     let urlToGet = "";
+    let callAsync = model.config.callAsync;
     let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
     if(model.config.debugging){
-        urlToGet = "test-data/transportapi-" + startingStationCode +".json"
+        urlToGet = "test-data/transportapi-" + startingStationCode +".json";
     } else{
         let now = new Date();
         let fullDate = date_with_dashes( now );
@@ -201,9 +205,9 @@ function get_train_station_departures( commute, model ){
                         + fullDate + "/"
                         + fullTime  + "/timetable.json?app_id="
                         + transportApi.appId + "&app_key="
-                        + transportApi.appKey
+                        + transportApi.appKey;
     }
-    get_remote_data( urlToGet, false, model
+    get_remote_data( urlToGet, callAsync, model
     , function( model2, data ){
         let trains = [];
         let showingTrainsCount = 0;
@@ -224,13 +228,24 @@ function get_train_station_departures( commute, model ){
             departures          : trains
         }
 
+        sanitise_dates_for_train_times( commuteData.departures );
         model2.data.trains.startingStations.push( commuteData );
+        model2.data.trains.dataDownloaded += 1;
+        write_to_console( 'model2.data.trains.dataDownloaded=' +  model2.data.trains.dataDownloaded );
     }, function( model2, xhr, default_process_error ){
-        model2.config.showTravel =  false;
         default_process_error( xhr );
     });
     return model;
 }
+
+function sanitise_dates_for_train_times( departures ){
+    date = date ? date : new Date();
+    departures.forEach(function(train){
+        train.departureTime = date_from_string( train.departureTime );
+    });
+    return departures;
+}
+
 
 function extract_trains_details( commute, trainDetails, isCommuteToDestination, stationNameToCodeMap, currentTime ){
     currentTime = currentTime ? currentTime : new Date();
