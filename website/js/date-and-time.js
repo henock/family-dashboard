@@ -236,9 +236,9 @@ function update_timezones_ui( model, now ){
             for( var i = 0; i < timeZones.length && i < 4; i++ ){
                 timeZoneElements +=
                 '<div class="row">'
-                    + '<span id="time-zone-'+ i +'-flag" class="col-2">'+ timeZones[i].flag +'</span>'
-                    + '<span id="time-zone-'+ i +'-name" class="col-4">'+ timeZones[i].name +'</span>'
-                    + '<span id="time-zone-'+ i +'-time" class="col-4">'+ convert_to_time_zone(now, timeZones[i].id ) +'</span>'
+                    + '<span id="time-zone-'+ i +'-flag" class="col-2 h3">'+ timeZones[i].flag +'</span>'
+                    + '<span id="time-zone-'+ i +'-name" class="col-4 h3">'+ timeZones[i].name +'</span>'
+                    + '<span id="time-zone-'+ i +'-time" class="col-4 h3">'+ convert_to_time_zone(now, timeZones[i].id ) +'</span>'
                 + '</div>'
             }
             $("#time-zones").html( timeZoneElements );
@@ -255,5 +255,5 @@ function update_timezones_ui( model, now ){
 }
 
 function convert_to_time_zone(date, tzString) {
-    return new Date((typeof date === "string" ? new Date(date) : date)).toLocaleString("en-GB", {timeZone: tzString }).split( ", ")[1];//.substring(0,5);
+    return new Date((typeof date === "string" ? new Date(date) : date)).toLocaleString("en-GB", {timeZone: tzString }).split( ", ")[1].substring(0,5);
 }
