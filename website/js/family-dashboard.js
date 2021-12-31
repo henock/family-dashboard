@@ -40,7 +40,6 @@ function check_for_new_code( model, reload_page_function, date ){
             model.data.reloadDashboardCheck.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.reloadDashboardCheck.updateEvery );
          }
     }
-    return model;
 }
 
 function reload_dashboard(){
@@ -60,8 +59,6 @@ function download_last_code_update_file( model ){
         log_error( "Unable to retrieve last-code-update.json from: '" + urlToGet + "'.")
         default_process_error( xhr );
     });
-
-    return model;
 }
 
 
@@ -105,8 +102,6 @@ function update_model_with_api_keys( model ){
         model2.config.showTimeZones =  false;
         default_process_error( xhr );
     });
-
-    return model;
 }
 
 function update_model_with_station_to_code_maps( model ){
@@ -131,7 +126,6 @@ function update_model_with_station_to_code_maps( model ){
             default_process_error( xhr );
         });
     }
-    return model;
 }
 
 function update_model_with_runtime_config( model ){
@@ -162,7 +156,6 @@ function update_model_with_runtime_config( model ){
     }
 
     get_remote_data(urlToGet, callAsync, model, success_function, error_function );
-    return model;
 }
 
 function setup_model( debugging, callAsync ){
@@ -234,7 +227,6 @@ function sanitise_dates_for_commute_config( commutes , date ){
         commute.runTransitTime = seconds_from_string( commute.runTransitTime );
         commute.driveTransitTime = seconds_from_string( commute.driveTransitTime );
     });
-    return commutes;
 }
 
 function sanitise_dates_for_school_run( schoolRun , date ){
@@ -248,7 +240,6 @@ function sanitise_dates_for_school_run( schoolRun , date ){
     schoolRun.departureTime = date_from_string( schoolRun.departureTime );
     schoolRun.stopCountDown = date_from_string( schoolRun.stopCountDown );
     schoolRun.showCountDownStop = date_from_string( schoolRun.showCountDownStop );
-    return schoolRun;
 }
 
 function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){

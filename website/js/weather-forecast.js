@@ -7,7 +7,6 @@ function update_model_with_weather( model, date ){
         model.data.weather.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
         model.data.weather.lastUpdatedTime = new Date();
     }
-    return model;
 }
 
 function update_weather_ui( model, now ){
@@ -89,7 +88,6 @@ function update_model_with_weather_now_and_future_hour( model ){
     }, function( model2, xhr, default_process_error ){
         default_process_error( xhr );
     });
-    return model;
 }
 
 function update_model_with_weather_next_five_days(model){
@@ -117,8 +115,6 @@ function update_model_with_weather_next_five_days(model){
     }, function( model2, xhr, default_process_error ){
         default_process_error( xhr );
     });
-
-    return model;
 }
 
 function common_get_remote_weather_data( model, timeStep, process_result_function, process_error_function ){
@@ -146,7 +142,6 @@ function common_get_remote_weather_data( model, timeStep, process_result_functio
             + "&apikey=" + model.apiKeys.tomorrowIo.apiKey;
     }
     get_remote_data( urlToGet, callAsync, model, process_result_function, process_error_function );
-    return model;
 }
 
 

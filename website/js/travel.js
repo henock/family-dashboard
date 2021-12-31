@@ -15,7 +15,6 @@ function update_model_with_trains( model , date ){
         model.data.trains.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
         model.data.trains.lastUpdatedTime = new Date();
     }
-    return model;
 }
 
 function update_trains_ui( model, now ){
@@ -235,7 +234,6 @@ function get_train_station_departures( commute, model ){
     }, function( model2, xhr, default_process_error ){
         default_process_error( xhr );
     });
-    return model;
 }
 
 function sanitise_dates_for_train_times( departures ){
@@ -243,7 +241,6 @@ function sanitise_dates_for_train_times( departures ){
     departures.forEach(function(train){
         train.departureTime = date_from_string( train.departureTime );
     });
-    return departures;
 }
 
 

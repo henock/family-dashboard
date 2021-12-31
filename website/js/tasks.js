@@ -38,7 +38,6 @@ function update_model_with_tasks( model, date ){
          model.data.tasks.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
          model.data.tasks.lastUpdatedTime = new Date();
     }
-    return model;
 }
 
 function download_tasks( model ){
@@ -75,5 +74,4 @@ function download_tasks( model ){
     }, function( model2, xhr, default_process_error){
         default_process_error( xhr );
     });
-    return model;
 }

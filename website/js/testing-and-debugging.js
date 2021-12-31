@@ -103,7 +103,7 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
 
     try {
         let result =  window[function_under_test].apply(null, parameters);
-        testResult = test_function( expected_result, result );
+        testResult = test_function( expected_result, result, parameters );
     }
     catch(err) {
         console.log( err.stack );
@@ -203,7 +203,8 @@ function run_all_unit_tests(){
 
 function check_for_new_code_unit_test(){
     let result = '';
-    function specific_compare_method( expected, model ){
+    function specific_compare_method( expected, result, parameters ){
+        let model = parameters[0];
         let testResult = (expected === model.reloadFunctionHasBeenCalled);
         return {
             passed: testResult,
@@ -314,7 +315,8 @@ function build_train_row_unit_test(){
 function sanitise_dates_for_school_run_unit_test(){
     let result = '';
 
-    function specific_compare_method( expected, schoolRunCountDown ){
+    function specific_compare_method( expected, result, parameters ){
+        let schoolRunCountDown = parameters[0];
         let actualDate = schoolRunCountDown.showCountDownStart;
         let testResult = compare_hours_minutes_secs( expected, actualDate );
         return {
@@ -345,7 +347,8 @@ function sanitise_dates_for_school_run_unit_test(){
 function sanitise_dates_for_commute_config_unit_test(){
     let result = '';
 
-    function specific_compare_method( expected, commute ){
+    function specific_compare_method( expected, result, parameters ){
+        let commute = parameters[0];
         let actualDate = commute[0].noNeedToLeaveBefore
         let testResult = ( expected == actualDate );
         return {
@@ -369,7 +372,8 @@ function sanitise_dates_for_commute_config_unit_test(){
 function sanitise_dates_for_train_times_unit_test(){
     let result = '';
 
-    function specific_compare_method( expected, departures ){
+    function specific_compare_method( expected, result, parameters ){
+        let departures = parameters[0];
         let actualDate = departures[0].departureTime
         let testResult = compare_hours_minutes_secs( expected, actualDate );
         return {
@@ -409,7 +413,8 @@ function seconds_from_string_unit_test(){
 
 function update_model_with_weather_next_five_days_unit_test(){
     let result = '';
-    function check_for_weather( expected, model ){
+    function check_for_weather( expected, result, parameters ){
+        let model = parameters[0];
         let testResult =  (model.data.weather.futureDays.length > 0 );
         return {
             passed: testResult,
@@ -425,7 +430,8 @@ function update_model_with_weather_next_five_days_unit_test(){
 
 function update_model_with_weather_now_and_future_hour_unit_test(){
     let result = '';
-    function check_for_weather( expected, model ){
+    function check_for_weather( expected, result, parameters ){
+        let model = parameters[0];
         let testResult =  ( model.data.weather.today.now.name === 'now' );
         return {
             passed: testResult,
@@ -442,7 +448,8 @@ function update_model_with_weather_now_and_future_hour_unit_test(){
 
 function common_get_remote_weather_data_unit_test(){
     let result = '';
-    function check_for_weather_data( expected, model ){
+    function check_for_weather_data( expected, result, parameters ){
+        let model = parameters[0];
         let testResult =  model.TEMP_TEST_PASSED;
         return {
             passed: testResult,
@@ -476,7 +483,8 @@ function common_get_remote_weather_data_unit_test(){
 
 function get_train_station_departures_unit_test(){
     let result = '';
-    function check_for_trains( expected, model ){
+    function check_for_trains( expected, result, parameters ){
+        let model = parameters[1];
         let testResult =  (model.data.trains.startingStations.length > 0);
         return {
             passed: testResult,
@@ -579,7 +587,8 @@ function extract_trains_details_unit_test(){
 
 function update_model_with_station_to_code_maps_unit_test(){
     let result = '';
-    function check_for_maps( expected, model ){
+    function check_for_maps( expected, result, parameters ){
+        let model = parameters[0];
         let testResult =  (undefined !== model.stationNameToCodeMap && undefined !== model.stationCodeToNameMap );
         return {
             passed: testResult,
@@ -597,7 +606,8 @@ function update_model_with_station_to_code_maps_unit_test(){
 
 function download_tasks_unit_test(){
 
-    function check_for_tasks( expected, model ){
+    function check_for_tasks( expected, result, parameters ){
+        let model = parameters[0];
         let testResult =  (undefined !== model.data.tasks.todo && model.data.tasks.todo.length > 0 );
         return {
             passed: testResult,
@@ -623,7 +633,8 @@ function download_tasks_unit_test(){
 
 function update_model_with_api_keys_unit_test(){
 
-    function api_key_test_function( expected, model ){
+    function api_key_test_function( expected, result, parameters ){
+        let model = parameters[0];
         let testResult =  (undefined !== model.apiKeys );
         return {
             passed: testResult,
@@ -645,7 +656,8 @@ function update_model_only_update_times_have_expired(){
 
     let model = setup_model(true, false);
     // update_model_with_tasks
-    function next_update_time_for_tasks_test_function( expectedTime, model ){
+    function next_update_time_for_tasks_test_function( expectedTime, result, parameters ){
+        let model = parameters[0];
         let nextDownloadDataTime = model.data.tasks.nextDownloadDataTime;
         let testResult = compare_hours_minutes_secs( expectedTime, nextDownloadDataTime );
         return {
@@ -667,7 +679,8 @@ function update_model_only_update_times_have_expired(){
                             , next_update_time_for_tasks_test_function, expectedTime, [model, new Date()] );
 
     ///update_model_with_weather
-    function next_update_time_for_weather_test_function( expectedTime, model ){
+    function next_update_time_for_weather_test_function( expectedTime, result, parameters ){
+        let model = parameters[0];
         let nextDownloadDataTime = model.data.weather.nextDownloadDataTime;
         let testResult = compare_hours_minutes_secs( expectedTime, nextDownloadDataTime );
         return {
@@ -689,7 +702,8 @@ function update_model_only_update_times_have_expired(){
                             , next_update_time_for_weather_test_function, expectedTime, [model, new Date()] );
 
     //update_model_with_trains
-    function next_update_time_for_trains_test_function( expectedTime, model ){
+    function next_update_time_for_trains_test_function( expectedTime, result, parameters ){
+        let model = parameters[0];
         let nextDownloadDataTime = model.data.trains.nextDownloadDataTime;
         let testResult = compare_hours_minutes_secs( expectedTime, nextDownloadDataTime );
         return {
@@ -716,7 +730,8 @@ function update_model_only_update_times_have_expired(){
 
 function setup_model_unit_test(){
 
-    function test_model_setup( expected, model ){
+    function test_model_setup( expected, result, parameters ){
+        let model = result;
         let testResult = (expected === model.config.debugging )
         return {
             passed: testResult,
@@ -737,13 +752,14 @@ function update_model_with_runtime_config_unit_test(){
     let result = '';
     let model = setup_model(true, false);
 
-    function test_for_runtime_config( expectedRuntimeConfig, actual ){
-         let testResult = ( undefined !==  actual.runtimeConfig.trains.show );
-         return {
-                 passed: testResult,
-                 expectedValue: 'model.runtimeConfig.trains.show = ' + actual.runtimeConfig.trains.show,
-                 testedValue: 'model.runtimeConfig.trains.show = '+ actual.runtimeConfig.trains.show
-             }
+    function test_for_runtime_config( expectedRuntimeConfig, result, parameters ){
+        let model = parameters[0];
+        let testResult = ( undefined !==  model.runtimeConfig.trains.show );
+        return {
+            passed: testResult,
+            expectedValue: 'model.runtimeConfig.trains.show = ' + model.runtimeConfig.trains.show,
+            testedValue: 'model.runtimeConfig.trains.show = '+ model.runtimeConfig.trains.show
+        }
     }
 
     result += run_unit_test( "update_model_with_runtime_config", 'We have retrieved a valid runtimeConfig',  test_for_runtime_config, {}, [model] );
