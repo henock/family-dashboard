@@ -157,31 +157,45 @@ function date_with_dashes( date ){
     return  year + '-' + month + '-' + day;
 }
 
-//str = "now+20s"
+//str = 'now+20s' OR 'Fri 31 Dec 2021 13:24:14 GMT'
+function date_from_string_only( str, date ){
+    date = date ? date : new Date();
+    if(str.includes( "now" ) || str.includes( "departure" )){
+        return calculate_relative_date( str, date );
+    } else {
+        return new Date( str );
+    }
+}
+
+//str = "now+20s" OR "departure-10m"
 function date_from_string( str , date ){
     date = date ? date : new Date();
     if( str instanceof Date ){
         return str;
     } else if(str.includes( "now" ) || str.includes( "departure" )){
-        let isPlus = str.includes("+");
-        let splitPos = (isPlus ?  str.indexOf('+') : str.indexOf('-'));
-        let amount = str.substring( splitPos +1, str.length-1 );
-        let timeStep = str.substring( str.length-1 );
-        switch(timeStep){
-            case 's': multiple=1;break;
-            case 'm': multiple=60;break;
-            case 'h': multiple=3600;break;
-            default: {
-                multiple=1;
-                log_error( 'Invalid string passed into date_from_string function expected "[now|departure][+|-]{int}[s|m|h]" got: "' + str + '"' );
-            }
-        }
-        seconds = (amount * multiple)
-        seconds *= isPlus ? 1 : -1;
-        return date_plus_seconds( date, seconds );
+        return calculate_relative_date( str, date );
     }else{
         return set_time_on_date( date , str );
     }
+}
+
+function calculate_relative_date( relativeString, date ){
+    let isPlus = relativeString.includes("+");
+    let splitPos = (isPlus ?  relativeString.indexOf('+') : relativeString.indexOf('-'));
+    let amount = relativeString.substring( splitPos +1, relativeString.length-1 );
+    let timeStep = relativeString.substring( relativeString.length-1 );
+    switch(timeStep){
+        case 's': multiple=1;break;
+        case 'm': multiple=60;break;
+        case 'h': multiple=3600;break;
+        default: {
+            multiple=1;
+            log_error( 'Invalid string passed into date_from_string function expected "[now|departure][+|-]{int}[s|m|h]" got: "' + relativeString + '"' );
+        }
+    }
+    seconds = (amount * multiple)
+    seconds *= isPlus ? 1 : -1;
+    return date_plus_seconds( date, seconds );
 }
 
 //str = "departure-10m"

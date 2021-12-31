@@ -29,10 +29,45 @@ function update_dashboard() {
 }
 
 function update_model( model ){
+    check_for_new_code( model, reload_dashboard, new Date() );
     update_model_with_tasks( model, new Date() );
     update_model_with_trains( model, new Date() );
     update_model_with_weather( model, new Date() );
 }
+
+function check_for_new_code( model, reload_page_function, date ){
+    if( model.data.reloadDashboardCheck.nextDownloadDataTime < date ){
+         download_last_code_update_file( model );
+         if( model.data.reloadDashboardCheck.lastCodeUpdate < date ){
+            reload_page_function();
+         }else{
+            model.data.reloadDashboardCheck.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.reloadDashboardCheck.updateEvery );
+         }
+    }
+    return model;
+}
+
+function reload_dashboard(){
+    location.reload(true); // reloads the whole dashboard
+}
+
+function download_last_code_update_file( model ){
+
+    let urlToGet = 'data/last-code-update.json';
+    if(model.config.debugging){
+        urlToGet = 'test-data/last-code-update.json';
+    }
+
+    get_remote_data( urlToGet, false, model, function( model2, data ){
+        model2.data.reloadDashboardCheck.lastCodeUpdate = date_from_string_only( data.lastCodeUpdate );
+    }, function( model2, xhr, default_process_error){
+        log_error( "Unable to retrieve last-code-update.json from: '" + urlToGet + "'.")
+        default_process_error( xhr );
+    });
+
+    return model;
+}
+
 
 function update_UI( model ){
     $("#dashboard-main").removeClass("d-none");
@@ -134,6 +169,7 @@ function setup_model( debugging ){
     model = create_empty_model( debugging );
     update_model_with_api_keys( model );
     update_model_with_runtime_config( model );
+    download_last_code_update_file( model );
     sanitise_dates( model );
     update_model_with_station_to_code_maps( model );
     return model;
@@ -141,6 +177,7 @@ function setup_model( debugging ){
 
 function create_empty_model( debugging ){
     let inThePast = now_plus_seconds( -10 );
+    let nextReloadDashboardCheck = now_plus_seconds( 300 );
     return {
         isDefaultModel: true,
         config : {
@@ -154,6 +191,9 @@ function create_empty_model( debugging ){
         apiKeys : {},
         runtimeConfig : {},
         data : {
+            reloadDashboardCheck : {
+                nextDownloadDataTime: nextReloadDashboardCheck
+            },
             tasks : {
                 nextDownloadDataTime: inThePast,
                 nextRebuildUiTime: inThePast

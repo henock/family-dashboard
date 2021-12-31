@@ -143,6 +143,7 @@ function run_all_unit_tests(){
 
     let result = '<table class="pt-2" border="1">';
     result += '<tr><th>Function under test</th><th>comment</th><th>result</th><th>params passed in</th></th></tr>';
+    result += check_for_new_code_unit_test();
     result += calculate_progress_bar_percentage_unit_test();
     result += generate_next_download_count_down_values_unit_test();
     result += build_transport_eta_countdown_element_unit_test();
@@ -194,6 +195,36 @@ function run_all_unit_tests(){
 //    result += run_unit_test( "XXX", '💔',  compare_exact, 'expected_result', [model] );
 //    return result;
 //}
+
+
+function check_for_new_code_unit_test(){
+    let result = '';
+    function specific_compare_method( expected, model ){
+        let testResult = (expected === model.reloadFunctionHasBeenCalled);
+        return {
+            passed: testResult,
+            expectedValue: 'model.reloadFunctionHasBeenCalled = ' + expected ,
+            testedValue:   model.reloadFunctionHasBeenCalled
+        }
+    }
+
+    let model = setup_model(true);
+    model.reloadFunctionHasBeenCalled = false;
+
+    function mock_reload_function(){
+        model.reloadFunctionHasBeenCalled = true;
+    }
+
+    let date = new Date();
+    model.data.reloadDashboardCheck.nextDownloadDataTime = now_plus_seconds( 5 );
+    result += run_unit_test( "check_for_new_code", 'Reload page not called when time has not expired',  specific_compare_method, false, [model, mock_reload_function, date] );
+
+    model.reloadFunctionHasBeenCalled = false;
+    date = new Date()
+    model.data.reloadDashboardCheck.nextDownloadDataTime = now_plus_seconds( -5 );
+    result += run_unit_test( "check_for_new_code", 'Reload page called when time has expired',  specific_compare_method, true, [model, mock_reload_function, date] );
+    return result;
+}
 
 
 function calculate_progress_bar_percentage_unit_test(){
@@ -707,7 +738,6 @@ function setup_model_unit_test(){
     let result = '';
     result += run_unit_test( "setup_model", 'returns the default model with debugging on',  test_model_setup, true, [true] );
 
-    model = setup_model( true );
     result += run_unit_test( "setup_model", 'return the default model with debugging off',  test_model_setup, false, [false] );
 
     return result;

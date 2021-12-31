@@ -8,4 +8,6 @@ if test ! -f website/data/runtime-config.json; then
   exit 1
 fi
 
+
+echo "{ \"lastCodeUpdate\": \"$(date)\" }" > website/data/last-code-update.json
 python3 -m http.server  > http-server-logs/server.log 2>&1 &

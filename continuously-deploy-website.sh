@@ -4,6 +4,7 @@
 set -euo pipefail
 
 TODAY="$(date -I)"
+LAST_CODE_UPDATE="{ \"lastCodeUpdate\": \"$TODAY\" }"
 SOURCE_FOLDER="/source"
 SECRETS_FOLDER="/secrets"
 RUNTIME_CONFIG_FILE="runtime-config.json"
@@ -77,6 +78,8 @@ copy_files_to_website(){
   log "Copying source files ($WEBSITE_FOLDER/* -> $NGINX_WEBSITE_FOLDER)."
   cp -Rvf "$WEBSITE_FOLDER/"* "$NGINX_WEBSITE_FOLDER"
   cp -Rvf "$SECRETS_FOLDER/"* "$NGINX_WEBSITE_FOLDER/data"
+  log "Writing $LAST_CODE_UPDATE to $NGINX_WEBSITE_FOLDER/data/last-code-update.json"
+  echo "$LAST_CODE_UPDATE" > "$NGINX_WEBSITE_FOLDER/data/last-code-update.json"
   log "Site update complete."
 }
 

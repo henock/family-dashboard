@@ -9,6 +9,9 @@
     "location": "51.114282,-0.017142",
     "updateEvery": "1800"
   },
+  "reloadDashboardCheck": {
+    "updateEvery": "300"
+  },
   "tasks": {
     "show": true,
     "todoListId": "todo",

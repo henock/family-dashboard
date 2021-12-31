@@ -9,6 +9,9 @@
     "location": "<your gps coordinates>",
     "updateEvery": "1800"
   },
+  "reloadDashboardCheck": {
+    "updateEvery": "300"
+  },
   "tasks": {
     "show": true,
     "todoListId": "<your todoListId>",
