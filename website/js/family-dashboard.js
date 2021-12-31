@@ -16,8 +16,8 @@ function update_dashboard() {
     if( !globalModel ){
         if(is_debug_on()){
             globalModel = setup_model( true );
-            log_error( "Test error removed in 10 seconds...", 10 );
-            write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds...</b>", 5 );
+            log_error( "Test error removed in 10 seconds after: " + get_padded_time_seconds(now_plus_seconds(10)), 10 );
+            write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds after: "+ get_padded_time_seconds(now_plus_seconds(5))+"</b>", 5 );
         }else{
             globalModel = setup_model( false );
         }
