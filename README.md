@@ -19,7 +19,7 @@ The dashboard is configured via two configuration files
  
 
 ### api-keys.json  
-You will need to sign up and get Api keys and token from the remote websites that provide this data.  
+You will need to sign up and get API keys and tokens from the remote websites that provide this data.  
 
 - [http://transportapi.com](https://developer.transportapi.com/signup) - to get data on train departure times.
 - [http://tomorrow.io](https://app.tomorrow.io/signup) - to get data on weather forecasts for a GPS coordinate.
