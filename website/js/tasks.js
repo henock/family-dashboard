@@ -19,6 +19,7 @@ function update_tasks_ui( model, now ){
 function set_tasks_into_ui( model ){
     let groupLists =  '';
     let now = new Date();
+    let groupCounter = 0;
     let sortedTasks = new Map([...model.data.tasks.todo.entries()].sort());
     for (const [groupName, groupsTasks] of sortedTasks ){
         let taskHtml = '';
@@ -26,7 +27,7 @@ function set_tasks_into_ui( model ){
             let dateTime = Date.parse(task.dateLastActivity);
             let diffInMillis = new Date(now - dateTime);
             let days = Math.floor( diffInMillis/1000/60/60/24 );
-            taskHtml += '<tr class="'+ groupName + ' h3"><td>' + days + '</td><td> ' +task.name+'</td></tr>';
+            taskHtml += '<tr class="task-group-'+ groupCounter + ' h3"><td>' + days + '</td><td> ' +task.name+'</td></tr>';
         });
         groupLists +=  '<div class="row border-top">' +
                         '<div class="col">' +
@@ -35,7 +36,8 @@ function set_tasks_into_ui( model ){
                                 taskHtml +
                             '</table>' +
                         '</div>' +
-                    '</div>'
+                    '</div>';
+        groupCounter++;
     }
     $('#tasks').html( groupLists );
 }

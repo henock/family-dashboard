@@ -3,7 +3,7 @@
 A simple browser only based dashboard, that gathers remote data via API calls out to three external websites for weather, train times and our todo list and displays the results on a monitor in our kitchen.
 
 ## Full dashboard.
-![Family Dashboard](/docs/2021-12-23-family-dashboard.jpg)
+![Family Dashboard](/docs/2022-01-01-family-dashboard.jpg)
 
 ## Train times count down explained.
 ![Count down explained](/docs/2021-12-23-train-countdown-explained.jpg)

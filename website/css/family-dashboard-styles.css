@@ -3,21 +3,22 @@ body{
     color: white;
 }
 
-.Henock {
-    color: #7ebbed!important
-}
-
-.Fikir {
-    color: #ffc107!important
-}
-
-.Melkam {
+.task-group-0 {
     color: #52e36a!important
 }
 
-.Sennai {
+.task-group-1 {
+    color: #ffc107!important
+}
+
+.task-group-2    {
     color: #e34646!important
 }
+
+.task-group-3 {
+    color: #7ebbed!important
+}
+
 
 .text-nowrap {
     white-space: nowrap;

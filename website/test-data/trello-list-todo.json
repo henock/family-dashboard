@@ -13,7 +13,7 @@
       {
         "id": "5e946ba7e985966ed00a78b4",
         "idBoard": "5e946ba7e985966ed00a7877",
-        "name": "Henock",
+        "name": "Person 1",
         "color": "sky"
       }
     ]
@@ -32,7 +32,7 @@
       {
         "id": "5e946ba7e985966ed00a78b0",
         "idBoard": "5e946ba7e985966ed00a7877",
-        "name": "Fikir",
+        "name": "Person 2",
         "color": "purple"
       }
     ]
@@ -45,7 +45,7 @@
       {
         "id": "5e946ba7e985966ed00a78b8",
         "idBoard": "5e946ba7e985966ed00a7877",
-        "name": "Melkam",
+        "name": "Person 3",
         "color": "lime"
       }
     ]
