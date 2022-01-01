@@ -17,19 +17,27 @@ function update_tasks_ui( model, now ){
 }
 
 function set_tasks_into_ui( model ){
-    let todoElementId = '#todo';
-    $(todoElementId).html("");
-    model.data.tasks.todo.forEach(function( todo ){
-        let now = new Date();
-        let dateTime = Date.parse(todo.dateLastActivity); //new Date( "2020-04-01");
-        let diffInMillis = new Date(now - dateTime);
-        let days = Math.floor( diffInMillis/1000/60/60/24 );
-        if( todo.label ){
-            $(todoElementId).append('<li><span class="'+todo.label+'">[' + days + '] '+todo.name+' </span></li>');
-        }else{
-            $(todoElementId).append('<li><span class="no-label">[' + days + '] '+todo.name+' </span></li>');
-        }
-    });
+    let groupLists =  '';
+    let now = new Date();
+    let sortedTasks = new Map([...model.data.tasks.todo.entries()].sort());
+    for (const [groupName, groupsTasks] of sortedTasks ){
+        let taskHtml = '';
+        groupsTasks.forEach( function( task ){
+            let dateTime = Date.parse(task.dateLastActivity);
+            let diffInMillis = new Date(now - dateTime);
+            let days = Math.floor( diffInMillis/1000/60/60/24 );
+            taskHtml += '<tr class="'+ groupName + ' h3"><td>' + days + '</td><td> ' +task.name+'</td></tr>';
+        });
+        groupLists +=  '<div class="row border-top">' +
+                        '<div class="col">' +
+                            '<span class="display-4">'+ groupName +'</span>' +
+                            '<table>' +
+                                taskHtml +
+                            '</table>' +
+                        '</div>' +
+                    '</div>'
+    }
+    $('#tasks').html( groupLists );
 }
 
 function update_model_with_tasks( model, date ){
@@ -44,6 +52,7 @@ function download_tasks( model ){
     let urlToGet = '';
     let callAsync = model.config.callAsync;
     let todoListId = model.runtimeConfig.tasks.todoListId;
+
     if(model.config.debugging){
         urlToGet = 'test-data/trello-list-' + todoListId + '.json'
     }else{
@@ -54,24 +63,46 @@ function download_tasks( model ){
                     +"&fields=name,dateLastActivity,labels"
     }
 
-    get_remote_data( urlToGet, callAsync, model, function( model2, data ){
-        model2.data.tasks.todo = [];
-        let now = new Date();
-        $(data).each(function( index, it ){
-            let dateTime = (new Date(it.dateLastActivity)).getTime();
-            let diffInMillis = new Date(now.getTime() - dateTime);
-
-            let task = {}
-            task.dateLastActivity = it.dateLastActivity;
-            task.name = it.name;
-            if( it.labels.length > 0 ){
-                task.label = it.labels[0].name;
-            }
-            model2.data.tasks.todo.push( task );
-        });
-        model2.data.tasks.dataDownloaded = true;
-        write_to_console( 'model2.data.tasks.dataDownloaded=true' );
-    }, function( model2, xhr, default_process_error){
+    get_remote_data( urlToGet, callAsync, model
+    , function( model2, data ){
+        model2.data.tasks.todo = set_tasks_on_model_from_remote_data( data );
+        model.data.tasks.dataDownloaded = true;
+    }
+    , function( model2, xhr, default_process_error){
         default_process_error( xhr );
     });
+}
+
+
+
+function set_tasks_on_model_from_remote_data( data ){
+    let tasks = new Map();
+    let now = new Date();
+
+    function compute_group_if_absent( groupName, tasks ){
+        let group = tasks.get(groupName)
+        if( !group ){
+            group = [];
+            tasks.set(groupName, group);
+        }
+        return group;
+    }
+
+    $(data).each(function( index, it ){
+        let task = {}
+        task.name = it.name;
+        let dateTime = (new Date(it.dateLastActivity)).getTime();
+        let diffInMillis = new Date(now.getTime() - dateTime);
+        task.dateLastActivity = it.dateLastActivity;
+
+        let group;
+        if( it.labels.length > 0 ){
+            let label = it.labels[0].name;
+            group = compute_group_if_absent( label, tasks )
+        }else{
+            group = compute_group_if_absent( 'Unassigned', tasks )
+        }
+        group.push( task );
+    });
+    return tasks;
 }

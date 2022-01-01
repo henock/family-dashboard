@@ -147,6 +147,7 @@ function run_all_unit_tests(){
 
     let result = '<table class="pt-2" border="1">';
     result += '<tr><th>Function under test</th><th>comment</th><th>result</th><th>params passed in</th></th></tr>';
+    result += set_tasks_on_model_from_remote_data_unit_test();
     result += check_for_new_code_unit_test();
     result += calculate_progress_bar_percentage_unit_test();
     result += generate_next_download_count_down_values_unit_test();
@@ -187,18 +188,66 @@ function run_all_unit_tests(){
 // Template for future tests
 //function XXX_unit_test(){
 //    let result = '';
-//    function specific_compare_method( expected, model ){
-//        let testResult = ();
+//    function specific_compare_method( expected, result, parameters ){
+//        let model = parameters[0];
+//        let testResult = (false);
 //        return {
 //            passed: testResult,
 //            expectedValue: 'THIS_HAS_NOT_BEEN_SET_YET',
 //            testedValue:   'THIS_HAS_NOT_BEEN_SET_YET'
 //        }
 //    }
-//    model = setup_model(true, false);
-//    result += run_unit_test( "XXX", '💔',  compare_exact, 'expected_result', [model] );
+//    let model = setup_model(true, false);
+//    result += run_unit_test( "XXX", '💔',  specific_compare_method, 'expected_result', [model] );
 //    return result;
 //}
+
+function set_tasks_on_model_from_remote_data_unit_test(){
+    let result = '';
+    function specific_compare_method( expected, todo, parameters ){
+        let testResult = (todo.size === 3 &&
+                            todo.get('Fikir').length === 1 &&
+                            todo.get('Fikir')[0].name === 'Todo Task 1' &&
+                            todo.get('Fikir')[0].dateLastActivity === "2020-04-16T14:12:46.260Z" &&
+                            todo.get('Unassigned').length === 1 &&
+                            todo.get('Henock').length === 2 );
+        return {
+            passed: testResult,
+            expectedValue: 'Three different groups of tasks Fikir(1), Henock(2), Unassigned(1)',
+            testedValue:   'Fikir: ' + JSON.stringify( todo.get('Fikir') )  +
+                            '<br/>Henock: ' + JSON.stringify( todo.get('Henock') ) +
+                            '<br/>Unassigned: ' + JSON.stringify( todo.get('Unassigned') )
+        }
+    }
+    let data = [{
+        name: "Todo Task 1",
+        dateLastActivity: "2020-04-16T14:12:46.260Z",
+        labels: [{
+            name: "Fikir",
+        }]
+    },{
+        name: "Todo Task 1",
+        dateLastActivity: "2020-04-16T14:12:46.260Z",
+        labels: [{
+            name: "Henock",
+        }]
+    },{
+        name: "Todo Task 2",
+        dateLastActivity: "2020-04-16T14:12:46.260Z",
+        labels: [{
+            name: "Henock",
+        }]
+    },
+    {
+        name: "Todo Task 1",
+        dateLastActivity: "2021-09-18T15:24:40.921Z",
+        labels: []
+    }]
+
+
+    result += run_unit_test( "set_tasks_on_model_from_remote_data", 'We convert remote tasks into the correct groups',  specific_compare_method, 'expected_result', [data] );
+    return result;
+}
 
 
 function check_for_new_code_unit_test(){
