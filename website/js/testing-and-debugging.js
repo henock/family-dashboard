@@ -78,8 +78,8 @@ function build_link_to_anchors( links ){
 }
 function build_link_toggle_remote_tests(){
     let runningRemoteTests = is_running_remote_tests();
-    let linksList ='<a href="?testing=true&doNotSkipRemoteTests='+ (!runningRemoteTests)+ '">' +(runningRemoteTests?"":"Dont") +
-                                                                                        ' run remote test.</a>';
+    let linksList ='<a href="?testing=true&doNotSkipRemoteTests='+ (!runningRemoteTests)+ '">' +(runningRemoteTests?"Dont r":"R") +
+                                                                                        'un remote test.</a>';
     return linksList;
 }
 
@@ -208,7 +208,7 @@ function set_tasks_on_model_from_remote_data_unit_test(){
         let testResult = (todo.size === 3 &&
                             todo.get('Fikir').length === 1 &&
                             todo.get('Fikir')[0].name === 'Todo Task 1' &&
-                            todo.get('Fikir')[0].dateLastActivity === "2020-04-16T14:12:46.260Z" &&
+                            todo.get('Fikir')[0].daysSinceAssigned === 1 &&
                             todo.get('Unassigned').length === 1 &&
                             todo.get('Henock').length === 2 );
         return {
@@ -221,26 +221,26 @@ function set_tasks_on_model_from_remote_data_unit_test(){
     }
     let data = [{
         name: "Todo Task 1",
-        dateLastActivity: "2020-04-16T14:12:46.260Z",
+        dateLastActivity: "now-24h",
         labels: [{
             name: "Fikir",
         }]
     },{
         name: "Todo Task 1",
-        dateLastActivity: "2020-04-16T14:12:46.260Z",
+        dateLastActivity: "now-10s",
         labels: [{
             name: "Henock",
         }]
     },{
         name: "Todo Task 2",
-        dateLastActivity: "2020-04-16T14:12:46.260Z",
+        dateLastActivity: "now-10s",
         labels: [{
             name: "Henock",
         }]
     },
     {
         name: "Todo Task 1",
-        dateLastActivity: "2021-09-18T15:24:40.921Z",
+        dateLastActivity: "now-200h",
         labels: []
     }]
 
@@ -521,11 +521,11 @@ function common_get_remote_weather_data_unit_test(){
                                 check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
 
     if(is_running_remote_tests()){
-        result += skip_unit_test( "common_get_remote_weather_data", testCounter, 'a valid response from http://tomorrow.io' );
-    }else{
         model = setup_model(false, false);
         result += run_unit_test( "common_get_remote_weather_data", 'a valid response from http://tomorrow.io',
                                     check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
+    }else{
+        result += skip_unit_test( "common_get_remote_weather_data", testCounter, 'a valid response from http://tomorrow.io' );
     }
     return result;
 }
@@ -558,10 +558,10 @@ function get_train_station_departures_unit_test(){
     result += run_unit_test( "get_train_station_departures", 'We get data back from /test-data ',  check_for_trains, {}, [startingStation,  model] );
 
     if(is_running_remote_tests()){
-        result += skip_unit_test( "get_train_station_departures", testCounter, 'We get data back from transportApi' );
-    }else{
         model = setup_model(false, false);
         result += run_unit_test( "get_train_station_departures", 'We get data back from transportApi ',  check_for_trains, {}, [startingStation, model] );
+    }else{
+        result += skip_unit_test( "get_train_station_departures", testCounter, 'We get data back from transportApi' );
     }
     return result;
 }
@@ -657,7 +657,7 @@ function download_tasks_unit_test(){
 
     function check_for_tasks( expected, result, parameters ){
         let model = parameters[0];
-        let testResult =  (undefined !== model.data.tasks.todo && model.data.tasks.todo.length > 0 );
+        let testResult =  (undefined !== model.data.tasks.todo && model.data.tasks.todo.size > 0 );
         return {
             passed: testResult,
             expectedValue: 'model.data.tasks.todo is not null',
@@ -665,16 +665,15 @@ function download_tasks_unit_test(){
         }
     }
 
-    //download_tasks( model )
     let result = '';
     let model = setup_model(true, false);
     result += run_unit_test( "download_tasks", 'we get back debugging tasks',  check_for_tasks, 'not used', [model] );
 
     if(is_running_remote_tests()){
-        result += skip_unit_test( "download_tasks", testCounter, 'we get back actual tasks from trello.com' );
-    }else{
         model = setup_model(false, false);
         result += run_unit_test( "download_tasks", 'we get back actual tasks from trello.com',  check_for_tasks, 'not used', [model] );
+    }else{
+        result += skip_unit_test( "download_tasks", testCounter, 'we get back actual tasks from trello.com' );
     }
     return result;
 }

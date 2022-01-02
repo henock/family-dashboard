@@ -37,12 +37,12 @@ function log_info( message, remove_after_seconds ){
 }
 
 function log_error( message, remove_after_seconds ){
-    console.trace();
+    console.trace( message );
     write_message( message, "text-danger border-top border-bottom p-1", remove_after_seconds, false );
 }
 
 function log_warn( message, remove_after_seconds ){
-    console.trace();
+    console.trace( message );
     write_message( message, "text-warning", remove_after_seconds, false  );
 }
 

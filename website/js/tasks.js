@@ -24,10 +24,7 @@ function set_tasks_into_ui( model ){
     for (const [groupName, groupsTasks] of sortedTasks ){
         let taskHtml = '';
         groupsTasks.forEach( function( task ){
-            let dateTime = Date.parse(task.dateLastActivity);
-            let diffInMillis = new Date(now - dateTime);
-            let days = Math.floor( diffInMillis/1000/60/60/24 );
-            taskHtml += '<tr class="task-group-'+ groupCounter + ' h3"><td>' + days + '</td><td> ' +task.name+'</td></tr>';
+            taskHtml += '<tr class="task-group-'+ groupCounter + ' h3"><td>' + task.daysSinceAssigned + '</td><td> ' +task.name+'</td></tr>';
         });
         groupLists +=  '<div class="row border-top">' +
                         '<div class="col">' +
@@ -93,9 +90,10 @@ function set_tasks_on_model_from_remote_data( data ){
     $(data).each(function( index, it ){
         let task = {}
         task.name = it.name;
-        let dateTime = (new Date(it.dateLastActivity)).getTime();
+
+        let dateTime = (date_from_string(it.dateLastActivity)).getTime();
         let diffInMillis = new Date(now.getTime() - dateTime);
-        task.dateLastActivity = it.dateLastActivity;
+        task.daysSinceAssigned = Math.floor( diffInMillis/1000/60/60/24 );
 
         let group;
         if( it.labels.length > 0 ){

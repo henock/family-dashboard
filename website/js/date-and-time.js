@@ -118,16 +118,6 @@ function display_time_period_from_seconds_into_future( seconds ){
     }
 }
 
-function set_time_on_date( date, timeAsString ){
-    let hours =  timeAsString.split(":")[0];
-    let minutes =  timeAsString.split(":")[1];
-    date.setHours(parseInt(hours));
-    date.setMinutes(parseInt(minutes));
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-    return date;
-}
-
 function update_all_count_down_times(){
     $(".transport-departure-time").each(function(index, element){
         let timeBoundaries = {}
@@ -159,51 +149,43 @@ function date_with_dashes( date ){
         log_error( "date_with_dashes() date was null - using now");
         date = new Date();
     }
-    let day = pad_with_leading_zero(date.getDate());
-    let month = pad_with_leading_zero(date.getMonth()+1);
+    let day = pad_with_leading_zero(date.getDate());      //date uses starting index of 1
+    let month = pad_with_leading_zero(date.getMonth()+1); //months are zero index
     let year = date.getFullYear();
     return  year + '-' + month + '-' + day;
 }
 
-//str = 'now+20s' OR 'Fri 31 Dec 2021 13:24:14 GMT'
-function date_from_string_only( str, date ){
-    date = date ? date : new Date();
-    if(str.includes( "now" ) || str.includes( "departure" )){
-        return calculate_relative_date( str, date );
-    } else {
-        return new Date( str );
-    }
-}
-
-//str = "now+20s" OR "departure-10m"
+//str = "now+20s" OR "departure-10m OR "Sun  2 Jan 2022 14:35:51 GMT"
 function date_from_string( str , date ){
     date = date ? date : new Date();
     if( str instanceof Date ){
         return str;
     } else if(str.includes( "now" ) || str.includes( "departure" )){
         return calculate_relative_date( str, date );
-    }else{
+    }else if(str.length === "hh:tt".length || str.length === "h:tt".length ){
         return set_time_on_date( date , str );
+    }else{
+        return new Date(str);
     }
 }
 
 function calculate_relative_date( relativeString, date ){
-    let isPlus = relativeString.includes("+");
-    let splitPos = (isPlus ?  relativeString.indexOf('+') : relativeString.indexOf('-'));
-    let amount = relativeString.substring( splitPos +1, relativeString.length-1 );
-    let timeStep = relativeString.substring( relativeString.length-1 );
-    switch(timeStep){
-        case 's': multiple=1;break;
-        case 'm': multiple=60;break;
-        case 'h': multiple=3600;break;
-        default: {
-            multiple=1;
-            log_error( 'Invalid string passed into date_from_string function expected "[now|departure][+|-]{int}[s|m|h]" got: "' + relativeString + '"' );
-        }
-    }
-    seconds = (amount * multiple)
-    seconds *= isPlus ? 1 : -1;
+    let seconds = seconds_from_string( relativeString );
     return date_plus_seconds( date, seconds );
+}
+
+function set_time_on_date( date, timeAsString ){
+    if( timeAsString.length !== "hh:tt".length && timeAsString.length !== "h:tt".length ){
+        log_error("Invalid time AsString passed into set_time_on_date expecting [h]h:mm but instead got: " + timeAsString  + ' using 00:00 on date passed in date=' + date );
+        timeAsString = '00:00';
+    }
+    let hours =  timeAsString.split(":")[0];
+    let minutes =  timeAsString.split(":")[1];
+    date.setHours(parseInt(hours));
+    date.setMinutes(parseInt(minutes));
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
 }
 
 //str = "departure-10m"

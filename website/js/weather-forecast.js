@@ -98,7 +98,7 @@ function update_model_with_weather_next_five_days(model){
         model2.data.weather.today.sunset  = new Date( today.values.sunsetTime).toLocaleString().substring(11,17);
         for (var i = 1; i < 6; i++) {
             let futureDay = response.data.timelines[0].intervals[i];
-            let dateString = new Date(futureDay.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
+            let dateString = date_from_string(futureDay.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
             let temperature = Math.round( futureDay.values.temperatureApparent ) + DEGREES_CELSIUS;
             let day = {
                 index: i,

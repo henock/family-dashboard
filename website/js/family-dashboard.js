@@ -54,7 +54,7 @@ function download_last_code_update_file( model ){
     }
 
     get_remote_data( urlToGet, callAsync, model, function( model2, data ){
-        model2.data.reloadDashboardCheck.lastCodeUpdate = date_from_string_only( data.lastCodeUpdate );
+        model2.data.reloadDashboardCheck.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
     }, function( model2, xhr, default_process_error){
         log_error( "Unable to retrieve last-code-update.json from: '" + urlToGet + "'.")
         default_process_error( xhr );
@@ -263,7 +263,7 @@ function get_remote_data( urlToGet, runAsync, model, success_response_parser_fun
             if( fail_response_parser_function ) {
                 fail_response_parser_function( model , xhr , default_process_error);
             }else{
-                process_error( xhr );
+                default_process_error( xhr );
             }
         }
     });
