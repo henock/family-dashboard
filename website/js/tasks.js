@@ -26,7 +26,7 @@ function set_tasks_into_ui( model ){
         groupsTasks.forEach( function( task ){
             taskHtml += '<tr class="task-group-'+ groupCounter + ' h3"><td>' + task.daysSinceAssigned + '</td><td> ' +task.name+'</td></tr>';
         });
-        groupLists +=  '<div class="row border-top">' +
+        groupLists +=  '<div class="row border-top pb-2">' +
                         '<div class="col">' +
                             '<span class="display-4">'+ groupName +'</span>' +
                             '<table>' +

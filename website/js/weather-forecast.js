@@ -69,7 +69,7 @@ function update_model_with_weather_now_and_future_hour( model ){
         model2.data.weather.today.now = {
             name: 'now',
             dateString : now.startTime.substring(11,16),
-            temperature: now.values.temperatureApparent  + DEGREES_CELSIUS,
+            temperature:  Math.round( now.values.temperatureApparent )  + DEGREES_CELSIUS,
             grassIndex : now.values.grassIndex,
             treeIndex  : now.values.treeIndex,
             weatherCode: now.values.weatherCode
@@ -78,7 +78,7 @@ function update_model_with_weather_now_and_future_hour( model ){
         model2.data.weather.today.futureHour = {
             name: 'plus-'+ futureHour +'hrs',
             dateString : inFutureHours.startTime.substring(11,16),
-            temperature: inFutureHours.values.temperatureApparent  + DEGREES_CELSIUS,
+            temperature:  Math.round( inFutureHours.values.temperatureApparent ) + DEGREES_CELSIUS,
             grassIndex : inFutureHours.values.grassIndex,
             treeIndex  : inFutureHours.values.treeIndex,
             weatherCode: inFutureHours.values.weatherCode

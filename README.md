@@ -3,10 +3,18 @@
 A simple browser only based dashboard, that gathers remote data via API calls out to three external websites for weather, train times and our todo list and displays the results on a monitor in our kitchen.
 
 ## Full dashboard.
-![Family Dashboard](/docs/2022-01-01-family-dashboard.jpg)
+![Family Dashboard](/docs/2022-01-02-family-dashboard.jpg)
 
-## Train times count down explained.
+## Train times count down.
 ![Count down explained](/docs/2021-12-23-train-countdown-explained.jpg)
+
+## Tasks.
+Our task list is maintained on a [Trello](https://www.youtube.com/watch?v=2h30589FQHE) board, and the dashboard only displays tasks yet to be done. Note: The number preceding the task is how long since task was last modified.  
+
+![Count down explained](/docs/2022-01-02-tasks-description.jpg)
+
+## Weather and pollen count.
+![Count down explained](/docs/2022-01-02-weather-description.jpg)
 
 ## Configuration and deployment 
 
@@ -23,7 +31,7 @@ You will need to sign up and get API keys and tokens from the remote websites th
 
 - [http://transportapi.com](https://developer.transportapi.com/signup) - to get data on train departure times.
 - [http://tomorrow.io](https://app.tomorrow.io/signup) - to get data on weather forecasts for a GPS coordinate.
-- [http://trello.com](https://trello.com/signup) - to get data on a todo or tasks list (we maintain the task list via the trello mobile app )
+- [http://trello.com](https://trello.com/signup) - to get data on a todo or tasks list.
 
 
 
