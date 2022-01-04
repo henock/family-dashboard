@@ -9,19 +9,24 @@ $(document).ready(function () {
 });
 
 function update_dashboard() {
+    globalModel = get_global_model();
+    update_model( globalModel );
+    update_UI( globalModel );
+}
+
+function get_global_model(){
     if( !globalModel ){
         if(is_debug_on()){
-            globalModel = setup_model( true, false );
             log_error( "Test error removed in 10 seconds after: " + get_padded_time_seconds(now_plus_seconds(10)), 10 );
             write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds after: "+ get_padded_time_seconds(now_plus_seconds(5))+"</b>", 5 );
+            return setup_model( true, false );
         }else{
-            globalModel = setup_model( false, true );
+            return setup_model( false, true );
         }
     }else{
         globalModel.isDefaultModel = false;
+        return globalModel;
     }
-    update_model( globalModel );
-    update_UI( globalModel );
 }
 
 function update_model( model ){
@@ -74,7 +79,7 @@ function update_UI( model ){
 }
 
 function update_date_and_time_ui( model, now ){
-    let monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - DO THIS LOCAL THING BETTER
+    let monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - Can I do this better?
 
     let date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();
     let time = get_padded_time_seconds( now );
