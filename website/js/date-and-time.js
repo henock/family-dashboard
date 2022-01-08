@@ -118,32 +118,6 @@ function display_time_period_from_seconds_into_future( seconds ){
     }
 }
 
-function update_all_count_down_times(){
-    $(".transport-departure-time").each(function(index, element){
-        let timeBoundaries = {}
-        let transportId = $(element).attr("transport-id");
-        timeBoundaries.tooEarly = $(element).attr("tooEarly");
-        timeBoundaries.plentyOfTime = $(element).attr("plentyOfTime");
-        timeBoundaries.moveQuickerTime = $(element).attr("moveQuickerTime");
-        timeBoundaries.almostOutOfTime = $(element).attr("almostOutOfTime");
-        timeBoundaries.deadLine = new Date($(element).attr("deadLine"));
-        let transportType = $(element).attr("transportType");
-        element.innerHTML = build_transport_eta_countdown_element( timeBoundaries, transportId, transportType );
-    });
-
-    $(".refresh-time").each(function(index,element){
-        let id = $(element).attr('id');
-        let refreshTime = new Date($(element).attr("next-refresh-time"));
-        let refreshPeriodInMillis = $(element).attr("refresh-period-in-seconds") * 1000;
-        let futureInMillis = (refreshTime.getTime() - (new Date()).getTime());
-        let futureInSeconds = futureInMillis/1000;
-        let nextRefreshTimeForDisplay = display_time_period_from_seconds_into_future( Math.floor(futureInSeconds));
-        $(element).html( nextRefreshTimeForDisplay );
-        let progressBarPercentage = futureInMillis / refreshPeriodInMillis * 100;
-        $(  '#' + id + '-progress-bar' ).attr('style', 'width: ' + (100 - progressBarPercentage) + '%');
-    });
-}
-
 function date_with_dashes( date ){
     if( !date || ! (date instanceof Date) ){
         log_error( "date_with_dashes() date was null - using now");
