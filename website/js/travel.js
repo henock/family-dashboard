@@ -148,7 +148,7 @@ function get_boundary_window( transport, transportType, time ){
         boundaryWindow.start = transport.minimumRunTransitTimeStamp;
         boundaryWindow.end =  transport.minimumDriveTransitTimeStamp;
         boundaryWindow.name = ALMOST_OUT_OF_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚗");
+        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚙");
     } else {
         if( transport.minimumDriveTransitTimeStamp ){
             boundaryWindow.start = transport.minimumDriveTransitTimeStamp;
@@ -167,9 +167,9 @@ function get_boundary_window( transport, transportType, time ){
 function get_class_for_boundary_window( boundaryWindow ){
     switch( boundaryWindow.name){
         case TOO_EARLY: return 'primary';
-        case PLENTY_OF_TIME: return 'success';
+        case PLENTY_OF_TIME: return 'danger';
         case MOVE_QUICKER_TIME: return 'warning';
-        case ALMOST_OUT_OF_TIME: return 'danger';
+        case ALMOST_OUT_OF_TIME: return 'success';
         case OUT_OF_TIME: return 'secondary';
         default: return '';
     }
