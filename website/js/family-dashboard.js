@@ -168,7 +168,6 @@ function setup_model( debugging, callAsync ){
     update_model_with_api_keys( model );
     update_model_with_runtime_config( model );
     download_last_code_update_file( model );
-    sanitise_dates( model );
     update_model_with_station_to_code_maps( model );
     return model;
 }
@@ -220,17 +219,15 @@ function create_empty_model( debugging, callAsync ){
     }
 }
 
-function sanitise_dates( model, date ){
-    date = date ? date : new Date();
-}
-
 function sanitise_dates_for_commute_config( commutes , date ){
     date = date ? date : new Date();
     commutes.forEach(function( commute ){
         commute.noNeedToLeaveBefore = seconds_from_string( commute.noNeedToLeaveBefore );
-        commute.walkTransitTime = seconds_from_string( commute.walkTransitTime );
-        commute.runTransitTime = seconds_from_string( commute.runTransitTime );
-        commute.driveTransitTime = seconds_from_string( commute.driveTransitTime );
+        commute.minimumWalkTransitTime = seconds_from_string( commute.minimumWalkTransitTime );
+        commute.minimumRunTransitTime = seconds_from_string( commute.minimumRunTransitTime );
+        if( commute.minimumDriveTransitTime ){
+            commute.minimumDriveTransitTime = seconds_from_string( commute.minimumDriveTransitTime );
+        }
     });
 }
 

@@ -69,3 +69,10 @@ tr td{
   margin-bottom: 0 !important;
   margin-top: 0 !important;
 }
+
+.hidden-link{
+    color: white;
+}
+.hidden-link:hover{
+    color: red;
+}

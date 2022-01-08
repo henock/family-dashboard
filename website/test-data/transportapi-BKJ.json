@@ -48,7 +48,7 @@
         },
         "status": "ON TIME",
         "expected_arrival_time": "17:11",
-        "expected_departure_time": "now+15m",
+        "expected_departure_time": "now+910s",
         "best_arrival_estimate_mins": 27,
         "best_departure_estimate_mins": 27
       },

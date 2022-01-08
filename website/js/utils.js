@@ -177,17 +177,20 @@ function build_time_boundaries_for_school_run( schoolRunCountDown ){
     return timeBoundaries;
 }
 
-function build_time_boundaries( noNeedToLeaveBeforeTimeStamp, walkTransitTimeStamp, runTransitTimeStamp, driveTransitTimeStamp, date ){
+function build_time_boundaries( noNeedToLeaveBeforeTimeStamp, minimumWalkTransitTimeStamp, minimumRunTransitTimeStamp, minimumDriveTransitTimeStamp, date ){
     let deadLine = new Date(date);
     let timeBoundaries = {}
     noNeedToLeaveBeforeTimeStamp = date_from_string( noNeedToLeaveBeforeTimeStamp, deadLine );
-    walkTransitTimeStamp = date_from_string( walkTransitTimeStamp, deadLine )
-    runTransitTimeStamp = date_from_string( runTransitTimeStamp, deadLine )
-    driveTransitTimeStamp = date_from_string( driveTransitTimeStamp, deadLine )
+    minimumWalkTransitTimeStamp = date_from_string( minimumWalkTransitTimeStamp, deadLine )
+    minimumRunTransitTimeStamp = date_from_string( minimumRunTransitTimeStamp, deadLine )
     timeBoundaries.noNeedToLeaveBeforeTimeStamp = get_seconds_between_dates( noNeedToLeaveBeforeTimeStamp , deadLine );
-    timeBoundaries.walkTransitTimeStamp = get_seconds_between_dates( walkTransitTimeStamp , deadLine );
-    timeBoundaries.runTransitTimeStamp = get_seconds_between_dates( runTransitTimeStamp , deadLine );
-    timeBoundaries.driveTransitTimeStamp = get_seconds_between_dates( driveTransitTimeStamp , deadLine );
+    timeBoundaries.minimumWalkTransitTimeStamp = get_seconds_between_dates( minimumWalkTransitTimeStamp , deadLine );
+    timeBoundaries.minimumRunTransitTimeStamp = get_seconds_between_dates( minimumRunTransitTimeStamp , deadLine );
+
+    if( minimumDriveTransitTimeStamp ){
+        minimumDriveTransitTimeStamp = date_from_string( minimumDriveTransitTimeStamp, deadLine )
+        timeBoundaries.minimumDriveTransitTimeStamp = get_seconds_between_dates( minimumDriveTransitTimeStamp , deadLine );
+    }
     timeBoundaries.deadLine = deadLine;
     return timeBoundaries;
 }

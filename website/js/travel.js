@@ -125,33 +125,37 @@ function build_transport_eta_countdown_element( train, transportId, transportTyp
     }
 }
 
-function get_boundary_window( train, transportType, time ){
+function get_boundary_window( transport, transportType, time ){
     time = time ? time : new Date();
     let currentTimeStamp = time.getTime();
     let boundaryWindow = {};
-    if ( currentTimeStamp < train.noNeedToLeaveBeforeTimeStamp ) {
+    if ( currentTimeStamp < transport.noNeedToLeaveBeforeTimeStamp ) {
         boundaryWindow.start = currentTimeStamp;
-        boundaryWindow.end =  train.noNeedToLeaveBeforeTimeStamp;
+        boundaryWindow.end =  transport.noNeedToLeaveBeforeTimeStamp;
         boundaryWindow.name = TOO_EARLY;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ?  "🛌" :  "");
-    } else if( currentTimeStamp < train.walkTransitTimeStamp ) {
-        boundaryWindow.start = train.noNeedToLeaveBeforeTimeStamp;
-        boundaryWindow.end =  train.walkTransitTimeStamp;
+    } else if( currentTimeStamp < transport.minimumWalkTransitTimeStamp ) {
+        boundaryWindow.start = transport.noNeedToLeaveBeforeTimeStamp;
+        boundaryWindow.end =  transport.minimumWalkTransitTimeStamp;
         boundaryWindow.name = PLENTY_OF_TIME;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👔️" : "🚶");
-    } else if( currentTimeStamp < train.runTransitTimeStamp ) {
-        boundaryWindow.start = train.walkTransitTimeStamp;
-        boundaryWindow.end =  train.runTransitTimeStamp;
+    } else if( currentTimeStamp < transport.minimumRunTransitTimeStamp ) {
+        boundaryWindow.start = transport.minimumWalkTransitTimeStamp;
+        boundaryWindow.end =  transport.minimumRunTransitTimeStamp;
         boundaryWindow.name = MOVE_QUICKER_TIME;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 🥣" : "🏃");
-    } else if( currentTimeStamp < train.driveTransitTimeStamp ) {
-        boundaryWindow.start = train.runTransitTimeStamp;
-        boundaryWindow.end =  train.driveTransitTimeStamp;
+    } else if(  transport.minimumDriveTransitTimeStamp && currentTimeStamp < transport.minimumDriveTransitTimeStamp ) {
+        boundaryWindow.start = transport.minimumRunTransitTimeStamp;
+        boundaryWindow.end =  transport.minimumDriveTransitTimeStamp;
         boundaryWindow.name = ALMOST_OUT_OF_TIME;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚗");
     } else {
-        boundaryWindow.start = train.driveTransitTimeStamp;
-        boundaryWindow.end = train.departureTimeStamp;
+        if( transport.minimumDriveTransitTimeStamp ){
+            boundaryWindow.start = transport.minimumDriveTransitTimeStamp;
+        }else{
+            boundaryWindow.start = transport.minimumRunTransitTimeStamp;
+        }
+        boundaryWindow.end = transport.departureTimeStamp;
         boundaryWindow.name = OUT_OF_TIME;
         boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? "" :  "");
     }
@@ -258,10 +262,13 @@ function extract_trains_details( commute, trainDetails, isCommuteToDestination, 
         "status" : trainDetails.status,
         "isCommuteToDestination": isCommuteToDestination,
         "noNeedToLeaveBeforeTimeStamp":  date_plus_seconds( departureTime, commute.noNeedToLeaveBefore ).getTime(),
-        "walkTransitTimeStamp":  date_plus_seconds( departureTime, commute.walkTransitTime ).getTime(),
-        "runTransitTimeStamp":  date_plus_seconds( departureTime, commute.runTransitTime ).getTime(),
-        "driveTransitTimeStamp":  date_plus_seconds( departureTime, commute.driveTransitTime ).getTime()
+        "minimumWalkTransitTimeStamp":  date_plus_seconds( departureTime, commute.minimumWalkTransitTime ).getTime(),
+        "minimumRunTransitTimeStamp":  date_plus_seconds( departureTime, commute.minimumRunTransitTime ).getTime(),
     };
+    if( commute.minimumDriveTransitTime ){
+        result.minimumDriveTransitTimeStamp = date_plus_seconds( departureTime, commute.minimumDriveTransitTime ).getTime()
+
+    }
     return result;
 }
 

@@ -176,6 +176,8 @@ function run_all_unit_tests(){
     result += '</table>';
 
     let totals = '<table class="p-2 border-1">'
+                    + '<tr><td><a href="?">Run in normal mode.</a></td></tr>'
+                    + '<tr><td><a href="?debug=true">Run in debug mode</a></td></tr>'
                     + '<tr class="text-success"><td class="display-2">Passed</td><td class="display-2">' + passedTests + '</td></tr>'
                     + '<tr class="text-warning"><td class="display-2">Skipped</td><td class="display-2">' + skippedTests + '</td><td>'+
                                                     build_link_to_anchors( skippedTestLinks )+'<br/>'+
@@ -208,7 +210,7 @@ function set_tasks_on_model_from_remote_data_unit_test(){
         let testResult = (todo.size === 3 &&
                             todo.get('Fikir').length === 1 &&
                             todo.get('Fikir')[0].name === 'Todo Task 1' &&
-                            todo.get('Fikir')[0].daysSinceAssigned === 1 &&
+                            todo.get('Fikir')[0].daysSinceAssigned === 0 &&
                             todo.get('Unassigned').length === 1 &&
                             todo.get('Henock').length === 2 );
         return {
@@ -409,9 +411,9 @@ function sanitise_dates_for_commute_config_unit_test(){
 
     let commute = [{
         noNeedToLeaveBefore : "now+5s",
-        walkTransitTime : "depart-10m",
-        runTransitTime : "depart-5m",
-        driveTransitTime : "depart-2m"
+        minimumWalkTransitTime : "depart-10m",
+        minimumRunTransitTime : "depart-5m",
+        minimumDriveTransitTime : "depart-2m"
     }];
 
     result += run_unit_test( "sanitise_dates_for_commute_config", 'now+5 becomes 5' ,  specific_compare_method, 5, [commute] );
@@ -545,9 +547,9 @@ function get_train_station_departures_unit_test(){
     let startingStation =  {
             from: "New Beckenham",
             noNeedToLeaveBefore: "departure-40m",
-            walkTransitTime: "departure-30m",
-            runTransitTime: "departure-25m",
-            driveTransitTime: "departure-15m",
+            minimumWalkTransitTime: "departure-30m",
+            minimumRunTransitTime: "departure-25m",
+            minimumDriveTransitTime: "departure-15m",
             direction: "to-work",
             showAllDestinations: true,
             to: [ "London Cannon Street", "London Charing Cross", "London Bridge" ]
@@ -580,9 +582,9 @@ function extract_trains_details_unit_test(){
            status                      : startingStation.status,
            isCommuteToDestination      : isCommuteToDestination,
            noNeedToLeaveBeforeTimeStamp: date_plus_seconds( departureTime, commute.noNeedToLeaveBefore ).getTime(),
-           walkTransitTimeStamp        : date_plus_seconds( departureTime, commute.walkTransitTime ).getTime(),
-           runTransitTimeStamp         : date_plus_seconds( departureTime, commute.runTransitTime ).getTime(),
-           driveTransitTimeStamp       : date_plus_seconds( departureTime, commute.driveTransitTime ).getTime()
+           minimumWalkTransitTimeStamp        : date_plus_seconds( departureTime, commute.minimumWalkTransitTime ).getTime(),
+           minimumRunTransitTimeStamp         : date_plus_seconds( departureTime, commute.minimumRunTransitTime ).getTime(),
+           minimumDriveTransitTimeStamp       : date_plus_seconds( departureTime, commute.minimumDriveTransitTime ).getTime()
        }
     }
 
@@ -590,9 +592,9 @@ function extract_trains_details_unit_test(){
 
     let commute = {
         noNeedToLeaveBefore : -40,
-        walkTransitTime     : -30,
-        runTransitTime      : -20,
-        driveTransitTime    : -10
+        minimumWalkTransitTime     : -30,
+        minimumRunTransitTime      : -20,
+        minimumDriveTransitTime    : -10
     };
 
     let startingStation = {
@@ -830,41 +832,40 @@ function get_boundary_window_unit_test(){
 
     let departureTime = new Date("2021-12-06T07:00:00.000Z");
 
-    //get_boundary_window( train, transportType )
-    let train = {
+    let transport = {
         departureTime : departureTime,
         departureTimeStamp : departureTime.getTime(),
         noNeedToLeaveBeforeTimeStamp:  date_plus_seconds( departureTime, -100 ).getTime(),
-        walkTransitTimeStamp:  date_plus_seconds( departureTime, -80 ).getTime(),
-        runTransitTimeStamp:  date_plus_seconds( departureTime, -60 ).getTime(),
-        driveTransitTimeStamp:  date_plus_seconds( departureTime, -50 ).getTime()
+        minimumWalkTransitTimeStamp:  date_plus_seconds( departureTime, -80 ).getTime(),
+        minimumRunTransitTimeStamp:  date_plus_seconds( departureTime, -60 ).getTime(),
+        minimumDriveTransitTimeStamp:  date_plus_seconds( departureTime, -50 ).getTime()
     };
 
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -200 ', compare_with_stringify, {start:1638773800000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -200 )]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110 ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -110 )]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110  ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '🛌', progressBarPercentage: 0}, [train, SCHOOL_RUN, date_plus_seconds( departureTime, -110  )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -100 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji:' 👔️', progressBarPercentage: 0}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -100 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -99 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 5}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -99 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -81 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 95}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -81 )]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -80 )]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji:' 🥣', progressBarPercentage: 0}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -80 )]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji: ' 🚗', progressBarPercentage: 90}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -51 )]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji:' 👞', progressBarPercentage: 90}, [train, SCHOOL_RUN , date_plus_seconds( departureTime, -51 )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME start of last boundary (-50)', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -50 )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -40', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -40  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -30 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -30  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -20 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -20  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -10  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -5 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -5  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -4 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -4  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -3 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -3  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -2 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -2  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -1 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -1  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -0 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [train, PUBLIC_TRANSPORT,date_plus_seconds( departureTime, 0  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME +10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [train, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, +10  )]);
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -200 ', compare_with_stringify, {start:1638773800000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -200 )]);
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110 ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -110 )]);
+    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110  ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '🛌', progressBarPercentage: 0}, [transport, SCHOOL_RUN, date_plus_seconds( departureTime, -110  )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -100 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji:' 👔️', progressBarPercentage: 0}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -100 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -99 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 5}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -99 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -81 )]);
+    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 95}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -81 )]);
+    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -80 )]);
+    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji:' 🥣', progressBarPercentage: 0}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -80 )]);
+    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji: ' 🚗', progressBarPercentage: 90}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -51 )]);
+    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji:' 👞', progressBarPercentage: 90}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -51 )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME start of last boundary (-50)', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -50 )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -40', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -40  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -30 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -30  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -20 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -20  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -10  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -5 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -5  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -4 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -4  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -3 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -3  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -2 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -2  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -1 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -1  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -0 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [transport, PUBLIC_TRANSPORT,date_plus_seconds( departureTime, 0  )]);
+    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME +10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, +10  )]);
     return result;
 }
 
