@@ -60,11 +60,19 @@ function clone_object( o ){
 }
 
 function build_anchor_for( text, counter, aClass ){
-    return '<a class="'+ aClass + '" id="' +  text + '-' + counter + '">' +  text + '</a>';
+    if( counter ){
+        return '<a class="'+ aClass + '" id="' +  text + '-' + counter + '">' +  text + '</a>';
+    }else {
+        return '<a class="'+ aClass + '" id="' +  text + '">' +  text + '</a>';
+    }
 }
 
 function build_link_to_anchor( text, counter, aClass ){
-    return '<a class="'+ aClass + '" href="#' +  text + '-' + counter + '">' +  text + '</a>';
+    if( counter ){
+        return '<a class="'+ aClass + '" href="#' +  text + '-' + counter + '">' +  text + '</a>';
+    } else {
+        return '<a class="'+ aClass + '" href="#' +  text + '">' +  text + '</a>';
+    }
 }
 
 function build_link_to_anchors( links ){
@@ -115,10 +123,11 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
     }
 
     let anchor = ' href="#'+function_under_test +'">' + function_under_test + '</a>';
+    let anchor_top_link = build_link_to_anchor( "top", null,  "text-primary" )
 
     if( testResult.passed ){
         passedTests++;
-        return '<tr><td class="text-success">' +  build_anchor_for( function_under_test, testCounter, "text-success" ) + ' </td><td>'
+        return '<tr><td class="text-success">' + anchor_top_link+ ': ' +  build_anchor_for( function_under_test, testCounter, "text-success" ) + ' </td><td>'
                 + comment + '</td><td>'
                 + JSON.stringify( testResult.testedValue ) + '</td><td>'
                 + JSON.stringify( testResult.expectedValue ) + '</td></tr>';
@@ -126,7 +135,8 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
         failedTests++;
         failedTestLinks.push( build_link_to_anchor( function_under_test, testCounter, "text-danger" ));
 
-        return '<tr><td colspan="6" class="text-danger"><table border="1">'
+        return '<tr><td colspan="6" class="text-danger bg-secondary"><table border="1" class="m-3 bg-dark">'
+                                + add_fail_row( 'Back to top',   anchor_top_link   )
                                 + add_fail_row( 'function',  build_anchor_for( function_under_test, testCounter, "text-danger" ) )
                                 + add_fail_row( 'comment',  comment )
                                 + add_fail_row( 'params',  JSON.stringify( parameters ))
@@ -153,7 +163,7 @@ function run_all_unit_tests(){
     result += generate_next_download_count_down_values_unit_test();
     result += build_transport_eta_countdown_element_unit_test();
     result += build_train_row_unit_test();
-    result += sanitise_dates_for_school_run_unit_test();
+    result += build_todays_school_run_dates_unit_test();
     result += sanitise_dates_for_commute_config_unit_test();
     result += sanitise_dates_for_train_times_unit_test();
     result += seconds_from_string_unit_test();
@@ -170,12 +180,14 @@ function run_all_unit_tests(){
     result += setup_model_unit_test();
     result += date_from_string_unit_test();
     result += is_week_day_unit_test();
-    result += get_boundary_window_unit_test();
+    result += get_boundary_window_for_public_transport_unit_test();
+    result += get_boundary_window_for_school_run_unit_test();
     result += get_seconds_until_unit_test();
     result += display_time_period_from_seconds_into_future_unit_test();
     result += '</table>';
 
     let totals = '<table class="p-2 border-1">'
+                    + '<tr><td>'+  build_anchor_for( "top" , undefined ) +'</td></tr>'
                     + '<tr><td><a href="?">Run in normal mode.</a></td></tr>'
                     + '<tr><td><a href="?debug=true">Run in debug mode</a></td></tr>'
                     + '<tr class="text-success"><td class="display-2">Passed</td><td class="display-2">' + passedTests + '</td></tr>'
@@ -210,20 +222,26 @@ function set_tasks_on_model_from_remote_data_unit_test(){
         let testResult = (todo.size === 3 &&
                             todo.get('Fikir').length === 1 &&
                             todo.get('Fikir')[0].name === 'Todo Task 1' &&
-                            todo.get('Fikir')[0].daysSinceAssigned === 0 &&
+                            todo.get('Fikir')[0].daysSinceAssigned === 1 &&
                             todo.get('Unassigned').length === 1 &&
                             todo.get('Henock').length === 2 );
         return {
             passed: testResult,
             expectedValue: 'Three different groups of tasks Fikir(1), Henock(2), Unassigned(1)',
-            testedValue:   'Fikir: ' + JSON.stringify( todo.get('Fikir') )  +
+            testedValue:    'Todo.size: ' + todo.size + ' result: ' + (todo.size === 3) +
+                            '<br/>todo.get("Fikir").length: ' + todo.get('Fikir').length + ' result: ' + (todo.get('Fikir').length === 1) +
+                            '<br/>todo.get("Fikir")[0].name: ' + todo.get('Fikir')[0].name + ' result: ' + (todo.get('Fikir')[0].name === 'Todo Task 1') +
+                            '<br/>todo.get("Fikir")[0].daysSinceAssigned: ' + todo.get('Fikir')[0].daysSinceAssigned + ' result: ' + (todo.get('Fikir')[0].daysSinceAssigned === 1) +
+                            '<br/>todo.get("Unassigned").length: ' + todo.get('Unassigned').length + ' result: ' + (todo.get('Unassigned').length === 1) +
+                            '<br/>todo.get("Henock").length === 2: ' + todo.get('Henock').length + ' result: ' + (todo.get('Henock').length === 2) +
+                            '<br/>Fikir: ' + JSON.stringify( todo.get('Fikir') )  +
                             '<br/>Henock: ' + JSON.stringify( todo.get('Henock') ) +
                             '<br/>Unassigned: ' + JSON.stringify( todo.get('Unassigned') )
         }
     }
     let data = [{
         name: "Todo Task 1",
-        dateLastActivity: "now-24h",
+        dateLastActivity: "now-25h",
         labels: [{
             name: "Fikir",
         }]
@@ -324,11 +342,12 @@ function build_transport_eta_countdown_element_unit_test(){
     };
 
     let transportId = "transportId";
-    let transportType = PUBLIC_TRANSPORT;
     let timeMinutes = get_padded_time_minutes( date );
-    let expectedResult = '          <div class=\"row\">              <div class=\"col-3 text-primary\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00s</div>              <div class=\"col-2\"></div>              <div class=\"col-2 text-primary\">'+timeMinutes+' </div>          </div>';
+    let expectedResult = '          <div class=\"row\">              <div class=\"col-3 text-primary\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00s</div>'+
+                         '              <div class=\"col-2\"></div>              <div class=\"col-2 text-primary\">' + timeMinutes +
+                         ' </div>          </div>';
 
-    result += run_unit_test( "build_transport_eta_countdown_element", 'eta countdown element',  compare_html, expectedResult, [train, transportId, transportType, dateMinus20s] );
+    result += run_unit_test( "build_transport_eta_countdown_element", 'eta countdown element',  compare_html, expectedResult, [train, transportId,  dateMinus20s] );
     return result;
 }
 
@@ -363,13 +382,13 @@ function build_train_row_unit_test(){
 }
 
 
-function sanitise_dates_for_school_run_unit_test(){
+function build_todays_school_run_dates_unit_test(){
     let result = '';
 
     function specific_compare_method( expected, result, parameters ){
-        let schoolRunCountDown = parameters[0];
+        let schoolRunCountDown = result;
         let actualDate = schoolRunCountDown.showCountDownStart;
-        let testResult = compare_hours_minutes_secs( expected, actualDate );
+        let testResult = ( expected == actualDate );
         return {
             passed: testResult,
             expectedValue: expected,
@@ -377,7 +396,8 @@ function sanitise_dates_for_school_run_unit_test(){
         }
     }
 
-    let nowMinus50 = now_plus_seconds( -50 );
+    let date = new Date();
+    let dateMinus50 = date_plus_seconds( date, -50 );
     let schoolRunCountDown = {
             show: true,
             showCountDownStart: "departure-50s",
@@ -386,12 +406,12 @@ function sanitise_dates_for_school_run_unit_test(){
             finishGettingDressedBy: "departure-30s",
             finishBreakfastBy: "departure-20s",
             putOnShoesBy: "departure-10s",
-            departureTime: "now+45s",
+            departureTime: "now+0s",
             stopCountDown: "departure+10s",
             showCountDownStop: "departure+10s"
        };
 
-    result += run_unit_test( "sanitise_dates_for_school_run", 'departure-50s becomes ' + nowMinus50 ,  specific_compare_method, nowMinus50, [schoolRunCountDown] );
+    result += run_unit_test( "build_todays_school_run_dates", 'departure-50s becomes ' + dateMinus50 ,  specific_compare_method, dateMinus50.getTime(), [schoolRunCountDown, date] );
     return result;
 }
 
@@ -827,7 +847,7 @@ function display_time_period_from_seconds_into_future_unit_test(){
     return result;
 }
 
-function get_boundary_window_unit_test(){
+function get_boundary_window_for_public_transport_unit_test(){
     let result = '';
 
     let departureTime = new Date("2021-12-06T07:00:00.000Z");
@@ -841,31 +861,60 @@ function get_boundary_window_unit_test(){
         minimumDriveTransitTimeStamp:  date_plus_seconds( departureTime, -50 ).getTime()
     };
 
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -200 ', compare_with_stringify, {start:1638773800000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -200 )]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110 ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -110 )]);
-    result += run_unit_test("get_boundary_window", 'TOO_EARLY -110  ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '🛌', progressBarPercentage: 0}, [transport, SCHOOL_RUN, date_plus_seconds( departureTime, -110  )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -100 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji:' 👔️', progressBarPercentage: 0}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -100 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -99 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 5}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -99 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -81 )]);
-    result += run_unit_test("get_boundary_window", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: ' 👔️', progressBarPercentage: 95}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -81 )]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -80 )]);
-    result += run_unit_test("get_boundary_window", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji:' 🥣', progressBarPercentage: 0}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -80 )]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji: ' 🚗', progressBarPercentage: 90}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -51 )]);
-    result += run_unit_test("get_boundary_window", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji:' 👞', progressBarPercentage: 90}, [transport, SCHOOL_RUN , date_plus_seconds( departureTime, -51 )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME start of last boundary (-50)', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -50 )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -40', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -40  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -30 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -30  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -20 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -20  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -10  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -5 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -5  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -4 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -4  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -3 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -3  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -2 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -2  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -1 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, -1  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME -0 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [transport, PUBLIC_TRANSPORT,date_plus_seconds( departureTime, 0  )]);
-    result += run_unit_test("get_boundary_window", 'OUT_OF_TIME +10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [transport, PUBLIC_TRANSPORT, date_plus_seconds( departureTime, +10  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'TOO_EARLY -200 ', compare_with_stringify, {start:1638773800000,end:1638773900000, name: TOO_EARLY, emoji: '', progressBarPercentage: 0}, [transport, date_plus_seconds( departureTime, -200 )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 0}, [transport, date_plus_seconds( departureTime, -100 )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 5}, [transport, date_plus_seconds( departureTime, -99 )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '🚶', progressBarPercentage: 95}, [transport, date_plus_seconds( departureTime, -81 )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji: '🏃', progressBarPercentage: 0}, [transport, date_plus_seconds( departureTime, -80 )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji: ' 🚙', progressBarPercentage: 90}, [transport, date_plus_seconds( departureTime, -51 )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME start of last boundary (-50)', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '', progressBarPercentage: 0}, [transport, date_plus_seconds( departureTime, -50 )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -40', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 20}, [transport, date_plus_seconds( departureTime, -40  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -30 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 40}, [transport, date_plus_seconds( departureTime, -30  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -20 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 60}, [transport, date_plus_seconds( departureTime, -20  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 80}, [transport, date_plus_seconds( departureTime, -10  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -5 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 90}, [transport, date_plus_seconds( departureTime, -5  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -4 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 92}, [transport, date_plus_seconds( departureTime, -4  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -3 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 94}, [transport, date_plus_seconds( departureTime, -3  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -2 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 96}, [transport, date_plus_seconds( departureTime, -2  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -1 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 98}, [transport, date_plus_seconds( departureTime, -1  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME -0 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 100}, [transport, date_plus_seconds( departureTime, 0  )]);
+    result += run_unit_test("get_boundary_window_for_public_transport", 'OUT_OF_TIME +10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: '',  progressBarPercentage: 0}, [transport, date_plus_seconds( departureTime, +10  )]);
+
+    return result;
+}
+
+function get_boundary_window_for_school_run_unit_test(){
+    let result = '';
+
+    let departureTime = new Date("2021-12-06T07:00:00.000Z");
+
+    let schoolRunCountDown = {
+        departureTime : departureTime,
+        departureTimeStamp : departureTime.getTime(),
+        getOutOfBedBy:  date_plus_seconds( departureTime, -100 ).getTime(),
+        finishGettingDressedBy:  date_plus_seconds( departureTime, -80 ).getTime(),
+        finishBreakfastBy:  date_plus_seconds( departureTime, -60 ).getTime(),
+        putOnShoesBy:  date_plus_seconds( departureTime, -50 ).getTime()
+    };
+
+    result += run_unit_test("get_boundary_window_for_school_run", 'TOO_EARLY -110  ', compare_with_stringify, {start:1638773890000,end:1638773900000, name: TOO_EARLY, emoji: '🛌 You should still be in bed', progressBarPercentage: 0}, [schoolRunCountDown, date_plus_seconds( departureTime, -110  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'PLENTY_OF_TIME -100 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji:'👔️ Get dressed', progressBarPercentage: 0}, [schoolRunCountDown, date_plus_seconds( departureTime, -100 )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'PLENTY_OF_TIME -99 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '👔️ Get dressed', progressBarPercentage: 5}, [schoolRunCountDown, date_plus_seconds( departureTime, -99 )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'PLENTY_OF_TIME -81 ', compare_with_stringify, {start:1638773900000,end:1638773920000, name: PLENTY_OF_TIME, emoji: '👔️ Get dressed', progressBarPercentage: 95}, [schoolRunCountDown, date_plus_seconds( departureTime, -81 )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'MOVE_QUICKER_TIME -80 ', compare_with_stringify, {start:1638773920000,end:1638773940000, name: MOVE_QUICKER_TIME, emoji:'🥣 Eat your breakfast', progressBarPercentage: 0}, [schoolRunCountDown, date_plus_seconds( departureTime, -80 )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'ALMOST_OUT_OF_TIME -51 ', compare_with_stringify, {start:1638773940000,end:1638773950000, name: ALMOST_OUT_OF_TIME, emoji:'👞 Put on your shoes', progressBarPercentage: 90}, [schoolRunCountDown, date_plus_seconds( departureTime, -51 )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -40', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 20}, [schoolRunCountDown, date_plus_seconds( departureTime, -40  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -30 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 40}, [schoolRunCountDown, date_plus_seconds( departureTime, -30  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -20 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 60}, [schoolRunCountDown, date_plus_seconds( departureTime, -20  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 80}, [schoolRunCountDown, date_plus_seconds( departureTime, -10  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -5 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 90}, [schoolRunCountDown, date_plus_seconds( departureTime, -5  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -4 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 92}, [schoolRunCountDown, date_plus_seconds( departureTime, -4  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -3 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 94}, [schoolRunCountDown, date_plus_seconds( departureTime, -3  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -2 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 96}, [schoolRunCountDown, date_plus_seconds( departureTime, -2  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -1 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 98}, [schoolRunCountDown, date_plus_seconds( departureTime, -1  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME -0 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 100}, [schoolRunCountDown, date_plus_seconds( departureTime, 0  )]);
+    result += run_unit_test("get_boundary_window_for_school_run", 'OUT_OF_TIME +10 ', compare_with_stringify, {start:1638773950000,end:1638774000000, name: OUT_OF_TIME, emoji: 'You are late!',  progressBarPercentage: 0}, [schoolRunCountDown, date_plus_seconds( departureTime, +10  )]);
+
     return result;
 }
 

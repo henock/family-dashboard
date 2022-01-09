@@ -167,34 +167,6 @@ function get_runtime_config(){
     return runtimeConfig;
 }
 
-function build_time_boundaries_for_school_run( schoolRunCountDown ){
-    let tooEarly = schoolRunCountDown.getOutOfBedBy;
-    let plentyOfTime = schoolRunCountDown.finishGettingDressedBy;
-    let moveQuickerTime = schoolRunCountDown.finishBreakfastBy;
-    let almostOutOfTime = schoolRunCountDown.putOnShoesBy;
-    let departureTime = date_from_string( schoolRunCountDown.departureTime )
-    let timeBoundaries =  build_time_boundaries( tooEarly, plentyOfTime, moveQuickerTime, almostOutOfTime, departureTime );
-    return timeBoundaries;
-}
-
-function build_time_boundaries( noNeedToLeaveBeforeTimeStamp, minimumWalkTransitTimeStamp, minimumRunTransitTimeStamp, minimumDriveTransitTimeStamp, date ){
-    let deadLine = new Date(date);
-    let timeBoundaries = {}
-    noNeedToLeaveBeforeTimeStamp = date_from_string( noNeedToLeaveBeforeTimeStamp, deadLine );
-    minimumWalkTransitTimeStamp = date_from_string( minimumWalkTransitTimeStamp, deadLine )
-    minimumRunTransitTimeStamp = date_from_string( minimumRunTransitTimeStamp, deadLine )
-    timeBoundaries.noNeedToLeaveBeforeTimeStamp = get_seconds_between_dates( noNeedToLeaveBeforeTimeStamp , deadLine );
-    timeBoundaries.minimumWalkTransitTimeStamp = get_seconds_between_dates( minimumWalkTransitTimeStamp , deadLine );
-    timeBoundaries.minimumRunTransitTimeStamp = get_seconds_between_dates( minimumRunTransitTimeStamp , deadLine );
-
-    if( minimumDriveTransitTimeStamp ){
-        minimumDriveTransitTimeStamp = date_from_string( minimumDriveTransitTimeStamp, deadLine )
-        timeBoundaries.minimumDriveTransitTimeStamp = get_seconds_between_dates( minimumDriveTransitTimeStamp , deadLine );
-    }
-    timeBoundaries.deadLine = deadLine;
-    return timeBoundaries;
-}
-
 function calculate_progress_bar_percentage( startTimeStamp, endTimeStamp, currentTimeStamp ){
     if( currentTimeStamp < startTimeStamp || currentTimeStamp > endTimeStamp ){
         return 0;
@@ -220,6 +192,17 @@ function generate_next_download_count_down_values( nextDownloadDataTime, updateE
 function set_next_download_count_down_elements( elementId, countDown ){
     $("#" + elementId ).html( countDown.timeLeft );
     $("#" + elementId + "-progress-bar").attr( "style", "width: " + countDown.percentage + "%" );
+}
+
+function get_class_for_boundary_window( boundaryWindow ){
+    switch( boundaryWindow.name){
+        case TOO_EARLY: return 'primary';
+        case PLENTY_OF_TIME: return 'danger';
+        case MOVE_QUICKER_TIME: return 'warning';
+        case ALMOST_OUT_OF_TIME: return 'success';
+        case OUT_OF_TIME: return 'secondary';
+        default: return '';
+    }
 }
 
 

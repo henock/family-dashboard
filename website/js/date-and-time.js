@@ -118,9 +118,9 @@ function display_time_period_from_seconds_into_future( seconds ){
     }
 }
 
-function date_with_dashes( date ){
+function get_date_with_dashes( date ){
     if( !date || ! (date instanceof Date) ){
-        log_error( "date_with_dashes() date was null - using now");
+        log_error( "get_date_with_dashes() date was null - using now");
         date = new Date();
     }
     let day = pad_with_leading_zero(date.getDate());      //date uses starting index of 1

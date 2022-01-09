@@ -39,10 +39,10 @@
     "getOutOfBedBy": "departure-40s",
     "finishGettingDressedBy": "departure-30s",
     "finishBreakfastBy": "departure-20s",
-    "putOnShoesBy": "departure-10s",
-    "departureTime": "now+45s",
-    "stopCountDown": "departure+10s",
-    "showCountDownStop": "departure+10s"
+    "putOnShoesBy": "departure-5s",
+    "departureTime": "now+50s",
+    "stopCountDown": "departure+5s",
+    "showCountDownStop": "departure+6s"
   },
   "transport": {
     "maximumTrainsToShow": 8,

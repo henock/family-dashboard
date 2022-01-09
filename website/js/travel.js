@@ -4,9 +4,6 @@ const MOVE_QUICKER_TIME = "moveQuickerTime";
 const ALMOST_OUT_OF_TIME = "almostOutOfTime";
 const OUT_OF_TIME = "outOfTime";
 
-const SCHOOL_RUN = "schoolRun";
-const PUBLIC_TRANSPORT = "publicTransport";
-
 
 
 function update_model_with_trains( model , date ){
@@ -41,7 +38,7 @@ function update_all_train_count_downs( model ){
         startingStation.departures.forEach(function(train, index){
             let transportId =  build_transport_id( startingStation, train, index);
             if( now < train.departureTime ){
-                let trainHtml = build_transport_eta_countdown_element( train, transportId, PUBLIC_TRANSPORT );
+                let trainHtml = build_transport_eta_countdown_element( train, transportId );
                 $( '#' + transportId + "-eta").html( trainHtml );
             }else{
                 $( '#' + transportId ).addClass( 'd-none' );
@@ -94,14 +91,14 @@ function build_train_row( train, startingStation, index){
     return trainRow;
 }
 
-function build_transport_eta_countdown_element( train, transportId, transportType, time ){
-    time = time ? time : new Date();
-    let boundaryWindow = get_boundary_window( train, transportType, time );
+function build_transport_eta_countdown_element( train, transportId, date ){
+    date = date ? date : new Date();
+    let boundaryWindow = get_boundary_window_for_public_transport( train, date );
     let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
     let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( train.departureTime));
     let paddedTimeMinutes = get_padded_time_minutes(train.departureTime);
-    if( train.departureTime > time ){
-        let div = '          <div class="row">'
+    if( train.departureTime > date ){
+        let div ='          <div class="row">'
                 +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
                 +'              <div class="col-2"></div>'
                 +'              <div class="col-2 text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +' ' + boundaryWindow.emoji + '</div>'
@@ -125,30 +122,30 @@ function build_transport_eta_countdown_element( train, transportId, transportTyp
     }
 }
 
-function get_boundary_window( transport, transportType, time ){
-    time = time ? time : new Date();
-    let currentTimeStamp = time.getTime();
+function get_boundary_window_for_public_transport( transport, date ){
+    date = date ? date : new Date();
+    let currentTimeStamp = date.getTime();
     let boundaryWindow = {};
     if ( currentTimeStamp < transport.noNeedToLeaveBeforeTimeStamp ) {
         boundaryWindow.start = currentTimeStamp;
         boundaryWindow.end =  transport.noNeedToLeaveBeforeTimeStamp;
         boundaryWindow.name = TOO_EARLY;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ?  "🛌" :  "");
+        boundaryWindow.emoji =  "";
     } else if( currentTimeStamp < transport.minimumWalkTransitTimeStamp ) {
         boundaryWindow.start = transport.noNeedToLeaveBeforeTimeStamp;
         boundaryWindow.end =  transport.minimumWalkTransitTimeStamp;
         boundaryWindow.name = PLENTY_OF_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👔️" : "🚶");
+        boundaryWindow.emoji =  "🚶";
     } else if( currentTimeStamp < transport.minimumRunTransitTimeStamp ) {
         boundaryWindow.start = transport.minimumWalkTransitTimeStamp;
         boundaryWindow.end =  transport.minimumRunTransitTimeStamp;
         boundaryWindow.name = MOVE_QUICKER_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 🥣" : "🏃");
+        boundaryWindow.emoji =  "🏃";
     } else if(  transport.minimumDriveTransitTimeStamp && currentTimeStamp < transport.minimumDriveTransitTimeStamp ) {
         boundaryWindow.start = transport.minimumRunTransitTimeStamp;
         boundaryWindow.end =  transport.minimumDriveTransitTimeStamp;
         boundaryWindow.name = ALMOST_OUT_OF_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? " 👞" : " 🚙");
+        boundaryWindow.emoji =  " 🚙";
     } else {
         if( transport.minimumDriveTransitTimeStamp ){
             boundaryWindow.start = transport.minimumDriveTransitTimeStamp;
@@ -157,22 +154,11 @@ function get_boundary_window( transport, transportType, time ){
         }
         boundaryWindow.end = transport.departureTimeStamp;
         boundaryWindow.name = OUT_OF_TIME;
-        boundaryWindow.emoji =  (transportType == SCHOOL_RUN ? "" :  "");
+        boundaryWindow.emoji = "";
     }
 
     boundaryWindow.progressBarPercentage = calculate_progress_bar_percentage(   boundaryWindow.start, boundaryWindow.end, currentTimeStamp );
     return boundaryWindow;
-}
-
-function get_class_for_boundary_window( boundaryWindow ){
-    switch( boundaryWindow.name){
-        case TOO_EARLY: return 'primary';
-        case PLENTY_OF_TIME: return 'danger';
-        case MOVE_QUICKER_TIME: return 'warning';
-        case ALMOST_OUT_OF_TIME: return 'success';
-        case OUT_OF_TIME: return 'secondary';
-        default: return '';
-    }
 }
 
 function highlightCommuteToDestinations( destinationStationCode, isCommuteToDestination ){
@@ -199,7 +185,7 @@ function get_train_station_departures( commute, model ){
         urlToGet = "test-data/transportapi-" + startingStationCode +".json";
     } else{
         let now = new Date();
-        let fullDate = date_with_dashes( now );
+        let fullDate = get_date_with_dashes( now );
         let fullTime = get_padded_time_minutes( now );
         let transportApi = model.apiKeys.transportApi
 

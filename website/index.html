@@ -14,15 +14,14 @@
                     <p class="mb-0">You do not have the file <a href="data/api-keys.json">data/api-keys.json</a> correctly configured.</p>
                 </div>
             </div>
+            <div id="user-messages-div" class="row d-none h-100 overflow-hidden">
+                <ul id="user-messages" class="list-unstyled h-100 overflow-hidden" ></ul>
+            </div>
             <div class="row pl-2">
                 <div class="col">
                     <!-- ///////// SCHOOL RUN /////// -->
                     <div id="school-run" class="row display-2 d-none pb-5">
-                        <div class="col-2 text-center">🏫</div>
-                        <div id="school-run-departure-time" class="col-10 text-center"></div>
-                    </div>
-                    <div id="user-messages-div" class="row d-none h-100 overflow-hidden">
-                        <ul id="user-messages" class="list-unstyled h-100 overflow-hidden" ></ul>
+                        <div id="school-run-departure-time" class="col text-center"></div>
                     </div>
                 </div>
             </div>
@@ -279,6 +278,7 @@
         <script type="text/javascript" src="js/travel.js"></script>
         <script type="text/javascript" src="js/tasks.js"></script>
         <script type="text/javascript" src="js/weather-forecast.js"></script>
+        <script type="text/javascript" src="js/school-run.js"></script>
         <script type="text/javascript" src="js/testing-and-debugging.js"></script>
         <script type="text/javascript" src="js/family-dashboard.js"></script>
     </body>

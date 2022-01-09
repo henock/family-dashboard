@@ -75,6 +75,7 @@ function update_UI( model ){
     update_tasks_ui( model, now );
     update_trains_ui( model, now );
     update_weather_ui( model, now );
+    update_school_run_ui( model, now );
     remove_overdue_messages();
 }
 
@@ -141,7 +142,6 @@ function update_model_with_runtime_config( model ){
         model2.config.showWeather = data.weather.show
         model2.config.showTimeZones = data.timeZones.show
         model2.config.showSchoolRunCountDown = data.schoolRunCountDown.show
-        sanitise_dates_for_school_run( model2.runtimeConfig.schoolRunCountDown, new Date() );
         sanitise_dates_for_commute_config( model2.runtimeConfig.transport.commute, new Date() );
     }
 
@@ -197,6 +197,8 @@ function create_empty_model( debugging, callAsync ){
                 nextDownloadDataTime: inThePast,
                 nextRebuildUiTime: inThePast
             },
+            schoolRunCountDown :{
+            },
             timeZones :{
                 dataDownloaded: false,
                 insertedTimeElements: false
@@ -229,19 +231,6 @@ function sanitise_dates_for_commute_config( commutes , date ){
             commute.minimumDriveTransitTime = seconds_from_string( commute.minimumDriveTransitTime );
         }
     });
-}
-
-function sanitise_dates_for_school_run( schoolRun , date ){
-    date = date ? date : new Date();
-    schoolRun.showCountDownStart = date_from_string( schoolRun.showCountDownStart );
-    schoolRun.startCountDown = date_from_string( schoolRun.startCountDown );
-    schoolRun.getOutOfBedBy = date_from_string( schoolRun.getOutOfBedBy );
-    schoolRun.finishGettingDressedBy = date_from_string( schoolRun.finishGettingDressedBy );
-    schoolRun.finishBreakfastBy = date_from_string( schoolRun.finishBreakfastBy );
-    schoolRun.putOnShoesBy = date_from_string( schoolRun.putOnShoesBy );
-    schoolRun.departureTime = date_from_string( schoolRun.departureTime );
-    schoolRun.stopCountDown = date_from_string( schoolRun.stopCountDown );
-    schoolRun.showCountDownStop = date_from_string( schoolRun.showCountDownStop );
 }
 
 function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){
