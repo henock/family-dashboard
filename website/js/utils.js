@@ -46,7 +46,6 @@ function log_warn( message, remove_after_seconds ){
     write_message( message, "text-warning", remove_after_seconds, false  );
 }
 
-
 function add_message_div_if_missing(){
     let messageDiv = $("#user-messages-div");
     messageDiv.removeClass('d-none');
@@ -63,7 +62,6 @@ function write_to_console( message ){
     let timedMessage = (' [' + get_padded_time_milli_seconds( new Date() ) + '] ' + message);
     console.log( timedMessage );
 }
-
 
 function write_message( message, aClass, removeAfterSeconds, asHtml ){
     let removeTime = removeAfterSeconds ? now_plus_seconds(removeAfterSeconds) : now_plus_seconds( 5 );
@@ -105,6 +103,7 @@ function colour_special_fields( field, regex ){
         return field;
     }
 }
+
 
 function get_runtime_config(){
     let runtimeConfigUrl = "data/runtime-config.json";
@@ -181,7 +180,7 @@ function calculate_progress_bar_percentage( startTimeStamp, endTimeStamp, curren
 function generate_next_download_count_down_values( nextDownloadDataTime, updateEvery, time ){
     time = time ? time : new Date();
     startTimeStamp = date_plus_seconds( nextDownloadDataTime, updateEvery * -1 );
-    let percentage = calculate_progress_bar_percentage( startTimeStamp, nextDownloadDataTime.getTime(), time.getTime() );
+    let percentage = calculate_progress_bar_percentage( startTimeStamp.getTime(), nextDownloadDataTime.getTime(), time.getTime() );
     let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( nextDownloadDataTime ));
     return {
         timeLeft: countDownTime,

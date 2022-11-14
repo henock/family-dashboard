@@ -50,6 +50,16 @@ function update_all_train_count_downs( model ){
 function insert_all_trains( model ){
     let isFirst = true;
     $('#train-travel').html('');
+    model.data.trains.startingStations.sort(function compareFn(a, b) {
+         if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+    });
+
     model.data.trains.startingStations.forEach( function(startingStation ){
         let border = '';
         if( isFirst ){

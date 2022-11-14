@@ -4,7 +4,7 @@ $(document).ready(function () {
     if(running_unit_tests()){
         run_all_unit_tests();
     } else {
-        setInterval(update_dashboard, 100 );
+        setInterval(update_dashboard, 1000 );
     }
 });
 
