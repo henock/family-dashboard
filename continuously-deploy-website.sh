@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# NOTE: This script is copied into the container when running this application via the run-dashboard-in-docker.sh
 
 set -euo pipefail
 
