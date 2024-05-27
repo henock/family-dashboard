@@ -85,8 +85,6 @@ function update_model_with_weather_now_and_future_hour( model ){
         };
         model2.data.weather.todaysDataDownloaded =  true;
         write_to_console( 'model2.data.weather.todaysDataDownloaded=true' );
-    }, function( model2, xhr, default_process_error ){
-        default_process_error( xhr );
     });
 }
 
@@ -112,8 +110,6 @@ function update_model_with_weather_next_five_days(model){
         }
         model2.data.weather.futureDataDownloaded = true;
         write_to_console( 'model2.data.weather.futureDataDownloaded=true' );
-    }, function( model2, xhr, default_process_error ){
-        default_process_error( xhr );
     });
 }
 

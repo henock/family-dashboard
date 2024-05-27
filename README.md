@@ -1,6 +1,7 @@
 # Family dashboard
 
-A simple browser only based dashboard, that gathers remote data via API calls out to three external websites for weather, train times and our todo list and displays the results on a monitor in our kitchen.
+A simple dashboard using only HTML and Javascript, that gathers remote data via API calls out to three other websites for weather, 
+train times and our todo list and displays the results on a monitor in our kitchen.
 
 ## Full dashboard.
 ![Family Dashboard](/docs/2022-01-02-family-dashboard.jpg)

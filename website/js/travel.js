@@ -4,8 +4,6 @@ const MOVE_QUICKER_TIME = "moveQuickerTime";
 const ALMOST_OUT_OF_TIME = "almostOutOfTime";
 const OUT_OF_TIME = "outOfTime";
 
-
-
 function update_model_with_trains( model , date ){
     if( model.config.showTravel && model.data.trains.nextDownloadDataTime < date ){
         set_trains( model );
@@ -15,20 +13,23 @@ function update_model_with_trains( model , date ){
 }
 
 function update_trains_ui( model, now ){
-    if( model.config.showTravel && model.data.trains.dataDownloaded > 0 ){
-        if( model.data.trains.nextRebuildUiTime < now ){
-            insert_all_trains( model );
-            if( model.data.trains.dataDownloaded >= model.runtimeConfig.transport.commute.length ){
-                model.data.trains.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
+    if( model.config.showTravel ){
+         if( model.data.trains.dataDownloaded > 0 ){
+            if( model.data.trains.nextRebuildUiTime < now ){
+                insert_all_trains( model );
+                if( model.data.trains.dataDownloaded >= model.runtimeConfig.transport.commute.length ){
+                    model.data.trains.nextRebuildUiTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
+                }
             }
+            update_all_train_count_downs( model );
+        }else{
+            write_to_console( 'trains.dataDownloaded=' + model.data.trains.dataDownloaded );
         }
-        update_all_train_count_downs( model );
         let countDown = generate_next_download_count_down_values( model.data.trains.nextDownloadDataTime, model.runtimeConfig.trains.updateEvery );
         set_next_download_count_down_elements( "train-travel-update", countDown );
         $(".travel-element").removeClass("d-none");
     }else{
         $(".travel-element").addClass("d-none");
-        write_to_console( 'trains.dataDownloaded=' + model.data.trains.dataDownloaded );
     }
 }
 
@@ -206,6 +207,9 @@ function get_train_station_departures( commute, model ){
                         + transportApi.appId + "&app_key="
                         + transportApi.appKey;
     }
+
+    log_info( 'Getting ' + urlToGet );
+
     get_remote_data( urlToGet, callAsync, model
     , function( model2, data ){
         let trains = [];
@@ -230,11 +234,52 @@ function get_train_station_departures( commute, model ){
         sanitise_dates_for_train_times( commuteData.departures );
         model2.data.trains.startingStations.push( commuteData );
         model2.data.trains.dataDownloaded += 1;
-        write_to_console( 'model2.data.trains.dataDownloaded=' +  model2.data.trains.dataDownloaded );
-    }, function( model2, xhr, default_process_error ){
-        default_process_error( xhr );
+        write_to_console( 'model2.data.trains.dataDownloaded=' + JSON.stringify( commuteData ));
     });
 }
+
+
+//function NEW_get_train_station_departures( commute, model ){
+//    let urlToGet = "";
+//    let callAsync = model.config.callAsync;
+//    let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
+//    let endStationCode =  model.stationNameToCodeMap.get( commute.to[0] );
+//    if(model.config.debugging){
+////      OLD -  urlToGet = "test-data/transportapi-" + startingStationCode +".json";
+//        urlToGet = "test-data/huxley2.azurewebsites.net-departures-" + startingStationCode +".json";
+//    } else{
+//        urlToGet = "https://huxley2.azurewebsites.net/departures/"
+//                        + startingStationCode + "/to/"
+//                        + endStationCode + "?accessToken=21913e68-7809-4630-be81-6228b089b5c8";
+//    }
+//    get_remote_data( urlToGet, callAsync, model
+//    , function( model2, data ){
+//        let trains = [];
+//        let showingTrainsCount = 0;
+//        let maximumTrainsToShow = model.runtimeConfig.transport.maximumTrainsToShow;
+//        $(data.departures.all)
+//            .each(function(index,it){
+//                let isCommuteToDestination = commute.to.includes( it.destination_name );
+//                if( showingTrainsCount < maximumTrainsToShow &&
+//                    ( commute.showAllDestinations || isCommuteToDestination)){
+//                    showingTrainsCount++;
+//                    trains.push(extract_trains_details( commute, it, isCommuteToDestination, model.stationNameToCodeMap));
+//                }
+//            });
+//
+//        let commuteData = {
+//            code                : startingStationCode,
+//            name                : commute.from,
+//            departures          : trains
+//        }
+//
+//        sanitise_dates_for_train_times( commuteData.departures );
+//        model2.data.trains.startingStations.push( commuteData );
+//        model2.data.trains.dataDownloaded += 1;
+//        write_to_console( 'model2.data.trains.dataDownloaded=' +  model2.data.trains.dataDownloaded );
+//    });
+//}
+
 
 function sanitise_dates_for_train_times( departures ){
     date = date ? date : new Date();

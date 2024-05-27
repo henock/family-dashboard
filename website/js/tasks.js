@@ -12,7 +12,6 @@ function update_tasks_ui( model, now ){
     }else{
         $(".task-element").addClass( "d-none");
         $("#date-travel-weather").removeClass( "col-8").addClass("col");
-        write_to_console( 'tasks.dataDownloaded=' + model.data.tasks.dataDownloaded );
     }
 }
 
@@ -42,7 +41,7 @@ function set_tasks_into_ui( model ){
 function update_model_with_tasks( model, date ){
     if( model.config.showTasks && model.data.tasks.nextDownloadDataTime < date ){
          download_tasks( model );
-         model.data.tasks.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.tasks.updateEvery );
+         model.data.tasks.nextDownloadDataTime = date_plus_seconds( date, model.runtimeConfig.tasks.updateEvery );
          model.data.tasks.lastUpdatedTime = new Date();
     }
 }
@@ -66,9 +65,6 @@ function download_tasks( model ){
     , function( model2, data ){
         model2.data.tasks.todo = set_tasks_on_model_from_remote_data( data );
         model.data.tasks.dataDownloaded = true;
-    }
-    , function( model2, xhr, default_process_error){
-        default_process_error( xhr );
     });
 }
 

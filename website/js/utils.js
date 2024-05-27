@@ -195,14 +195,50 @@ function set_next_download_count_down_elements( elementId, countDown ){
 
 function get_class_for_boundary_window( boundaryWindow ){
     switch( boundaryWindow.name){
-        case TOO_EARLY: return 'primary';
-        case PLENTY_OF_TIME: return 'danger';
-        case MOVE_QUICKER_TIME: return 'warning';
-        case ALMOST_OUT_OF_TIME: return 'success';
+        case TOO_EARLY:
+        case GO_BACK_TO_BED:
+            return 'primary';
+        case PLENTY_OF_TIME:
+        case EAT_YOUR_BREAKFAST:
+            return 'danger';
+        case MOVE_QUICKER_TIME:
+        case GET_DRESSED:
+            return 'warning';
+        case ALMOST_OUT_OF_TIME:
+        case PUT_ON_YOUR_SHOES:
+            return 'success';
         case OUT_OF_TIME: return 'secondary';
         default: return '';
     }
 }
+
+function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){
+
+    function default_process_error( xhr ){
+        if( xhr ){
+            log_error( xhr.status +': Error calling ' + urlToGet + ', got the response  ('+xhr.responseText +').');
+        } else{
+            log_error( ' Error calling ' + urlToGet + ' ( Unknown error ).');
+        }
+    }
+
+    $.ajax({
+        url: urlToGet,
+        type: "GET",
+        async: runAsync,
+        success: function( data ) {
+            return success_response_parser_function( model, data );
+        },
+        error: function ( xhr ){
+            if( fail_response_parser_function ) {
+                fail_response_parser_function( model , xhr , default_process_error);
+            }else{
+                default_process_error( xhr );
+            }
+        }
+    });
+}
+
 
 
 

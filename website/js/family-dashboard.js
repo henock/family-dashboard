@@ -29,6 +29,15 @@ function get_global_model(){
     }
 }
 
+function setup_model( debugging, callAsync ){
+    model = create_empty_model( debugging, callAsync );
+    update_model_with_api_keys( model );
+    update_model_with_runtime_config( model );
+    download_last_code_update_file( model );
+    update_model_with_station_to_code_maps( model );
+    return model;
+}
+
 function update_model( model ){
     check_for_new_code( model, reload_dashboard, new Date() );
     update_model_with_tasks( model, new Date() );
@@ -52,20 +61,12 @@ function reload_dashboard(){
 }
 
 function download_last_code_update_file( model ){
-    let urlToGet = 'data/last-code-update.json';
+    let urlToGet = model.config.debugging ? 'test-data/last-code-update.json' : 'data/last-code-update.json';
     let callAsync = model.config.callAsync;
-    if(model.config.debugging){
-        urlToGet = 'test-data/last-code-update.json';
-    }
-
     get_remote_data( urlToGet, callAsync, model, function( model2, data ){
         model2.data.reloadDashboardCheck.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
-    }, function( model2, xhr, default_process_error){
-        log_error( "Unable to retrieve last-code-update.json from: '" + urlToGet + "'.")
-        default_process_error( xhr );
     });
 }
-
 
 function update_UI( model ){
     $("#dashboard-main").removeClass("d-none");
@@ -91,16 +92,14 @@ function update_date_and_time_ui( model, now ){
     $("#local-time-zone").html( local_time_zone );
 }
 
-function update_model_with_api_keys( model ){
-    let urlToGet = "data/api-keys.json";
+function update_model_with_api_keys( model ){ 
+    let urlToGet = model.config.debugging ? "test-data/debug-api-keys.json" : "data/api-keys.json";
     let callAsync = model.config.callAsync;
-    if(model.config.debugging){
-        urlToGet = "test-data/debug-api-keys.json";
-    }
-
-    get_remote_data( urlToGet, callAsync, model, function( model2, data ){
+    get_remote_data( urlToGet, callAsync, model,
+    function( model2, data ){
         model2.apiKeys = data;
-    }, function( model2, xhr, default_process_error){
+    },
+    function( model2, xhr, default_process_error){
         log_error( "Unable to retrieve API keys from: '" + urlToGet + "' - switching off all functionality that requires remote calls.")
         model2.config.showTasks = false;
         model2.config.showWeather =  false;
@@ -163,15 +162,6 @@ function update_model_with_runtime_config( model ){
     get_remote_data(urlToGet, callAsync, model, success_function, error_function );
 }
 
-function setup_model( debugging, callAsync ){
-    model = create_empty_model( debugging, callAsync );
-    update_model_with_api_keys( model );
-    update_model_with_runtime_config( model );
-    download_last_code_update_file( model );
-    update_model_with_station_to_code_maps( model );
-    return model;
-}
-
 function create_empty_model( debugging, callAsync ){
     let inThePast = now_plus_seconds( -10 );
     let nextReloadDashboardCheck = now_plus_seconds( 300 );
@@ -229,33 +219,6 @@ function sanitise_dates_for_commute_config( commutes , date ){
         commute.minimumRunTransitTime = seconds_from_string( commute.minimumRunTransitTime );
         if( commute.minimumDriveTransitTime ){
             commute.minimumDriveTransitTime = seconds_from_string( commute.minimumDriveTransitTime );
-        }
-    });
-}
-
-function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){
-
-    function default_process_error( xhr ){
-        if( xhr ){
-            log_error( xhr.status +': Error calling ' + urlToGet + ', got the response  ('+xhr.responseText +').');
-        } else{
-            log_error( ' Error calling ' + urlToGet + ' ( Unknown error ).');
-        }
-    }
-
-    $.ajax({
-        url: urlToGet,
-        type: "GET",
-        async: runAsync,
-        success: function( data ) {
-            return success_response_parser_function( model, data );
-        },
-        error: function ( xhr ){
-            if( fail_response_parser_function ) {
-                fail_response_parser_function( model , xhr , default_process_error);
-            }else{
-                default_process_error( xhr );
-            }
         }
     });
 }

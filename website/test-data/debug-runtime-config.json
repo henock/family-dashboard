@@ -13,7 +13,7 @@
     "updateEvery": "300"
   },
   "tasks": {
-    "show": true,
+    "show": false,
     "todoListId": "todo",
     "updateEvery": "120"
   },
@@ -39,9 +39,7 @@
     "getOutOfBedBy": "departure-40s",
     "finishBreakfastBy": "departure-30s",
     "finishGettingDressedBy": "departure-20s",
-    "putOnShoesBy": "departure-5s",
     "departureTime": "now+50s",
-    "stopCountDown": "departure+5s",
     "showCountDownStop": "departure+6s"
   },
   "transport": {

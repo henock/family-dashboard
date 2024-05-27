@@ -1,7 +1,7 @@
 {
   "trains": {
     "show": true,
-    "updateEvery": "600"
+    "updateEvery": "3600"
   },
   "weather": {
     "show": true,
@@ -39,13 +39,11 @@
     "getOutOfBedBy": "departure-40m",
     "finishBreakfastBy": "departure-30m",
     "finishGettingDressedBy": "departure-20m",
-    "putOnShoesBy": "departure-10m",
     "departureTime": "07:40",
-    "stopCountDown": "departure+1m",
     "showCountDownStop": "departure+1m"
   },
   "transport": {
-    "maximumTrainsToShow": 8,
+    "maximumTrainsToShow": 15,
     "commute": [
       {
         "from": "New Beckenham",

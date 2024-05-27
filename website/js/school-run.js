@@ -16,8 +16,8 @@ function update_school_run_ui( model, date ){
         if( ( is_week_day( date ) || is_debug_on() )
             && model.data.schoolRunCountDown.showCountDownStart < date && date < model.data.schoolRunCountDown.showCountDownStop ){
             let departTimeElement = $("#school-run-departure-time");
+            build_school_run_countdown_element( model.data.schoolRunCountDown, date );
             schoolRunElement.removeClass('d-none');
-            departTimeElement.html( build_school_run_countdown_element( model.data.schoolRunCountDown, date ));
         } else {
             schoolRunElement.addClass('d-none');
         }
@@ -25,62 +25,86 @@ function update_school_run_ui( model, date ){
 }
 
 function build_school_run_countdown_element( schoolRunCountDown, date  ){
-    let boundaryWindow = get_boundary_window_for_school_run( schoolRunCountDown, date );
-    let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
+    let schoolRun = get_boundary_window_for_school_run( schoolRunCountDown, date );
+    let classForSchoolRun = get_class_for_boundary_window( schoolRun );
+    let textClassForSchoolRun = 'text-' + classForSchoolRun;
+    let bgClassForSchoolRun = 'bg-' + classForSchoolRun;
     let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( schoolRunCountDown.departureTime));
     let paddedTimeMinutes = get_padded_time_minutes(schoolRunCountDown.departureTime);
 
-    let div ='          <div class="row">'
-            +'              <div class="col-5 text-'+ classForBoundaryWindow +'">🏫 '+ countDownTime + '</div>'
-            +'              <div class="col-5 text-'+ classForBoundaryWindow +'">' + boundaryWindow.emoji +' </div>'
-            +'              <div class="col-5 text-'+ classForBoundaryWindow +'">Depart time: '+ paddedTimeMinutes +'</div>'
-            +'          </div>';
+    let secondTillDeparture =  $("#second-till-departure")
+    secondTillDeparture.html( "🏫 School run count down" );
+    secondTillDeparture.removeClass();
+    secondTillDeparture.addClass( "col-5" );
+    secondTillDeparture.addClass( textClassForSchoolRun );
 
-        if( boundaryWindow.name !== GO_BACK_TO_BED && boundaryWindow.name !== OUT_OF_TIME ){
-            div +='     <div class="row">'
-            +'              <div class="col">'
-            +'                  <div class="progress" style="height: 50px;">'
-            +'                      <div class="progress-bar bg-'+ classForBoundaryWindow +'" role="progressbar"'
-            +'                                              aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: '+
-                                                            boundaryWindow.progressBarPercentage +'%"></div>'
-            +'                  </div>'
-            +'              </div>'
-            +'          </div>';
-        }
-    return div;
+    let currentDepartureAction =  $("#current-departure-action")
+    currentDepartureAction.html( schoolRun.emoji );
+    currentDepartureAction.removeClass();
+    currentDepartureAction.addClass( "col-5" );
+    currentDepartureAction.addClass( textClassForSchoolRun );
+
+    let departureTime  =  $("#departure-time")
+    departureTime.html( 'Depart time: '+ paddedTimeMinutes );
+    departureTime.removeClass();
+    departureTime.addClass( "col-5" );
+    departureTime.addClass( textClassForSchoolRun );
+
+    let schoolRunProgressBar = $("#school-run-progress-bar");
+    let schoolRunProgressBarRow = $("#school-run-progress-bar-row");
+    if( schoolRun.hasProgressBar ){
+        schoolRunProgressBarRow.removeClass("d-none");
+        schoolRunProgressBar.removeClass();
+        schoolRunProgressBar.addClass("progress-bar");
+        schoolRunProgressBar.addClass(bgClassForSchoolRun);
+        schoolRunProgressBar.css("width",  schoolRun.progressBarPercentage +"%");
+    }else{
+        schoolRunProgressBarRow.addClass("d-none");
+    }
+
 }
 
 function get_boundary_window_for_school_run( schoolRunCountDown, date ){
     date = date ? date : new Date();
     let currentTimeStamp = date.getTime();
+    let departureTimeStamp = schoolRunCountDown.departureTime.getTime();
     let boundaryWindow = {};
-    if ( currentTimeStamp < schoolRunCountDown.getOutOfBedBy ) {
+    if ( currentTimeStamp <= schoolRunCountDown.getOutOfBedBy ) {
         boundaryWindow.start = currentTimeStamp;
         boundaryWindow.end =  schoolRunCountDown.getOutOfBedBy;
         boundaryWindow.name = GO_BACK_TO_BED;
         boundaryWindow.emoji = "🛌 You should still be in bed";
-    } else if( currentTimeStamp < schoolRunCountDown.finishBreakfastBy ) {
+        boundaryWindow.hasProgressBar = false;
+    } else if( currentTimeStamp <= schoolRunCountDown.finishBreakfastBy ) {
         boundaryWindow.start = schoolRunCountDown.getOutOfBedBy;
         boundaryWindow.end =  schoolRunCountDown.finishBreakfastBy;
         boundaryWindow.name = EAT_YOUR_BREAKFAST;
         boundaryWindow.emoji = "🥣 Eat your breakfast";
-    } else if( currentTimeStamp < schoolRunCountDown.finishGettingDressedBy ) {
+        boundaryWindow.hasProgressBar = true;
+    } else if( currentTimeStamp <= schoolRunCountDown.finishGettingDressedBy ) {
         boundaryWindow.start = schoolRunCountDown.finishBreakfastBy;
         boundaryWindow.end =  schoolRunCountDown.finishGettingDressedBy;
         boundaryWindow.name = GET_DRESSED;
         boundaryWindow.emoji = "👔️ Get dressed";
-    } else if(  currentTimeStamp < schoolRunCountDown.putOnShoesBy ) {
+        boundaryWindow.hasProgressBar = true;
+    } else if(  currentTimeStamp <= departureTimeStamp ) {
         boundaryWindow.start = schoolRunCountDown.finishGettingDressedBy;
-        boundaryWindow.end =  schoolRunCountDown.putOnShoesBy;
+        boundaryWindow.end =  departureTimeStamp;
         boundaryWindow.name = PUT_ON_YOUR_SHOES;
         boundaryWindow.emoji = "👞 Put on your shoes" ;
-    } else {
-        boundaryWindow.start = schoolRunCountDown.putOnShoesBy;
-        boundaryWindow.end = schoolRunCountDown.departureTime.getTime();
+        boundaryWindow.hasProgressBar = true;
+    } else if(  currentTimeStamp <= schoolRunCountDown.showCountDownStop ) {
+        boundaryWindow.start = schoolRunCountDown.departureTime.getTime();
+        boundaryWindow.end = schoolRunCountDown.showCountDownStop;
         boundaryWindow.name = OUT_OF_TIME;
         boundaryWindow.emoji =  "You are late!";
+        boundaryWindow.hasProgressBar = false;
     }
-    boundaryWindow.progressBarPercentage = calculate_progress_bar_percentage(   boundaryWindow.start, boundaryWindow.end, currentTimeStamp );
+
+    if( boundaryWindow.hasProgressBar ){
+        boundaryWindow.progressBarPercentage = calculate_progress_bar_percentage( boundaryWindow.start, boundaryWindow.end, currentTimeStamp );
+    }
+
     return boundaryWindow;
 }
 
@@ -95,8 +119,6 @@ function build_todays_school_run_dates( schoolRun , date ){
     todaysSchoolRun.getOutOfBedBy = date_from_string( schoolRun.getOutOfBedBy, departureTime ).getTime();
     todaysSchoolRun.finishBreakfastBy = date_from_string( schoolRun.finishBreakfastBy, departureTime ).getTime();
     todaysSchoolRun.finishGettingDressedBy = date_from_string( schoolRun.finishGettingDressedBy, departureTime ).getTime();
-    todaysSchoolRun.putOnShoesBy = date_from_string( schoolRun.putOnShoesBy, departureTime ).getTime();
-    todaysSchoolRun.stopCountDown = date_from_string( schoolRun.stopCountDown, departureTime ).getTime();
     todaysSchoolRun.showCountDownStop = date_from_string( schoolRun.showCountDownStop, departureTime ).getTime();
     return todaysSchoolRun;
 }
