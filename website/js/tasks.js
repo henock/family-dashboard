@@ -17,7 +17,7 @@ function update_tasks_ui( model, now ){
 
 function set_tasks_into_ui( model ){
     let groupLists =  '';
-    let now = new Date();
+    let now = clock.get_Date();
     let groupCounter = 0;
     let sortedTasks = new Map([...model.data.tasks.todo.entries()].sort());
     for (const [groupName, groupsTasks] of sortedTasks ){
@@ -42,7 +42,7 @@ function update_model_with_tasks( model, date ){
     if( model.config.showTasks && model.data.tasks.nextDownloadDataTime < date ){
          download_tasks( model );
          model.data.tasks.nextDownloadDataTime = date_plus_seconds( date, model.runtimeConfig.tasks.updateEvery );
-         model.data.tasks.lastUpdatedTime = new Date();
+         model.data.tasks.lastUpdatedTime = clock.get_Date();
     }
 }
 
@@ -72,7 +72,7 @@ function download_tasks( model ){
 
 function set_tasks_on_model_from_remote_data( data ){
     let tasks = new Map();
-    let now = new Date();
+    let now = clock.get_Date();
 
     function compute_group_if_absent( groupName, tasks ){
         let group = tasks.get(groupName)

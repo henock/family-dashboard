@@ -39,10 +39,10 @@ function setup_model( debugging, callAsync ){
 }
 
 function update_model( model ){
-    check_for_new_code( model, reload_dashboard, new Date() );
-    update_model_with_tasks( model, new Date() );
-    update_model_with_trains( model, new Date() );
-    update_model_with_weather( model, new Date() );
+    check_for_new_code( model, reload_dashboard, clock.get_Date() );
+    update_model_with_tasks( model, clock.get_Date() );
+    update_model_with_trains( model, clock.get_Date() );
+    update_model_with_weather( model, clock.get_Date() );
 }
 
 function check_for_new_code( model, reload_page_function, date ){
@@ -70,7 +70,7 @@ function download_last_code_update_file( model ){
 
 function update_UI( model ){
     $("#dashboard-main").removeClass("d-none");
-    let now = new Date();
+    let now = clock.get_Date();
     update_date_and_time_ui( model, now );
     update_timezones_ui( model, now );
     update_tasks_ui( model, now );
@@ -141,7 +141,7 @@ function update_model_with_runtime_config( model ){
         model2.config.showWeather = data.weather.show
         model2.config.showTimeZones = data.timeZones.show
         model2.config.showSchoolRunCountDown = data.schoolRunCountDown.show
-        sanitise_dates_for_commute_config( model2.runtimeConfig.transport.commute, new Date() );
+        sanitise_dates_for_commute_config( model2.runtimeConfig.transport.commute, clock.get_Date() );
     }
 
     function error_function( model2, xhr, default_process_error ){
@@ -212,7 +212,7 @@ function create_empty_model( debugging, callAsync ){
 }
 
 function sanitise_dates_for_commute_config( commutes , date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     commutes.forEach(function( commute ){
         commute.noNeedToLeaveBefore = seconds_from_string( commute.noNeedToLeaveBefore );
         commute.minimumWalkTransitTime = seconds_from_string( commute.minimumWalkTransitTime );

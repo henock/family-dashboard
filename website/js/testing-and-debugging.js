@@ -172,6 +172,7 @@ function run_all_unit_tests(){
     result += update_model_with_weather_now_and_future_hour_unit_test();
     result += common_get_remote_weather_data_unit_test();
     result += get_train_station_departures_unit_test();
+    result += is_train_departing_in_the_future_unit_test();
     result += extract_trains_details_unit_test();
     result += update_model_with_station_to_code_maps_unit_test();
     result += download_tasks_unit_test();
@@ -290,12 +291,12 @@ function check_for_new_code_unit_test(){
         model.reloadFunctionHasBeenCalled = true;
     }
 
-    let date = new Date();
+    let date = clock.get_Date();
     model.data.reloadDashboardCheck.nextDownloadDataTime = now_plus_seconds( 5 );
     result += run_unit_test( "check_for_new_code", 'Reload page not called when time has not expired',  specific_compare_method, false, [model, mock_reload_function, date] );
 
     model.reloadFunctionHasBeenCalled = false;
-    date = new Date()
+    date = clock.get_Date()
     model.data.reloadDashboardCheck.nextDownloadDataTime = now_plus_seconds( -5 );
     result += run_unit_test( "check_for_new_code", 'Reload page called when time has expired',  specific_compare_method, true, [model, mock_reload_function, date] );
     return result;
@@ -319,7 +320,7 @@ function calculate_progress_bar_percentage_unit_test(){
 function generate_next_download_count_down_values_unit_test(){
     let result = '';
 
-    time = new Date();
+    time = clock.get_Date();
     nextDownloadDataTime = date_plus_seconds( time, 60 );
 
     expectedResult = {
@@ -333,7 +334,7 @@ function generate_next_download_count_down_values_unit_test(){
 function build_transport_eta_countdown_element_unit_test(){
     let result = '';
 
-    let date = new Date();
+    let date = clock.get_Date();
     let dateMinus10s = date_plus_seconds( date, -10 );
     let dateMinus20s = date_plus_seconds( date, -20 );
 
@@ -355,7 +356,7 @@ function build_transport_eta_countdown_element_unit_test(){
 function build_train_row_unit_test(){
 
     let result = '';
-    let now = new Date();
+    let now = clock.get_Date();
     let train = {
         "platform": 1,
         "destinationStationCode":  "VIC",
@@ -397,7 +398,7 @@ function build_todays_school_run_dates_unit_test(){
         }
     }
 
-    let date = new Date();
+    let date = clock.get_Date();
     let dateMinus50 = date_plus_seconds( date, -50 );
     let schoolRunCountDown = {
             show: true,
@@ -453,7 +454,7 @@ function sanitise_dates_for_train_times_unit_test(){
         }
     }
 
-    let twelveTen = set_time_on_date(new Date(), "12:10");
+    let twelveTen = set_time_on_date(clock.get_Date(), "12:10");
     let departures =  [{  departureTime: "12:10" }]
     result += run_unit_test( "sanitise_dates_for_train_times", '12:10 becomes' + twelveTen ,  specific_compare_method, twelveTen, [departures] );
     return result;
@@ -587,10 +588,17 @@ function get_train_station_departures_unit_test(){
     return result;
 }
 
+function is_train_departing_in_the_future_unit_test(){
+    let now = clock.get_Date();
+    let nowPlus20Seconds = date_plus_seconds( now , 20 );
+    let result = run_unit_test( 'is_train_departing_in_the_future', "Train is in the future +20minutes", compare_exact, true, [now , nowPlus20Seconds] );
+    return result;
+}
+
 
 function extract_trains_details_unit_test(){
     let result = '';
-    let now = new Date();
+    let now = clock.get_Date();
 
     function create_expected_result_with( departureTime, startingStation, commute, isCommuteToDestination ){
         return {
@@ -738,14 +746,14 @@ function update_model_only_update_times_have_expired(){
         }
     }
 
-    let now = new Date()
+    let now = clock.get_Date()
     model.data.tasks.nextDownloadDataTime = now_plus_seconds( -2 );
     let expectedTime = date_plus_seconds( now,  model.runtimeConfig.tasks.updateEvery );
     result += run_unit_test( "update_model_with_tasks", 'updates model with tasks because nextDownloadDataTime has passed'
                             , next_update_time_for_tasks_test_function, expectedTime, [model, now] );
 
 
-    now = new Date()
+    now = clock.get_Date()
     model.data.tasks.nextDownloadDataTime = now_plus_seconds(20);
     expectedTime = model.data.tasks.nextDownloadDataTime;
     result += run_unit_test( "update_model_with_tasks", "doesn't updates model with tasks because nextDownloadDataTime has not passed"
@@ -766,13 +774,13 @@ function update_model_only_update_times_have_expired(){
     expectedTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
 
     result += run_unit_test( "update_model_with_weather", 'updates model with weather because nextDownloadDataTime has passed'
-                            , next_update_time_for_weather_test_function, expectedTime, [model, new Date()] );
+                            , next_update_time_for_weather_test_function, expectedTime, [model, clock.get_Date()] );
 
 
     model.data.weather.nextDownloadDataTime = now_plus_seconds( 2 );
     expectedTime = model.data.weather.nextDownloadDataTime;
     result += run_unit_test( "update_model_with_weather", "doesn't updates model with weather because nextDownloadDataTime has not passed"
-                            , next_update_time_for_weather_test_function, expectedTime, [model, new Date()] );
+                            , next_update_time_for_weather_test_function, expectedTime, [model, clock.get_Date()] );
 
     //update_model_with_trains
     function next_update_time_for_trains_test_function( expectedTime, result, parameters ){
@@ -789,13 +797,13 @@ function update_model_only_update_times_have_expired(){
     expectedTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
 
     result += run_unit_test( "update_model_with_trains", 'updates model with trains data because nextDownloadDataTime has passed'
-                            , next_update_time_for_trains_test_function, expectedTime, [model, new Date()] );
+                            , next_update_time_for_trains_test_function, expectedTime, [model, clock.get_Date()] );
 
 
     model.data.trains.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery + 2 );
     expectedTime = model.data.trains.nextDownloadDataTime;
     result += run_unit_test( "update_model_with_trains", "doesn't updates model with trains data because nextDownloadDataTime has not passed"
-                            , next_update_time_for_trains_test_function, expectedTime, [model, new Date()] );
+                            , next_update_time_for_trains_test_function, expectedTime, [model, clock.get_Date()] );
     return result;
 }
 

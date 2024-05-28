@@ -5,7 +5,7 @@ function update_model_with_weather( model, date ){
         update_model_with_weather_next_five_days(model);
         update_model_with_weather_now_and_future_hour(model);
         model.data.weather.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.weather.updateEvery );
-        model.data.weather.lastUpdatedTime = new Date();
+        model.data.weather.lastUpdatedTime = clock.get_Date();
     }
 }
 

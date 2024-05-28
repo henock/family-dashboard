@@ -1,3 +1,14 @@
+let clock = {};
+
+clock.get_Date = function(){
+    return new Date();
+}
+
+
+function set_clock( other_clock ){
+    clock = other_clock;
+}
+
 
 function pad_with_leading_zero( num ){
     if( num < 10 && num > -1 ){
@@ -16,13 +27,13 @@ function pad_with_leading_spaces( full_length, a_string ){
 }
 
 function now_plus_seconds( seconds_to_add ){
-    return date_plus_seconds( new Date(), seconds_to_add );
+    return date_plus_seconds( clock.get_Date(), seconds_to_add );
 }
 
 function date_plus_seconds( date, seconds_to_add ){
     if( !date || ! (date instanceof Date) ){
         log_error( "date_plus_seconds() date was null - using now");
-        date = new Date();
+        date = clock.get_Date();
     }
     return date_plus_milli_seconds( date , (seconds_to_add * 1000));
 }
@@ -34,11 +45,11 @@ function date_plus_milli_seconds( date, millis_to_add ){
 function get_seconds_between_dates( date_a, date_b ){
     if( !date_a || ! (date_a instanceof Date) ){
         log_error( "get_seconds_between_dates() date_a was null - using now");
-        date_a = new Date();
+        date_a = clock.get_Date();
     }
     if( !date_b || ! (date_b instanceof Date) ){
         log_error( "get_seconds_between_dates() date_b was null - using now");
-        date_b = new Date();
+        date_b = clock.get_Date();
     }
     return Math.floor((date_a.getTime() - date_b.getTime()) / 1000);
 }
@@ -46,16 +57,16 @@ function get_seconds_between_dates( date_a, date_b ){
 function get_seconds_since( date ){
     if( !date || ! (date instanceof Date) ){
         log_error( "get_seconds_since() date was null - using now");
-        date = new Date();
+        date = clock.get_Date();
     }
-    let now = (new Date()).getTime();
+    let now = (clock.get_Date()).getTime();
     return Math.floor((now - date.getTime()) / 1000);
 }
 
 function get_seconds_until( date ){
     if( !date || ! (date instanceof Date) ){
         log_error( "get_seconds_until() date was null - using now");
-        date = new Date();
+        date = clock.get_Date();
     }
     return get_seconds_since( date )  * -1;
 }
@@ -63,7 +74,7 @@ function get_seconds_until( date ){
 function get_padded_time_minutes( date ){
     if( !date || ! (date instanceof Date) ){
         log_error( "get_padded_time_minutes() date was null - using now");
-        date = new Date();
+        date = clock.get_Date();
     }
     let time = 	pad_with_leading_zero(date.getHours()) + ':' +
                 pad_with_leading_zero(date.getMinutes());
@@ -71,7 +82,7 @@ function get_padded_time_minutes( date ){
 }
 
 function get_padded_time_milli_seconds( date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     let time = 	get_padded_time_minutes(date) + ':' +
                 pad_with_leading_zero(date.getSeconds()) + ':' +
                 date.getMilliseconds();
@@ -79,7 +90,7 @@ function get_padded_time_milli_seconds( date ){
 }
 
 function get_padded_time_seconds( date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     let time = 	get_padded_time_minutes(date) + ':' +
                 pad_with_leading_zero(date.getSeconds());
     return time;
@@ -121,7 +132,7 @@ function display_time_period_from_seconds_into_future( seconds ){
 function get_date_with_dashes( date ){
     if( !date || ! (date instanceof Date) ){
         log_error( "get_date_with_dashes() date was null - using now");
-        date = new Date();
+        date = clock.get_Date();
     }
     let day = pad_with_leading_zero(date.getDate());      //date uses starting index of 1
     let month = pad_with_leading_zero(date.getMonth()+1); //months are zero index
@@ -131,7 +142,7 @@ function get_date_with_dashes( date ){
 
 //str = "now+20s" OR "departure-10m OR "Sun  2 Jan 2022 14:35:51 GMT"
 function date_from_string( str , date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     if( str instanceof Date ){
         return str;
     } else if(str.includes( "now" ) || str.includes( "departure" )){
@@ -194,7 +205,7 @@ function is_week_day( now ){
 }
 
 function set_date_and_time() {
-    let now = new Date();
+    let now = clock.get_Date();
     let monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - CAN I DO THIS LOCAL STRING BETTER
 
     let date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();

@@ -8,7 +8,7 @@ function update_model_with_trains( model , date ){
     if( model.config.showTravel && model.data.trains.nextDownloadDataTime < date ){
         set_trains( model );
         model.data.trains.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.trains.updateEvery );
-        model.data.trains.lastUpdatedTime = new Date();
+        model.data.trains.lastUpdatedTime = clock.get_Date();
     }
 }
 
@@ -34,7 +34,7 @@ function update_trains_ui( model, now ){
 }
 
 function update_all_train_count_downs( model ){
-    let now = new Date();
+    let now = clock.get_Date();
     model.data.trains.startingStations.forEach( function(startingStation){
         startingStation.departures.forEach(function(train, index){
             let transportId =  build_transport_id( startingStation, train, index);
@@ -77,7 +77,7 @@ function insert_all_trains( model ){
             +'  <div class="col h5 text-center">'+ TRAIN_GLYPH + startingStation.name + '</div>'
             +'</div>'
         );
-        let now = new Date();
+        let now = clock.get_Date();
         startingStation.departures.forEach(function(train, index){
             if( now < train.departureTime ){
                 $(stationElementId).append( build_train_row( train, startingStation, index ));
@@ -103,7 +103,7 @@ function build_train_row( train, startingStation, index){
 }
 
 function build_transport_eta_countdown_element( train, transportId, date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     let boundaryWindow = get_boundary_window_for_public_transport( train, date );
     let classForBoundaryWindow = get_class_for_boundary_window( boundaryWindow );
     let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( train.departureTime));
@@ -134,7 +134,7 @@ function build_transport_eta_countdown_element( train, transportId, date ){
 }
 
 function get_boundary_window_for_public_transport( transport, date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     let currentTimeStamp = date.getTime();
     let boundaryWindow = {};
     if ( currentTimeStamp < transport.noNeedToLeaveBeforeTimeStamp ) {
@@ -195,7 +195,7 @@ function get_train_station_departures( commute, model ){
     if(model.config.debugging){
         urlToGet = "test-data/transportapi-" + startingStationCode +".json";
     } else{
-        let now = new Date();
+        let now = clock.get_Date();
         let fullDate = get_date_with_dashes( now );
         let fullTime = get_padded_time_minutes( now );
         let transportApi = model.apiKeys.transportApi
@@ -282,7 +282,7 @@ function get_train_station_departures( commute, model ){
 
 
 function sanitise_dates_for_train_times( departures ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     departures.forEach(function(train){
         train.departureTime = date_from_string( train.departureTime );
     });
@@ -290,7 +290,7 @@ function sanitise_dates_for_train_times( departures ){
 
 
 function extract_trains_details( commute, trainDetails, isCommuteToDestination, stationNameToCodeMap, currentTime ){
-    currentTime = currentTime ? currentTime : new Date();
+    currentTime = currentTime ? currentTime : clock.get_Date();
     let departureTimeString = trainDetails.expected_departure_time ? trainDetails.expected_departure_time : trainDetails.aimed_departure_time;
     let departureTime = calculate_departure_date_time_from_time_only( departureTimeString, currentTime );
     let destinationStationCode  = stationNameToCodeMap.get( trainDetails.destination_name );

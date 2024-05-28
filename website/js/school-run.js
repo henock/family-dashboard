@@ -65,7 +65,7 @@ function build_school_run_countdown_element( schoolRunCountDown, date  ){
 }
 
 function get_boundary_window_for_school_run( schoolRunCountDown, date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     let currentTimeStamp = date.getTime();
     let departureTimeStamp = schoolRunCountDown.departureTime.getTime();
     let boundaryWindow = {};
@@ -110,7 +110,7 @@ function get_boundary_window_for_school_run( schoolRunCountDown, date ){
 
 
 function build_todays_school_run_dates( schoolRun , date ){
-    date = date ? date : new Date();
+    date = date ? date : clock.get_Date();
     let todaysSchoolRun = {}
     let departureTime = date_from_string( schoolRun.departureTime, date ); // everything else is relative to departureTime
     todaysSchoolRun.departureTime = departureTime;

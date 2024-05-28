@@ -59,13 +59,13 @@ function write_html_message( message, aClass, remove_after_seconds ){
 }
 
 function write_to_console( message ){
-    let timedMessage = (' [' + get_padded_time_milli_seconds( new Date() ) + '] ' + message);
+    let timedMessage = (' [' + get_padded_time_milli_seconds( clock.get_Date() ) + '] ' + message);
     console.log( timedMessage );
 }
 
 function write_message( message, aClass, removeAfterSeconds, asHtml ){
     let removeTime = removeAfterSeconds ? now_plus_seconds(removeAfterSeconds) : now_plus_seconds( 5 );
-    let now = new Date();
+    let now = clock.get_Date();
     let timedMessage = (' [' + get_padded_time_seconds( now ) + '] ' + message);
     add_message_div_if_missing();
     console.log( timedMessage );
@@ -178,7 +178,7 @@ function calculate_progress_bar_percentage( startTimeStamp, endTimeStamp, curren
 }
 
 function generate_next_download_count_down_values( nextDownloadDataTime, updateEvery, time ){
-    time = time ? time : new Date();
+    time = time ? time : clock.get_Date();
     startTimeStamp = date_plus_seconds( nextDownloadDataTime, updateEvery * -1 );
     let percentage = calculate_progress_bar_percentage( startTimeStamp.getTime(), nextDownloadDataTime.getTime(), time.getTime() );
     let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( nextDownloadDataTime ));
