@@ -59,14 +59,39 @@ function set_weather_details( keyString, day ){
     $("#weather-text-" + keyString ).html( convert_weather_code_to_text( day.weatherCode ));
 }
 
-function update_model_with_weather_now_and_future_hour( model ){
-    common_get_remote_weather_data( model, '1h'
-    , function( model2, response ){
-        let futureHour = model2.runtimeConfig.weather.showFutureHour;
-        let now = response.data.timelines[0].intervals[0];
-        let inFutureHours = response.data.timelines[0].intervals[futureHour];
 
-        model2.data.weather.today.now = {
+function build_weather_url( location, timeStep, apiKey ){
+    let fields = '&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed';
+    if( timeStep === '1h'){
+        fields += ",humidity";
+    } else {
+        fields += ",sunriseTime,sunsetTime,humidity";
+    }
+
+    // 'apikey', '' from junk.henock
+    // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
+    return  "https://api.tomorrow.io/v4/timelines"
+               + "?location=" + location + fields
+               + "&units=metric"
+               + "&timesteps=" + timeStep
+               + "&apikey=" + apiKey;
+}
+
+async function update_model_with_weather_now_and_future_hour( model ){
+    let urlToGet = '';
+    if(model.config.debugging){
+        urlToGet = "test-data/tomorrow-timelines-1h.json";
+    } else{
+        urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1h', model.apiKeys.tomorrowIo.apiKey);
+    }
+
+    try{
+        let responseData = await $.get( urlToGet );
+        let futureHour = model.runtimeConfig.weather.showFutureHour;
+        let now = responseData.data.timelines[0].intervals[0];
+        let inFutureHours = responseData.data.timelines[0].intervals[futureHour];
+
+        model.data.weather.today.now = {
             name: 'now',
             dateString : now.startTime.substring(11,16),
             temperature:  Math.round( now.values.temperatureApparent )  + DEGREES_CELSIUS,
@@ -75,7 +100,7 @@ function update_model_with_weather_now_and_future_hour( model ){
             weatherCode: now.values.weatherCode
         };
 
-        model2.data.weather.today.futureHour = {
+        model.data.weather.today.futureHour = {
             name: 'plus-'+ futureHour +'hrs',
             dateString : inFutureHours.startTime.substring(11,16),
             temperature:  Math.round( inFutureHours.values.temperatureApparent ) + DEGREES_CELSIUS,
@@ -83,19 +108,29 @@ function update_model_with_weather_now_and_future_hour( model ){
             treeIndex  : inFutureHours.values.treeIndex,
             weatherCode: inFutureHours.values.weatherCode
         };
-        model2.data.weather.todaysDataDownloaded =  true;
-        write_to_console( 'model2.data.weather.todaysDataDownloaded=true' );
-    });
+        model.data.weather.todaysDataDownloaded =  true;
+        write_to_console( 'model.data.weather.todaysDataDownloaded=true' );
+    }catch(e){
+        log_error( "Unable to retrieve remote weather data from: '" + urlToGet +
+                    "' I got back: '" + e.statusText +"'");
+    }
 }
 
-function update_model_with_weather_next_five_days(model){
-     common_get_remote_weather_data( model, '1d'
-     , function( model2, response ){
-        let today = response.data.timelines[0].intervals[0];
-        model2.data.weather.today.sunrise = new Date( today.values.sunriseTime).toLocaleString().substring(11,17);
-        model2.data.weather.today.sunset  = new Date( today.values.sunsetTime).toLocaleString().substring(11,17);
+async function update_model_with_weather_next_five_days(model){
+    let urlToGet = '';
+    if(model.config.debugging){
+        urlToGet = "test-data/tomorrow-timelines-1d.json";
+    } else{
+        urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1d', model.apiKeys.tomorrowIo.apiKey);
+    }
+
+    try{
+        let responseData = await $.get( urlToGet );
+        let today = responseData.data.timelines[0].intervals[0];
+        model.data.weather.today.sunrise = new Date( today.values.sunriseTime).toLocaleString().substring(11,17);
+        model.data.weather.today.sunset  = new Date( today.values.sunsetTime).toLocaleString().substring(11,17);
         for (var i = 1; i < 6; i++) {
-            let futureDay = response.data.timelines[0].intervals[i];
+            let futureDay = responseData.data.timelines[0].intervals[i];
             let dateString = date_from_string(futureDay.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
             let temperature = Math.round( futureDay.values.temperatureApparent ) + DEGREES_CELSIUS;
             let day = {
@@ -106,40 +141,15 @@ function update_model_with_weather_next_five_days(model){
                 treeIndex  : futureDay.values.treeIndex,
                 weatherCode: futureDay.values.weatherCode
             }
-            model2.data.weather.futureDays.push( day );
+            model.data.weather.futureDays.push( day );
         }
-        model2.data.weather.futureDataDownloaded = true;
-        write_to_console( 'model2.data.weather.futureDataDownloaded=true' );
-    });
-}
-
-function common_get_remote_weather_data( model, timeStep, process_result_function, process_error_function ){
-    let urlToGet = '';
-    let callAsync = model.config.callAsync;
-    if(model.config.debugging){
-        urlToGet = "test-data/tomorrow-timelines-"+ timeStep +".json";
-    } else{
-        // 'apikey', '' from junk.henock
-        // calls limited to 25/hour, therefore max call every 150 seconds (3600/24=150)
-
-        let fields = '';
-        if( timeStep === '1h'){
-            fields = "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,humidity";
-        } else {
-            fields = "&fields=grassIndex,treeIndex,weatherCode,temperature,temperatureApparent,precipitationProbability,precipitationType,windSpeed,sunriseTime,sunsetTime,humidity";
-        }
-
-
-        urlToGet = "https://api.tomorrow.io/v4/timelines"
-            + "?location=" + model.runtimeConfig.weather.location
-            + fields
-            + "&units=metric"
-            + "&timesteps=" + timeStep
-            + "&apikey=" + model.apiKeys.tomorrowIo.apiKey;
+        model.data.weather.futureDataDownloaded = true;
+        write_to_console( 'model.data.weather.futureDataDownloaded=true' );
+    }catch(e){
+        log_error( "Unable to retrieve remote weather data from: '" + urlToGet +
+                    "' I got back: '" + e.statusText +"'");
     }
-    get_remote_data( urlToGet, callAsync, model, process_result_function, process_error_function );
 }
-
 
 function convert_weather_code_to_text( code ){
     switch(code){

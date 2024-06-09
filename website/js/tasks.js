@@ -46,9 +46,8 @@ function update_model_with_tasks( model, date ){
     }
 }
 
-function download_tasks( model ){
+async function download_tasks( model ){
     let urlToGet = '';
-    let callAsync = model.config.callAsync;
     let todoListId = model.runtimeConfig.tasks.todoListId;
 
     if(model.config.debugging){
@@ -61,14 +60,15 @@ function download_tasks( model ){
                     +"&fields=name,dateLastActivity,labels"
     }
 
-    get_remote_data( urlToGet, callAsync, model
-    , function( model2, data ){
-        model2.data.tasks.todo = set_tasks_on_model_from_remote_data( data );
+    try {
+        let data = await $.get( urlToGet );
+        model.data.tasks.todo = set_tasks_on_model_from_remote_data( data );
         model.data.tasks.dataDownloaded = true;
-    });
+    } catch (e) {
+        log_error( "Unable to retrieve tasks from: '" + urlToGet +
+                    "' I got back: '" + e.statusText +"'");
+    }
 }
-
-
 
 function set_tasks_on_model_from_remote_data( data ){
     let tasks = new Map();

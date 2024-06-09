@@ -226,7 +226,7 @@ function run_all_unit_tests(){
 //            testedValue:   'THIS_HAS_NOT_BEEN_SET_YET'
 //        }
 //    }
-//    let model = setup_model(true, false);
+//    let model = await setup_model(true);
 //    result += run_unit_test( "XXX", '💔',  specific_compare_method, 'expected_result', [model] );
 //    return result;
 //}
@@ -285,7 +285,7 @@ function set_tasks_on_model_from_remote_data_unit_test(){
 }
 
 
-function check_for_new_code_unit_test(){
+async function check_for_new_code_unit_test(){
     let result = '';
     function specific_compare_method( expected, result, parameters ){
         let model = parameters[0];
@@ -297,7 +297,7 @@ function check_for_new_code_unit_test(){
         }
     }
 
-    let model = setup_model(true, false);
+    let model = await setup_model(true);
     model.reloadFunctionHasBeenCalled = false;
 
     function mock_reload_function(){
@@ -495,7 +495,7 @@ function seconds_from_string_unit_test(){
     return result;
 }
 
-function update_model_with_weather_next_five_days_unit_test(){
+async function update_model_with_weather_next_five_days_unit_test(){
     let result = '';
     function check_for_weather( expected, result, parameters ){
         let model = parameters[0];
@@ -507,12 +507,12 @@ function update_model_with_weather_next_five_days_unit_test(){
         }
     }
 
-    model = setup_model(true, false);
+    model = await setup_model(true);
     result += run_unit_test( "update_model_with_weather_next_five_days", "getting future weather from local",  check_for_weather, 'expected_result', [model] );
     return result;
 }
 
-function update_model_with_weather_now_and_future_hour_unit_test(){
+async function update_model_with_weather_now_and_future_hour_unit_test(){
     let result = '';
     function check_for_weather( expected, result, parameters ){
         let model = parameters[0];
@@ -524,13 +524,13 @@ function update_model_with_weather_now_and_future_hour_unit_test(){
         }
     }
 
-    model = setup_model(true, false);
+    model = await setup_model(true);
     result += run_unit_test( "update_model_with_weather_now_and_future_hour", "getting today's weather from local",  check_for_weather, 'expected_result', [model] );
     return result;
 }
 
 
-function common_get_remote_weather_data_unit_test(){
+async function common_get_remote_weather_data_unit_test(){
     let result = '';
     function check_for_weather_data( expected, result, parameters ){
         let model = parameters[0];
@@ -551,12 +551,12 @@ function common_get_remote_weather_data_unit_test(){
         }
     }
 
-    model = setup_model(true, false);
+    model = await setup_model(true);
     result += run_unit_test( "common_get_remote_weather_data", 'a valid response from local data/tomorrow-timelines-1d',
                                 check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
 
     if(is_running_remote_tests()){
-        model = setup_model(false, false);
+        model = await setup_model(false);
         result += run_unit_test( "common_get_remote_weather_data", 'a valid response from http://tomorrow.io',
                                     check_for_weather_data, 'not_used', [model, '1d', processResultFunction] );
     }else{
@@ -565,7 +565,7 @@ function common_get_remote_weather_data_unit_test(){
     return result;
 }
 
-function get_train_station_departures_unit_test(){
+async function get_train_station_departures_unit_test(){
     let result = '';
     function check_for_trains( expected, result, parameters ){
         let model = parameters[1];
@@ -588,12 +588,12 @@ function get_train_station_departures_unit_test(){
             to: [ "London Cannon Street", "London Charing Cross", "London Bridge" ]
         };
 
-    model = setup_model(true, false);
+    model = await setup_model(true);
 
     result += run_unit_test( "get_train_station_departures", 'We get data back from /test-data ',  check_for_trains, {}, [startingStation,  model] );
 
     if(is_running_remote_tests()){
-        model = setup_model(false, false);
+        model = await setup_model(false);
         result += run_unit_test( "get_train_station_departures", 'We get data back from transportApi ',  check_for_trains, {}, [startingStation, model] );
     }else{
         result += skip_unit_test( "get_train_station_departures", testCounter, 'We get data back from transportApi' );
@@ -609,7 +609,7 @@ function is_train_departing_in_the_future_unit_test(){
 }
 
 
-function extract_trains_details_unit_test(){
+async function extract_trains_details_unit_test(){
     let result = '';
     let now = clock.get_Date();
 
@@ -628,7 +628,7 @@ function extract_trains_details_unit_test(){
        }
     }
 
-    model = setup_model(true, false);
+    model = await setup_model(true);
 
     let commute = {
         noNeedToLeaveBefore : -40,
@@ -676,7 +676,7 @@ function extract_trains_details_unit_test(){
 }
 
 
-function update_model_with_station_to_code_maps_unit_test(){
+async function update_model_with_station_to_code_maps_unit_test(){
     let result = '';
     function check_for_maps( expected, result, parameters ){
         let model = parameters[0];
@@ -690,12 +690,12 @@ function update_model_with_station_to_code_maps_unit_test(){
                            '<br/>London Cannon Street => ' + model.stationNameToCodeMap.get("London Cannon Street")
         }
     }
-    model = setup_model(true, false);
+    model = await setup_model(true);
     result += run_unit_test( "update_model_with_station_to_code_maps", 'returns station codes from /data/station-codes.json',  check_for_maps, 'not used', [model] );
     return result;
 }
 
-function download_tasks_unit_test(){
+async function download_tasks_unit_test(){
 
     function check_for_tasks( expected, result, parameters ){
         let model = parameters[0];
@@ -708,11 +708,11 @@ function download_tasks_unit_test(){
     }
 
     let result = '';
-    let model = setup_model(true, false);
+    let model = await setup_model(true);
     result += run_unit_test( "download_tasks", 'we get back debugging tasks',  check_for_tasks, 'not used', [model] );
 
     if(is_running_remote_tests()){
-        model = setup_model(false, false);
+        model = await setup_model(false);
         result += run_unit_test( "download_tasks", 'we get back actual tasks from trello.com',  check_for_tasks, 'not used', [model] );
     }else{
         result += skip_unit_test( "download_tasks", testCounter, 'we get back actual tasks from trello.com' );
@@ -721,7 +721,7 @@ function download_tasks_unit_test(){
 }
 
 
-function update_model_with_api_keys_unit_test(){
+async function update_model_with_api_keys_unit_test(){
 
     function api_key_test_function( expected, result, parameters ){
         let model = parameters[0];
@@ -734,17 +734,17 @@ function update_model_with_api_keys_unit_test(){
     }
 
     let result = '';
-    let model = setup_model(true, false);
+    let model = await setup_model(true);
     result += run_unit_test( "update_model_with_api_keys", 'we get the debug api keys',  api_key_test_function, 'not used', [model] );
 
     return result;
 }
 
-function update_model_only_update_times_have_expired(){
+async function update_model_only_update_times_have_expired(){
 
     let result = '';
 
-    let model = setup_model(true, false);
+    let model = await setup_model(true);
     model.config.showTasks = true; // in case it has been switched off by user
 
     // update_model_with_tasks
@@ -822,10 +822,11 @@ function update_model_only_update_times_have_expired(){
 
 
 
+
 function setup_model_unit_test(){
 
-    function test_model_setup( expected, result, parameters ){
-        let model = result;
+    async function test_model_setup( expected, result, parameters ){
+        let model = await result;
         let testResult = (expected === model.config.debugging )
         return {
             passed: testResult,
@@ -835,16 +836,16 @@ function setup_model_unit_test(){
     }
 
     let result = '';
-    result += run_unit_test( "setup_model", 'returns the default model with debugging on',  test_model_setup, true, [true, false] );
+    result += run_unit_test( "setup_model", 'returns the default model with debugging on',  test_model_setup, true, [true] );
 
-    result += run_unit_test( "setup_model", 'return the default model with debugging off',  test_model_setup, false, [false, false] );
+    result += run_unit_test( "setup_model", 'return the default model with debugging off',  test_model_setup, false, [false] );
 
     return result;
 }
 
-function update_model_with_runtime_config_unit_test(){
+async function update_model_with_runtime_config_unit_test(){
     let result = '';
-    let model = setup_model(true, false);
+    let model = await setup_model(true);
 
     function test_for_runtime_config( expectedRuntimeConfig, result, parameters ){
         let model = parameters[0];

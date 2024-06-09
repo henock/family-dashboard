@@ -8,23 +8,24 @@ $(document).ready(function () {
     }
 });
 
-function update_dashboard() {
-    globalModel = get_global_model();
+async function update_dashboard() {
+    globalModel = await get_global_model();
     update_model( globalModel );
     update_UI( globalModel );
 
 }
 
-function get_global_model(){
+async function get_global_model(){
     if( !globalModel ){
         if(is_debug_on()){
             log_error( "Test error removed in 10 seconds after: " + get_padded_time_seconds(now_plus_seconds(10)), 10 );
             write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds after: "+ get_padded_time_seconds(now_plus_seconds(5))+"</b>", 5 );
             debug_using_different_time();
-            return setup_model( true, false );
+            model = await setup_model( true );
         }else{
-            return setup_model( false, true );
+            model = await setup_model( false  );
         }
+        return model;
     }else{
         globalModel.isDefaultModel = false;
         return globalModel;
@@ -37,7 +38,9 @@ function setup_model( debugging, callAsync ){
     update_model_with_runtime_config( model );
     download_last_code_update_file( model );
     update_model_with_station_to_code_maps( model );
-    return model;
+    return new Promise(function(resolve, reject) {
+        resolve(model);
+    });
 }
 
 function update_model( model ){
@@ -62,12 +65,15 @@ function reload_dashboard(){
     location.reload(true); // reloads the whole dashboard
 }
 
-function download_last_code_update_file( model ){
+async function download_last_code_update_file( model ){
     let urlToGet = model.config.debugging ? 'test-data/last-code-update.json' : 'data/last-code-update.json';
-    let callAsync = model.config.callAsync;
-    get_remote_data( urlToGet, callAsync, model, function( model2, data ){
-        model2.data.reloadDashboardCheck.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
-    });
+    try{
+        let data = await $.get( urlToGet );
+        model.data.reloadDashboardCheck.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
+    }catch( e ){
+        log_error( "Unable to retrieve last code update from: '" + urlToGet +
+                    "' I got back: '" + e.statusText +"'");
+    }
 }
 
 function update_UI( model ){
@@ -94,28 +100,27 @@ function update_date_and_time_ui( model, now ){
     $("#local-time-zone").html( local_time_zone );
 }
 
-function update_model_with_api_keys( model ){ 
+async function update_model_with_api_keys( model ){
     let urlToGet = model.config.debugging ? "test-data/debug-api-keys.json" : "data/api-keys.json";
-    let callAsync = model.config.callAsync;
-    get_remote_data( urlToGet, callAsync, model,
-    function( model2, data ){
-        model2.apiKeys = data;
-    },
-    function( model2, xhr, default_process_error){
-        log_error( "Unable to retrieve API keys from: '" + urlToGet + "' - switching off all functionality that requires remote calls.")
-        model2.config.showTasks = false;
-        model2.config.showWeather =  false;
-        model2.config.showTravel =  false;
-        model2.config.showTimeZones =  false;
-        default_process_error( xhr );
-    });
+    try{
+        let data = await $.get( urlToGet );
+        model.apiKeys = data;
+    }catch( e ){
+        log_error( "Unable to retrieve API keys from: '" + urlToGet +
+                    "' I got back: '" + e.statusText +
+                    "' - switching off all functionality that requires remote calls.");
+        model.config.showTasks = false;
+        model.config.showWeather =  false;
+        model.config.showTravel =  false;
+        model.config.showTimeZones =  false;
+    }
 }
 
-function update_model_with_station_to_code_maps( model ){
+async function update_model_with_station_to_code_maps( model ){
     if( !model.stationCodeToNameMap ){  //only need it once.
         let urlToGet = "data/station-codes.json";
-        get_remote_data( urlToGet, false, model
-        , function( model2, data ){
+        try {
+            let data = await $.get( urlToGet );
             let entries = Object.entries(data);
             let entry;
             let nameToCode = new Map();
@@ -126,42 +131,37 @@ function update_model_with_station_to_code_maps( model ){
                 nameToCode.set( entry[0], entry[1] );
                 codeToName.set( entry[1], entry[0] );
             };
-            model2.stationCodeToNameMap = codeToName;
-            model2.stationNameToCodeMap = nameToCode;
-        }, function( model2, xhr, default_process_error){
-            model2.config.showTravel =  false;
-            default_process_error( xhr );
-        });
+            model.stationCodeToNameMap = codeToName;
+            model.stationNameToCodeMap = nameToCode;
+        }catch( e ){
+            log_error( "Unable to retrieve station to code maps from: '" + urlToGet +
+                        "' I got back: '" + e.statusText +"'");
+            model.config.showTravel =  false;
+        }
     }
 }
 
-function update_model_with_runtime_config( model ){
-    function success_function( model2, data ){
-        model2.runtimeConfig = data;
-        model2.config.showTasks = data.tasks.show
-        model2.config.showTravel = data.trains.show
-        model2.config.showWeather = data.weather.show
-        model2.config.showTimeZones = data.timeZones.show
-        model2.config.showSchoolRunCountDown = data.schoolRunCountDown.show
-        sanitise_dates_for_commute_config( model2.runtimeConfig.transport.commute, clock.get_Date() );
+async function update_model_with_runtime_config( model ){
+    //TODO - RENAME TO 'data-for-debugging/..' so that it sits next to '/data/..'
+    let urlToGet = model.config.debugging ? "data/runtime-config.json" : "test-data/debug-runtime-config.json";
+    try {
+        let data = await $.get( urlToGet );
+        model.runtimeConfig = data;
+        model.config.showTasks = data.tasks.show
+        model.config.showTravel = data.trains.show
+        model.config.showWeather = data.weather.show
+        model.config.showTimeZones = data.timeZones.show
+        model.config.showSchoolRunCountDown = data.schoolRunCountDown.show
+        sanitise_dates_for_commute_config( model.runtimeConfig.transport.commute, clock.get_Date() );
+    }catch( e ) {
+        log_error( "Unable to retrieve runtime config from: '" + urlToGet +
+                    "' I got back: '" + e.statusText +"' - switching off all remote calls");
+        model.config.showTasks = false;
+        model.config.showWeather =  false;
+        model.config.showTimeZones =  false;
+        model.config.showTravel =  false;
+        model.config.showSchoolRunCountDown =  false;
     }
-
-    function error_function( model2, xhr, default_process_error ){
-        model2.config.showTasks = false;
-        model2.config.showWeather =  false;
-        model2.config.showTimeZones =  false;
-        model2.config.showTravel =  false;
-        model2.config.showSchoolRunCountDown =  false;
-        default_process_error( xhr );
-    }
-
-    let urlToGet = "data/runtime-config.json";
-    let callAsync = model.config.callAsync;
-    if(model.config.debugging){
-        urlToGet = "test-data/debug-runtime-config.json";
-    }
-
-    get_remote_data(urlToGet, callAsync, model, success_function, error_function );
 }
 
 function create_empty_model( debugging, callAsync ){

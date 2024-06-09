@@ -188,7 +188,7 @@ function set_trains( model ){
     }
 }
 
-function get_train_station_departures( commute, model ){
+async function get_train_station_departures( commute, model ){
     let urlToGet = "";
     let callAsync = model.config.callAsync;
     let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
