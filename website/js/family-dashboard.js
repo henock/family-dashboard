@@ -12,6 +12,7 @@ function update_dashboard() {
     globalModel = get_global_model();
     update_model( globalModel );
     update_UI( globalModel );
+
 }
 
 function get_global_model(){
@@ -19,6 +20,7 @@ function get_global_model(){
         if(is_debug_on()){
             log_error( "Test error removed in 10 seconds after: " + get_padded_time_seconds(now_plus_seconds(10)), 10 );
             write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds after: "+ get_padded_time_seconds(now_plus_seconds(5))+"</b>", 5 );
+            debug_using_different_time();
             return setup_model( true, false );
         }else{
             return setup_model( false, true );

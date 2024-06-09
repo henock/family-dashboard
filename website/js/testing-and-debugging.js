@@ -9,6 +9,19 @@ function running_unit_tests(){
     return 'true' === get_url_parameter('testing');
 }
 
+function debug_using_different_time(){
+    $("#debug-config").removeClass('d-none');
+    $("#change-time").on("input", function() {
+       let differentTime = $(this).val();
+       log_warn( "Running in debug using a different time: " + differentTime, 10 );
+       if(!isNaN(differentTime)){
+          clock.get_Date = function(){
+              return date_plus_seconds( new Date(), differentTime);
+          }
+       }
+    });
+}
+
 function is_debug_on(){
     return 'true' === get_url_parameter('debug');
 }

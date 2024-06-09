@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="css/family-dashboard-styles.css">
         <title>The Zewde Dashboard</title>
     </head>
-    <body>
+    <body id="main-body">
         <div id="main-container" class="container-fluid border">
             <div id="dynamic-runtime-config" class="row pl-2 pt-3 d-none">
                 <div class="col alert alert-success" role="alert">
@@ -281,6 +281,16 @@
                     <div class="row">
                         <div id="tasks" class="col">
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div id="debug-config"  class="row pl-2 border-top d-none">
+                <div class="col">
+                    <div class="row pt-2">
+                        <form class="well form-search">
+                            <label>Set the relative time (seconds)</label>
+                            <input id="change-time" type="text" class="span3 search-query" placeholder="-5000…">
+                        </form>
                     </div>
                 </div>
             </div>
