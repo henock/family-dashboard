@@ -104,68 +104,6 @@ function colour_special_fields( field, regex ){
     }
 }
 
-
-function get_runtime_config(){
-    let runtimeConfigUrl = "data/runtime-config.json";
-
-    if(is_debug_on()){
-        runtimeConfigUrl = "test-data/debug-runtime-config.json";
-    }
-
-    if( !runtimeConfig ){
-        $.ajax({
-                url: runtimeConfigUrl ,
-                type: "GET",
-                async: false,
-                success: function( data ) {
-                    runtimeConfig = data;
-                },
-                error: function ( xhr ){
-                    log_error( ' Error getting ' + runtimeConfigUrl + ' errorStatus: ' + xhr.status );
-                }
-            });
-        if( runtimeConfig ){
-            let getUrl = "data/station-codes.json";
-            $.ajax({
-                    url: getUrl,
-                    type: "GET",
-                    async: false,
-                    success: function( data ) {
-                        let entries = Object.entries(data);
-                        let entry;
-                        let nameToCode = new Map();
-                        let codeToName = new Map();
-
-                        for (var i = 0; i < entries.length; i++ ){
-                            entry = entries[i];
-                            nameToCode.set( entry[0], entry[1] );
-                            codeToName.set( entry[1], entry[0] );
-                        };
-                        runtimeConfig.transport.stationCodeToNameMap = codeToName;
-                        runtimeConfig.transport.stationNameToCodeMap = nameToCode;
-                    },
-                    error: function ( xhr ){
-                        log_error( ' Error getting '+ getUrl + ' errorStatus: ' + xhr.status );
-                    }
-                });
-
-            getUrl = "data/api-keys.json";
-            $.ajax({
-                    url: getUrl,
-                    type: "GET",
-                    async: false,
-                    success: function( data ) {
-                        runtimeConfig.apiKeys = data;
-                    },
-                    error: function ( xhr ){
-                        log_error( ' Error getting ' + getUrl + ' xhr.status: ' + xhr.status );
-                    }
-                });
-        }
-    }
-    return runtimeConfig;
-}
-
 function calculate_progress_bar_percentage( startTimeStamp, endTimeStamp, currentTimeStamp ){
     if( currentTimeStamp < startTimeStamp || currentTimeStamp > endTimeStamp ){
         return 0;

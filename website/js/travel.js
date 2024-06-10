@@ -190,7 +190,6 @@ function set_trains( model ){
 
 async function get_train_station_departures( commute, model ){
     let urlToGet = "";
-    let callAsync = model.config.callAsync;
     let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
     if(model.config.debugging){
         urlToGet = "test-data/transportapi-" + startingStationCode +".json";
@@ -209,9 +208,8 @@ async function get_train_station_departures( commute, model ){
     }
 
     log_info( 'Getting ' + urlToGet );
-
-    get_remote_data( urlToGet, callAsync, model
-    , function( model2, data ){
+    try{
+        let data = await $.get( urlToGet );
         let trains = [];
         let showingTrainsCount = 0;
         let maximumTrainsToShow = model.runtimeConfig.transport.maximumTrainsToShow;
@@ -232,54 +230,14 @@ async function get_train_station_departures( commute, model ){
         }
 
         sanitise_dates_for_train_times( commuteData.departures );
-        model2.data.trains.startingStations.push( commuteData );
-        model2.data.trains.dataDownloaded += 1;
-        write_to_console( 'model2.data.trains.dataDownloaded=' + JSON.stringify( commuteData ));
-    });
+        model.data.trains.startingStations.push( commuteData );
+        model.data.trains.dataDownloaded += 1;
+        write_to_console( 'model.data.trains.dataDownloaded=' + JSON.stringify( commuteData ));
+    }catch( e ){
+        log_error( "Unable to retrieve train station departures for " + commute.from + " from url: '" + urlToGet +
+                    "' I got back: '" + e.statusText +"'");
+    }
 }
-
-
-//function NEW_get_train_station_departures( commute, model ){
-//    let urlToGet = "";
-//    let callAsync = model.config.callAsync;
-//    let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
-//    let endStationCode =  model.stationNameToCodeMap.get( commute.to[0] );
-//    if(model.config.debugging){
-////      OLD -  urlToGet = "test-data/transportapi-" + startingStationCode +".json";
-//        urlToGet = "test-data/huxley2.azurewebsites.net-departures-" + startingStationCode +".json";
-//    } else{
-//        urlToGet = "https://huxley2.azurewebsites.net/departures/"
-//                        + startingStationCode + "/to/"
-//                        + endStationCode + "?accessToken=21913e68-7809-4630-be81-6228b089b5c8";
-//    }
-//    get_remote_data( urlToGet, callAsync, model
-//    , function( model2, data ){
-//        let trains = [];
-//        let showingTrainsCount = 0;
-//        let maximumTrainsToShow = model.runtimeConfig.transport.maximumTrainsToShow;
-//        $(data.departures.all)
-//            .each(function(index,it){
-//                let isCommuteToDestination = commute.to.includes( it.destination_name );
-//                if( showingTrainsCount < maximumTrainsToShow &&
-//                    ( commute.showAllDestinations || isCommuteToDestination)){
-//                    showingTrainsCount++;
-//                    trains.push(extract_trains_details( commute, it, isCommuteToDestination, model.stationNameToCodeMap));
-//                }
-//            });
-//
-//        let commuteData = {
-//            code                : startingStationCode,
-//            name                : commute.from,
-//            departures          : trains
-//        }
-//
-//        sanitise_dates_for_train_times( commuteData.departures );
-//        model2.data.trains.startingStations.push( commuteData );
-//        model2.data.trains.dataDownloaded += 1;
-//        write_to_console( 'model2.data.trains.dataDownloaded=' +  model2.data.trains.dataDownloaded );
-//    });
-//}
-
 
 function sanitise_dates_for_train_times( departures ){
     date = date ? date : clock.get_Date();
@@ -287,7 +245,6 @@ function sanitise_dates_for_train_times( departures ){
         train.departureTime = date_from_string( train.departureTime );
     });
 }
-
 
 function extract_trains_details( commute, trainDetails, isCommuteToDestination, stationNameToCodeMap, currentTime ){
     currentTime = currentTime ? currentTime : clock.get_Date();

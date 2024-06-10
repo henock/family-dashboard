@@ -32,8 +32,8 @@ async function get_global_model(){
     }
 }
 
-function setup_model( debugging, callAsync ){
-    model = create_empty_model( debugging, callAsync );
+function setup_model( debugging ){
+    model = create_empty_model( debugging );
     update_model_with_api_keys( model );
     update_model_with_runtime_config( model );
     download_last_code_update_file( model );
@@ -79,6 +79,7 @@ async function download_last_code_update_file( model ){
 function update_UI( model ){
     $("#dashboard-main").removeClass("d-none");
     let now = clock.get_Date();
+    //TODO - ONLY PASS IN THE RELEVANT PART OF THE MODEL!! UPDATE TESTING TO REFLECT THIS.
     update_date_and_time_ui( model, now );
     update_timezones_ui( model, now );
     update_tasks_ui( model, now );
@@ -86,6 +87,7 @@ function update_UI( model ){
     update_weather_ui( model, now );
     update_school_run_ui( model, now );
     remove_overdue_messages();
+//    changeBackgroundColors( model.runtimeConfig.backgroundColor );
 }
 
 function update_date_and_time_ui( model, now ){
@@ -164,14 +166,13 @@ async function update_model_with_runtime_config( model ){
     }
 }
 
-function create_empty_model( debugging, callAsync ){
+function create_empty_model( debugging ){
     let inThePast = now_plus_seconds( -10 );
     let nextReloadDashboardCheck = now_plus_seconds( 300 );
     return {
         isDefaultModel: true,
         config : {
             debugging: debugging,
-            callAsync: callAsync,
             showTimeZones: false,
             showSchoolRunCountDown: false,
             showWeather: false,
