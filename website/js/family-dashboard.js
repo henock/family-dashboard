@@ -65,7 +65,7 @@ function reload_dashboard(){
 }
 
 async function download_last_code_update_file( model ){
-    let urlToGet = model.config.debugging ? 'test-data/last-code-update.json' : 'data/last-code-update.json';
+    let urlToGet = model.config.debugging ? 'data-for-running-locally/last-code-update.json' : 'data/last-code-update.json';
     try{
         let data = await $.get( urlToGet );
         model.data.reloadDashboardCheck.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
@@ -102,7 +102,7 @@ function update_date_and_time_ui( model, now ){
 }
 
 async function update_model_with_api_keys( model ){
-    let urlToGet = model.config.debugging ? "test-data/debug-api-keys.json" : "data/api-keys.json";
+    let urlToGet = model.config.debugging ? "data-for-running-locally/debug-api-keys.json" : "data/api-keys.json";
     try{
         let data = await $.get( urlToGet );
         model.apiKeys = data;
@@ -143,8 +143,7 @@ async function update_model_with_station_to_code_maps( model ){
 }
 
 async function update_model_with_runtime_config( model ){
-    //TODO - RENAME TO 'data-for-debugging/..' so that it sits next to '/data/..'
-    let urlToGet = model.config.debugging ?  "test-data/debug-runtime-config.json" : "data/runtime-config.json";
+    let urlToGet = model.config.debugging ?  "data-for-running-locally/debug-runtime-config.json" : "data/runtime-config.json";
     try {
         let data = await $.get( urlToGet );
         model.runtimeConfig = data;

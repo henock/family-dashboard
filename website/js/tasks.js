@@ -51,7 +51,7 @@ async function download_tasks( model ){
     let todoListId = model.runtimeConfig.tasks.todoListId;
 
     if(model.config.debugging){
-        urlToGet = 'test-data/trello-list-' + todoListId + '.json'
+        urlToGet = 'data-for-running-locally/trello-list-' + todoListId + '.json'
     }else{
         urlToGet = "https://api.trello.com/1/lists/"
                     + todoListId

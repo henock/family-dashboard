@@ -199,7 +199,7 @@ async function get_train_station_departures( commute, model ){
     let urlToGet = "";
     let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
     if(model.config.debugging){
-        urlToGet = "test-data/transportapi-" + startingStationCode +".json";
+        urlToGet = "data-for-running-locally/transportapi-" + startingStationCode +".json";
     } else{
         let now = clock.get_Date();
         let fullDate = get_date_with_dashes( now );
