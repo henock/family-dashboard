@@ -358,9 +358,8 @@ function build_transport_eta_countdown_element_unit_test(){
 
     let transportId = "transportId";
     let timeMinutes = get_padded_time_minutes( date );
-    let expectedResult = '          <div class=\"row\">              <div class=\"col-3 text-primary\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00s</div>'+
-                         '              <div class=\"col-2\"></div>              <div class=\"col-2 text-primary\">' + timeMinutes +
-                         ' </div>          </div>';
+    let expectedResult = '          <div class=\"row\">              <div class=\"col-2 text-primary\">' + timeMinutes +
+                         ' </div>              <div class=\"col-2\"></div>              <div class=\"col-3 text-primary\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00s</div>          </div>';
 
     result += run_unit_test( "build_transport_eta_countdown_element", 'eta countdown element',  compare_html, expectedResult, [train, transportId,  dateMinus20s] );
     return result;
