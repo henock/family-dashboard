@@ -117,9 +117,9 @@ function build_transport_eta_countdown_element( train, transportId, date ){
     let paddedTimeMinutes = get_padded_time_minutes(train.departureTime);
     if( train.departureTime > date ){
         let div ='          <div class="row">'
-                +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
-                +'              <div class="col-2"></div>'
                 +'              <div class="col-2 text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +' ' + boundaryWindow.emoji + '</div>'
+                +'              <div class="col-2"></div>'
+                +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
                 +'          </div>'
             if( boundaryWindow.name !== TOO_EARLY && boundaryWindow.name !== OUT_OF_TIME ){
                 div +='     <div class="row">'
