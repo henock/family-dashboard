@@ -80,6 +80,8 @@ function write_message( message, aClass, removeAfterSeconds, asHtml ){
     $("#user-messages").append( li );
 }
 
+
+//TODO - BUG DOES NOT REMOVE OVERDUE MESSAGES
 function remove_overdue_messages(){
     let userMessageList = $("#user-messages");
     userMessageList.children().each( function( index, it ){

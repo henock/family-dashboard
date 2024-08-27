@@ -86,6 +86,13 @@ function insert_all_trains( model ){
     });
 }
 
+function is_train_departing_in_the_future( date, departureTime){
+    //TODO - The response from transportapi.com only returns the departure time (with no date) meaning if the response
+    //has times that are after midnight my code has to be able to tell if 01:10 is tomorrow morning or earlier this morning.
+    //if the time is after 20:00 I will consider all trains after 00:00 as the following morning.
+    return true;
+}
+
 function build_transport_id( startingStation, train, index ){
     return startingStation.code + '-' + train.destinationStationCode + '-' + index;;
 }

@@ -1,7 +1,7 @@
 {
-  "date": "2021-11-21",
-  "time_of_day": "16:43",
-  "request_time": "2021-11-21T16:43:40+00:00",
+  "date": "2024-05-27",
+  "time_of_day": "23:35",
+  "request_time": "2024-05-27T23:36:41+01:00",
   "station_name": "Beckenham Junction",
   "station_code": "BKJ",
   "departures": {
@@ -9,186 +9,218 @@
       {
         "mode": "train",
         "service": "24652005",
-        "train_uid": "L15511",
+        "train_uid": "J12644",
         "platform": null,
         "operator": "SE",
         "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "16:50",
+        "aimed_departure_time": "23:40",
+        "aimed_arrival_time": "23:40",
         "aimed_pass_time": null,
-        "origin_name": "London Victoria",
-        "destination_name": "Bromley South",
-        "source": "Network Rail",
+        "origin_name": "Orpington",
+        "destination_name": "London Victoria",
+        "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15511/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "NO REPORT",
-        "expected_arrival_time": "16:50",
-        "expected_departure_time": "now+10m",
-        "best_arrival_estimate_mins": 6,
-        "best_departure_estimate_mins": 6
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/J12644:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
       },
       {
-        "mode": "train",
-        "service": "24652005",
-        "train_uid": "L15281",
+        "mode": "bus",
+        "service": "22742000",
+        "train_uid": "X74183",
         "platform": null,
-        "operator": "SE",
-        "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "17:11",
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:42",
+        "aimed_arrival_time": "23:42",
         "aimed_pass_time": null,
         "origin_name": "Bromley South",
-        "destination_name": "London Victoria",
-        "source": "Network Rail",
+        "destination_name": "London Blackfriars",
+        "source": "ATOC",
+        "category": "BR",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/X74183:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "X91928",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:47",
+        "aimed_arrival_time": "23:46",
+        "aimed_pass_time": null,
+        "origin_name": "London Blackfriars",
+        "destination_name": "Sevenoaks",
+        "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15281/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "ON TIME",
-        "expected_arrival_time": "17:11",
-        "expected_departure_time": "now+910s",
-        "best_arrival_estimate_mins": 27,
-        "best_departure_estimate_mins": 27
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/X91928:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
       },
       {
         "mode": "train",
         "service": "24652005",
-        "train_uid": "L15512",
+        "train_uid": "J12356",
         "platform": null,
         "operator": "SE",
         "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "17:20",
+        "aimed_departure_time": "23:50",
+        "aimed_arrival_time": "23:50",
         "aimed_pass_time": null,
         "origin_name": "London Victoria",
-        "destination_name": "Bromley South",
-        "source": "Network Rail",
+        "destination_name": "Orpington",
+        "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15512/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "ON TIME",
-        "expected_arrival_time": "17:20",
-        "expected_departure_time": "now+20m",
-        "best_arrival_estimate_mins": 36,
-        "best_departure_estimate_mins": 36
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/J12356:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "X91890",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "23:59",
+        "aimed_arrival_time": "23:58",
+        "aimed_pass_time": null,
+        "origin_name": "Sevenoaks",
+        "destination_name": "London Blackfriars",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/X91890:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "bus",
+        "service": "22742000",
+        "train_uid": "X14864",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "00:03",
+        "aimed_arrival_time": "00:03",
+        "aimed_pass_time": null,
+        "origin_name": "Herne Hill",
+        "destination_name": "Bromley South",
+        "source": "ATOC",
+        "category": "BR",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/X14864:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
       },
       {
         "mode": "train",
         "service": "24652005",
-        "train_uid": "L15284",
+        "train_uid": "J12638",
         "platform": null,
         "operator": "SE",
         "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "17:41",
+        "aimed_departure_time": "00:10",
+        "aimed_arrival_time": "00:10",
+        "aimed_pass_time": null,
+        "origin_name": "Orpington",
+        "destination_name": "London Victoria",
+        "source": "ATOC",
+        "category": "OO",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/J12638:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "bus",
+        "service": "22742000",
+        "train_uid": "X74217",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "00:12",
+        "aimed_arrival_time": "00:12",
         "aimed_pass_time": null,
         "origin_name": "Bromley South",
-        "destination_name": "London Victoria",
-        "source": "Network Rail",
+        "destination_name": "London Blackfriars",
+        "source": "ATOC",
+        "category": "BR",
+        "service_timetable": {
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/X74217:2024-05-28.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
+      },
+      {
+        "mode": "train",
+        "service": "22742000",
+        "train_uid": "X91915",
+        "platform": null,
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "00:18",
+        "aimed_arrival_time": "00:17",
+        "aimed_pass_time": null,
+        "origin_name": "London Blackfriars",
+        "destination_name": "Sevenoaks",
+        "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15284/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "ON TIME",
-        "expected_arrival_time": "17:41",
-        "expected_departure_time": "now+31m",
-        "best_arrival_estimate_mins": 57,
-        "best_departure_estimate_mins": 57
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/X91915:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
       },
       {
         "mode": "train",
         "service": "24652005",
-        "train_uid": "L15513",
+        "train_uid": "J28701",
         "platform": null,
         "operator": "SE",
         "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "17:50",
+        "aimed_departure_time": "00:21",
+        "aimed_arrival_time": "00:21",
         "aimed_pass_time": null,
         "origin_name": "London Victoria",
-        "destination_name": "Bromley South",
-        "source": "Network Rail",
+        "destination_name": "Orpington",
+        "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15513/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "ON TIME",
-        "expected_arrival_time": "17:50",
-        "expected_departure_time": "now+40m",
-        "best_arrival_estimate_mins": 66,
-        "best_departure_estimate_mins": 66
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/J28701:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
       },
       {
-        "mode": "train",
-        "service": "24652005",
-        "train_uid": "L15287",
+        "mode": "bus",
+        "service": "22742000",
+        "train_uid": "X14882",
         "platform": null,
-        "operator": "SE",
-        "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "18:11",
+        "operator": "TL",
+        "operator_name": "Thameslink",
+        "aimed_departure_time": "00:33",
+        "aimed_arrival_time": "00:33",
         "aimed_pass_time": null,
-        "origin_name": "Bromley South",
-        "destination_name": "London Victoria",
-        "source": "Network Rail",
-        "category": "OO",
+        "origin_name": "Herne Hill",
+        "destination_name": "Bromley South",
+        "source": "ATOC",
+        "category": "BR",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15287/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "ON TIME",
-        "expected_arrival_time": "18:11",
-        "expected_departure_time": "now+51m",
-        "best_arrival_estimate_mins": 87,
-        "best_departure_estimate_mins": 87
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/X14882:2024-05-27.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
       },
       {
         "mode": "train",
         "service": "24652005",
-        "train_uid": "L15514",
+        "train_uid": "J13513",
         "platform": null,
         "operator": "SE",
         "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "18:20",
+        "aimed_departure_time": "00:50",
+        "aimed_arrival_time": "00:50",
         "aimed_pass_time": null,
         "origin_name": "London Victoria",
-        "destination_name": "Bromley South",
-        "source": "Network Rail",
+        "destination_name": "Orpington",
+        "source": "ATOC",
         "category": "OO",
         "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15514/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "ON TIME",
-        "expected_arrival_time": "18:20",
-        "expected_departure_time": "now+50m",
-        "best_arrival_estimate_mins": 96,
-        "best_departure_estimate_mins": 96
-      },
-      {
-        "mode": "train",
-        "service": "24652005",
-        "train_uid": "L15290",
-        "platform": null,
-        "operator": "SE",
-        "operator_name": "Southeastern",
-        "aimed_departure_time": "NOT-USED",
-        "aimed_arrival_time": "18:41",
-        "aimed_pass_time": null,
-        "origin_name": "Bromley South",
-        "destination_name": "London Victoria",
-        "source": "Network Rail",
-        "category": "OO",
-        "service_timetable": {
-          "id": "https://transportapi.com/v3/uk/train/service/train_uid:L15290/2021-11-21/timetable.json?app_id=63561717&app_key=apiKey&live=true"
-        },
-        "status": "ON TIME",
-        "expected_arrival_time": "18:41",
-        "expected_departure_time": "now+61m",
-        "best_arrival_estimate_mins": 117,
-        "best_departure_estimate_mins": 117
+          "id": "http://transportapi.com/v3/uk/train/service_timetables/J13513:2024-05-28.json?app_id=63561717\u0026app_key=db6e1bd787b924216d7f4f7030a33fa6"
+        }
       }
     ]
   }

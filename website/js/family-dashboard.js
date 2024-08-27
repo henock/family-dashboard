@@ -9,10 +9,9 @@ $(document).ready(function () {
 });
 
 async function update_dashboard() {
-    globalModel = await get_global_model();
-    update_model( globalModel );
-    update_UI( globalModel );
-
+            globalModel = await get_global_model();
+            update_model( globalModel );
+            update_UI( globalModel );
 }
 
 async function get_global_model(){
@@ -87,7 +86,7 @@ function update_UI( model ){
     update_weather_ui( model, now );
     update_school_run_ui( model, now );
     remove_overdue_messages();
-//    changeBackgroundColors( model.runtimeConfig.backgroundColor );
+    changeBackgroundColors( model.runtimeConfig.backgroundColor );
 }
 
 function update_date_and_time_ui( model, now ){
@@ -145,7 +144,7 @@ async function update_model_with_station_to_code_maps( model ){
 
 async function update_model_with_runtime_config( model ){
     //TODO - RENAME TO 'data-for-debugging/..' so that it sits next to '/data/..'
-    let urlToGet = model.config.debugging ? "data/runtime-config.json" : "test-data/debug-runtime-config.json";
+    let urlToGet = model.config.debugging ?  "test-data/debug-runtime-config.json" : "data/runtime-config.json";
     try {
         let data = await $.get( urlToGet );
         model.runtimeConfig = data;
