@@ -1,4 +1,6 @@
 {
+  "reloadDashboardEvery": "500",
+  "familyICalendarUrl":"<Apple iCalandar read only URL>",
   "trains": {
     "show": true,
     "updateEvery": "3600"
@@ -8,9 +10,6 @@
     "showFutureHour": 6,
     "location": "<your gps coordinates>",
     "updateEvery": "1800"
-  },
-  "reloadDashboardCheck": {
-    "updateEvery": "300"
   },
   "backgroundColor": {
     "changeEverySeconds": 60,

@@ -1,4 +1,5 @@
 {
+  "reloadDashboardEvery": "500",
   "trains": {
     "show": true,
     "updateEvery": "600"
@@ -8,9 +9,6 @@
     "showFutureHour": 6,
     "location": "51.114282,-0.017142",
     "updateEvery": "1800"
-  },
-  "reloadDashboardCheck": {
-    "updateEvery": "300"
   },
   "backgroundColor": {
     "changeEverySeconds": 60,

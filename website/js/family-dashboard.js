@@ -8,67 +8,72 @@ $(document).ready(function () {
     }
 });
 
-async function update_dashboard() {
-            globalModel = await get_global_model();
-            update_model( globalModel );
-            update_UI( globalModel );
+function update_dashboard() {
+    globalModel =  get_global_model();
+    update_model( globalModel );
+    update_UI( globalModel );
 }
 
-async function get_global_model(){
+function get_global_model(){
     if( !globalModel ){
         if(is_debug_on()){
             log_error( "Test error removed in 10 seconds after: " + get_padded_time_seconds(now_plus_seconds(10)), 10 );
             write_html_message( "<span class='text-success'>Test</span><span class='text-warning'> html</span><span class='text-danger'> error</span> removed in 5 seconds after: "+ get_padded_time_seconds(now_plus_seconds(5))+"</b>", 5 );
             debug_using_different_time();
-            model = await setup_model( true );
+            return setup_model_for_debugging();
         }else{
-            model = await setup_model( false  );
+            return setup_model_for_production();
         }
-        return model;
     }else{
         globalModel.isDefaultModel = false;
         return globalModel;
     }
 }
 
+function setup_model_for_debugging(){
+     return setup_model(true);
+}
+
+function setup_model_for_production(){
+     return setup_model(false);
+}
+
 function setup_model( debugging ){
     model = create_empty_model( debugging );
-    update_model_with_api_keys( model );
     update_model_with_runtime_config( model );
+    update_urls_if_debugging( model )
     download_last_code_update_file( model );
+    update_model_with_api_keys( model );
     update_model_with_station_to_code_maps( model );
-    return new Promise(function(resolve, reject) {
-        resolve(model);
-    });
+    return model;
 }
 
 function update_model( model ){
-    check_for_new_code( model, reload_dashboard, clock.get_Date() );
     update_model_with_tasks( model, clock.get_Date() );
     update_model_with_trains( model, clock.get_Date() );
     update_model_with_weather( model, clock.get_Date() );
+    reload_the_dashboard( model, clock.get_Date() );
 }
 
-function check_for_new_code( model, reload_page_function, date ){
-    if( model.data.reloadDashboardCheck.nextDownloadDataTime < date ){
-         download_last_code_update_file( model );
-         if( model.data.reloadDashboardCheck.lastCodeUpdate < date ){
-            reload_page_function();
-         }else{
-            model.data.reloadDashboardCheck.nextDownloadDataTime = now_plus_seconds( model.runtimeConfig.reloadDashboardCheck.updateEvery );
-         }
+function reload_the_dashboard( model, date ) {
+    if( !model.data.nextDashboardReload  ) {
+        model.data.nextDashboardReload = now_plus_seconds( model.runtimeConfig.reloadDashboardEvery );
+        return false;
+    } else if( model.data.nextDashboardReload < date ) {
+        return true;
+        model.data.nextDashboardReload = now_plus_seconds( model.runtimeConfig.reloadDashboardEvery );
+        location.reload(true); // reloads the whole dashboard
+    }else{
+        return false;
     }
 }
 
-function reload_dashboard(){
-    location.reload(true); // reloads the whole dashboard
-}
-
-async function download_last_code_update_file( model ){
-    let urlToGet = model.config.debugging ? 'data-for-running-locally/last-code-update.json' : 'data/last-code-update.json';
+function download_last_code_update_file( model ){
+    let urlToGet = model.config.urls.lastCodeUpdate;
     try{
-        let data = await $.get( urlToGet );
-        model.data.reloadDashboardCheck.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
+        let data =  get_remote_data( urlToGet );
+        model.data.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
+        model.data.nextDashboardReload = date_from_string( model.runtimeConfig.reloadDashboardEvery );
     }catch( e ){
         log_error( "Unable to retrieve last code update from: '" + urlToGet +
                     "' I got back: '" + e.statusText +"'");
@@ -101,10 +106,10 @@ function update_date_and_time_ui( model, now ){
     $("#local-time-zone").html( local_time_zone );
 }
 
-async function update_model_with_api_keys( model ){
-    let urlToGet = model.config.debugging ? "data-for-running-locally/debug-api-keys.json" : "data/api-keys.json";
+function update_model_with_api_keys( model ){
+    let urlToGet = model.config.urls.apiKeys;
     try{
-        let data = await $.get( urlToGet );
+        let data =  get_remote_data( urlToGet );
         model.apiKeys = data;
     }catch( e ){
         log_error( "Unable to retrieve API keys from: '" + urlToGet +
@@ -117,11 +122,11 @@ async function update_model_with_api_keys( model ){
     }
 }
 
-async function update_model_with_station_to_code_maps( model ){
+function update_model_with_station_to_code_maps( model ){
     if( !model.stationCodeToNameMap ){  //only need it once.
         let urlToGet = "data/station-codes.json";
         try {
-            let data = await $.get( urlToGet );
+            let data =  get_remote_data( urlToGet );
             let entries = Object.entries(data);
             let entry;
             let nameToCode = new Map();
@@ -142,10 +147,11 @@ async function update_model_with_station_to_code_maps( model ){
     }
 }
 
-async function update_model_with_runtime_config( model ){
-    let urlToGet = model.config.debugging ?  "data-for-running-locally/debug-runtime-config.json" : "data/runtime-config.json";
+function update_model_with_runtime_config( model ){
+    let urlToGet = model.config.debugging ?  "data-for-running-locally/debug-runtime-config.json"
+                                          :  "data/runtime-config.json";
     try {
-        let data = await $.get( urlToGet );
+        let data =  get_remote_data( urlToGet );
         model.runtimeConfig = data;
         model.config.showTasks = data.tasks.show
         model.config.showTravel = data.trains.show
@@ -164,9 +170,25 @@ async function update_model_with_runtime_config( model ){
     }
 }
 
+function update_urls_if_debugging( model ) {
+    let urls = {}
+
+    if(model.config.debugging){
+        urls.runtimeConfig  = 'data-for-running-locally/debug-runtime-config.json';
+        urls.lastCodeUpdate = 'data-for-running-locally/last-code-update.json';
+        urls.familyCalendar = 'data-for-running-locally/family-calendar.ics';
+        urls.apiKeys        = 'data-for-running-locally/debug-api-keys.json';
+    }else{
+        urls.runtimeConfig  = 'data/runtime-config.json';
+        urls.lastCodeUpdate = 'data/last-code-update.json';
+        urls.familyCalendar = model.runtimeConfig.familyICalendarUrl;
+        urls.apiKeys        = 'data/api-keys.json';
+    }
+    model.config.urls = urls;
+}
+
 function create_empty_model( debugging ){
     let inThePast = now_plus_seconds( -10 );
-    let nextReloadDashboardCheck = now_plus_seconds( 300 );
     return {
         isDefaultModel: true,
         config : {
@@ -178,11 +200,7 @@ function create_empty_model( debugging ){
             showTasks: false
         },
         apiKeys : {},
-        runtimeConfig : {},
         data : {
-            reloadDashboardCheck : {
-                nextDownloadDataTime: nextReloadDashboardCheck
-            },
             tasks : {
                 dataDownloaded: false,
                 nextDownloadDataTime: inThePast,

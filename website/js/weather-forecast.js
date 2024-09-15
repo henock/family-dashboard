@@ -77,7 +77,7 @@ function build_weather_url( location, timeStep, apiKey ){
                + "&apikey=" + apiKey;
 }
 
-async function update_model_with_weather_now_and_future_hour( model ){
+function update_model_with_weather_now_and_future_hour( model ){
     let urlToGet = '';
     if(model.config.debugging){
         urlToGet = "data-for-running-locally/tomorrow-timelines-1h.json";
@@ -86,7 +86,7 @@ async function update_model_with_weather_now_and_future_hour( model ){
     }
 
     try{
-        let responseData = await $.get( urlToGet );
+        let responseData =  get_remote_data( urlToGet );
         let futureHour = model.runtimeConfig.weather.showFutureHour;
         let now = responseData.data.timelines[0].intervals[0];
         let inFutureHours = responseData.data.timelines[0].intervals[futureHour];
@@ -116,7 +116,7 @@ async function update_model_with_weather_now_and_future_hour( model ){
     }
 }
 
-async function update_model_with_weather_next_five_days(model){
+function update_model_with_weather_next_five_days(model){
     let urlToGet = '';
     if(model.config.debugging){
         urlToGet = "data-for-running-locally/tomorrow-timelines-1d.json";
@@ -125,13 +125,14 @@ async function update_model_with_weather_next_five_days(model){
     }
 
     try{
-        let responseData = await $.get( urlToGet );
+        let responseData =  get_remote_data( urlToGet );
         let today = responseData.data.timelines[0].intervals[0];
         model.data.weather.today.sunrise = new Date( today.values.sunriseTime).toLocaleString().substring(11,17);
         model.data.weather.today.sunset  = new Date( today.values.sunsetTime).toLocaleString().substring(11,17);
         for (var i = 1; i < 6; i++) {
             let futureDay = responseData.data.timelines[0].intervals[i];
-            let dateString = date_from_string(futureDay.startTime).toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
+            let dateString = date_from_string(futureDay.startTime).
+                                toLocaleString('default', { month: 'short', day: '2-digit' , weekday: 'short'});
             let temperature = Math.round( futureDay.values.temperatureApparent ) + DEGREES_CELSIUS;
             let day = {
                 index: i,

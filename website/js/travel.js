@@ -195,7 +195,7 @@ function set_trains( model ){
     }
 }
 
-async function get_train_station_departures( commute, model ){
+function get_train_station_departures( commute, model ){
     let urlToGet = "";
     let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
     if(model.config.debugging){
@@ -216,7 +216,7 @@ async function get_train_station_departures( commute, model ){
 
     log_info( 'Getting ' + urlToGet );
     try{
-        let data = await $.get( urlToGet );
+        let data =  get_remote_data( urlToGet );
         let trains = [];
         let showingTrainsCount = 0;
         let maximumTrainsToShow = model.runtimeConfig.transport.maximumTrainsToShow;

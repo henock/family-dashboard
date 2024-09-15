@@ -151,33 +151,32 @@ function get_class_for_boundary_window( boundaryWindow ){
         default: return '';
     }
 }
-//TODO DELETE ME
-//function get_remote_data( urlToGet, runAsync, model, success_response_parser_function, fail_response_parser_function ){
-//
-//    function default_process_error( xhr ){
-//        if( xhr ){
-//            log_error( xhr.status +': Error calling ' + urlToGet + ', got the response  ('+xhr.responseText +').');
-//        } else{
-//            log_error( ' Error calling ' + urlToGet + ' ( Unknown error ).');
-//        }
-//    }
-////TODO BUG - CALLING ASYNC=TRUE SEEMS TO CAUSE THE WRONG SUCCESS METHOD TO BE CALLED WHEN TWO OF THEM ARE RUNNING AT THE SAME TIME.
-//    $.ajax({
-//        url: urlToGet,
-//        type: "GET",
-//        async: runAsync,
-//        success: function( data ) {
-//            return success_response_parser_function( model, data );
-//        },
-//        error: function ( xhr ){
-//            if( fail_response_parser_function ) {
-//                fail_response_parser_function( model , xhr , default_process_error);
-//            }else{
-//                default_process_error( xhr );
-//            }
-//        }
-//    });
-//}
+
+
+function default_process_error( xhr ){
+    if( xhr ){
+        log_error( xhr.status +': Error calling ' + urlToGet + ', got the response  ('+xhr.responseText +').');
+    } else{
+        log_error( ' Error calling ' + urlToGet + ' ( Unknown error ).');
+    }
+}
+
+
+function get_remote_data( urlToGet ){
+    $.ajax({
+        url: urlToGet,
+        type: "GET",
+        async: false,
+        success: function( response ) {
+            data = response;
+        },
+        error: function ( xhr ){
+            default_process_error( xhr );
+        }
+    });
+
+    return data;
+}
 
 
 

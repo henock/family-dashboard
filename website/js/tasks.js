@@ -46,7 +46,7 @@ function update_model_with_tasks( model, date ){
     }
 }
 
-async function download_tasks( model ){
+function download_tasks( model ){
     let urlToGet = '';
     let todoListId = model.runtimeConfig.tasks.todoListId;
 
@@ -61,7 +61,7 @@ async function download_tasks( model ){
     }
 
     try {
-        let data = await $.get( urlToGet );
+        let data =  get_remote_data( urlToGet );
         model.data.tasks.todo = set_tasks_on_model_from_remote_data( data );
         model.data.tasks.dataDownloaded = true;
     } catch (e) {
