@@ -21,13 +21,13 @@ Our task list is maintained on a [Trello](https://www.youtube.com/watch?v=2h3058
 
 The dashboard is configured via two configuration files
 
-| Name                | Description                                                                               |
-|:--------------------|:------------------------------------------------------------------------------------------|
-| api-keys.json       | Which stores you api keys to connect to the remote api endpoints called to download data. | 
-| runtime-config.json | Which configures how and what the dashboard displays.                                     | 
+| Name                | Description                                                                                                       |
+|:--------------------|:------------------------------------------------------------------------------------------------------------------|
+| secrets.json        | Which stores your passwords, secrets and api keys to connect to the remote api endpoints called to download data. | 
+| runtime-config.json | Which configures how and what the dashboard displays.                                                             | 
  
 
-### api-keys.json  
+### secrets.json  
 You will need to sign up and get API keys and tokens from the remote websites that provide this data.  
 
 - [http://transportapi.com](https://developer.transportapi.com/signup) - to get data on train departure times.
@@ -40,7 +40,7 @@ You will need to sign up and get API keys and tokens from the remote websites th
 >
 > This dashboard as it is configured currently is not supposed to be running out on the internet, but instead on a local server running in our kitchen.
 >
-> This is because your /data/api-keys.json would expose all of your API keys
+> This is because your /data/secret.json would expose all of your API keys
 
 
 ```json

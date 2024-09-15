@@ -21,6 +21,6 @@ RUN mkdir /etc/periodic/1min
 RUN mkdir /var/log/continuous-deployment
 
 # Copy my local personal configuration files to the secrets folder.
-COPY website/data/api-keys.json  /secrets
+COPY website/data/secrets.json  /secrets
 COPY website/data/runtime-config.json  /secrets
 RUN cd /etc/periodic/1min && ln -s /docker-entrypoint.d/continuously-deploy-website.sh .

@@ -177,12 +177,12 @@ function update_urls_if_debugging( model ) {
         urls.runtimeConfig  = 'data-for-running-locally/debug-runtime-config.json';
         urls.lastCodeUpdate = 'data-for-running-locally/last-code-update.json';
         urls.familyCalendar = 'data-for-running-locally/family-calendar.ics';
-        urls.apiKeys        = 'data-for-running-locally/debug-api-keys.json';
+        urls.apiKeys        = 'data-for-running-locally/debug-secrets.json';
     }else{
         urls.runtimeConfig  = 'data/runtime-config.json';
         urls.lastCodeUpdate = 'data/last-code-update.json';
         urls.familyCalendar = model.runtimeConfig.familyICalendarUrl;
-        urls.apiKeys        = 'data/api-keys.json';
+        urls.apiKeys        = 'data/secrets.json';
     }
     model.config.urls = urls;
 }
