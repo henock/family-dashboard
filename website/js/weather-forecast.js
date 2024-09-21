@@ -82,7 +82,7 @@ function update_model_with_weather_now_and_future_hour( model ){
     if(model.config.debugging){
         urlToGet = "data-for-running-locally/tomorrow-timelines-1h.json";
     } else{
-        urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1h', model.apiKeys.tomorrowIo.apiKey);
+        urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1h', model.secrets.tomorrowIo.apiKey);
     }
 
     try{
@@ -121,7 +121,7 @@ function update_model_with_weather_next_five_days(model){
     if(model.config.debugging){
         urlToGet = "data-for-running-locally/tomorrow-timelines-1d.json";
     } else{
-        urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1d', model.apiKeys.tomorrowIo.apiKey);
+        urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1d', model.secrets.tomorrowIo.apiKey);
     }
 
     try{

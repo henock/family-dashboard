@@ -55,8 +55,8 @@ function download_tasks( model ){
     }else{
         urlToGet = "https://api.trello.com/1/lists/"
                     + todoListId
-                    +"/cards?key=" + model.apiKeys.trello.key
-                    +"&token=" + model.apiKeys.trello.token
+                    +"/cards?key=" + model.secrets.trello.key
+                    +"&token=" + model.secrets.trello.token
                     +"&fields=name,dateLastActivity,labels"
     }
 

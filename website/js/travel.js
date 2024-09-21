@@ -204,7 +204,7 @@ function get_train_station_departures( commute, model ){
         let now = clock.get_Date();
         let fullDate = get_date_with_dashes( now );
         let fullTime = get_padded_time_minutes( now );
-        let transportApi = model.apiKeys.transportApi
+        let transportApi = model.secrets.transportApi
 
         urlToGet = "http://transportapi.com/v3/uk/train/station/"
                         + startingStationCode +"/"

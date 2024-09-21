@@ -43,7 +43,7 @@ function setup_model( debugging ){
     update_model_with_runtime_config( model );
     update_urls_if_debugging( model )
     download_last_code_update_file( model );
-    update_model_with_api_keys( model );
+    update_model_with_secrets( model );
     update_model_with_station_to_code_maps( model );
     return model;
 }
@@ -106,11 +106,11 @@ function update_date_and_time_ui( model, now ){
     $("#local-time-zone").html( local_time_zone );
 }
 
-function update_model_with_api_keys( model ){
-    let urlToGet = model.config.urls.apiKeys;
+function update_model_with_secrets( model ){
+    let urlToGet = model.config.urls.secrets;
     try{
         let data =  get_remote_data( urlToGet );
-        model.apiKeys = data;
+        model.secrets = data;
     }catch( e ){
         log_error( "Unable to retrieve API keys from: '" + urlToGet +
                     "' I got back: '" + e.statusText +
@@ -176,13 +176,11 @@ function update_urls_if_debugging( model ) {
     if(model.config.debugging){
         urls.runtimeConfig  = 'data-for-running-locally/debug-runtime-config.json';
         urls.lastCodeUpdate = 'data-for-running-locally/last-code-update.json';
-        urls.familyCalendar = 'data-for-running-locally/family-calendar.ics';
-        urls.apiKeys        = 'data-for-running-locally/debug-secrets.json';
+        urls.secrets        = 'data-for-running-locally/debug-secrets.json';
     }else{
         urls.runtimeConfig  = 'data/runtime-config.json';
         urls.lastCodeUpdate = 'data/last-code-update.json';
-        urls.familyCalendar = model.runtimeConfig.familyICalendarUrl;
-        urls.apiKeys        = 'data/secrets.json';
+        urls.secrets        = 'data/secrets.json';
     }
     model.config.urls = urls;
 }
@@ -199,7 +197,7 @@ function create_empty_model( debugging ){
             showTravel: false,
             showTasks: false
         },
-        apiKeys : {},
+        secrets : {},
         data : {
             tasks : {
                 dataDownloaded: false,

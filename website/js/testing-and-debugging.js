@@ -56,8 +56,8 @@ function compare_html( a, b ){
     let testResult = ( a.replaceAll(' ', '+') === b.replaceAll(' ', '+') );
     return {
         passed: testResult,
-        expectedValue: '<textarea style="width:800px; height:150px;">' + a + '</textarea>',
-        testedValue:    '<textarea style="width:800px; height:150px;">' + b + '</textarea>'
+        expectedValue: wrap_in_text_area( a),
+        testedValue:    wrap_in_text_area( b)
     }
 }
 
@@ -179,7 +179,7 @@ function write_unit_test_result( message, pass ){
 //    result += should_parse_calendar_event();
 //    result +=  download_calendar_unit_test();
     result += set_tasks_on_model_from_remote_data_unit_test();
-    result +=  reload_the_dashboard_unit_test();
+    result += reload_the_dashboard_unit_test();
     result += calculate_progress_bar_percentage_unit_test();
     result += generate_next_download_count_down_values_unit_test();
     result += build_transport_eta_countdown_element_unit_test();
@@ -195,7 +195,7 @@ function write_unit_test_result( message, pass ){
     result += extract_trains_details_unit_test();
     result += update_model_with_station_to_code_maps_unit_test();
     result += download_tasks_unit_test();
-    result += update_model_with_api_keys_unit_test();
+    result += update_model_with_secrets_unit_test();
     result += update_model_only_update_times_have_expired();
     result += update_model_with_runtime_config_unit_test();
     result += setup_model_unit_test();
@@ -697,21 +697,21 @@ function download_tasks_unit_test(){
 }
 
 
-function update_model_with_api_keys_unit_test(){
+function update_model_with_secrets_unit_test(){
 
     function api_key_test_function( expected, result, parameters ){
         let model = parameters[0];
-        let testResult =  (undefined !== model.apiKeys );
+        let testResult =  (undefined !== model.secrets );
         return {
             passed: testResult,
-            expectedValue: 'model.apiKeys is not null',
-            testedValue:   model.apiKeys
+            expectedValue: 'model.secrets is not null',
+            testedValue:   model.secrets
         }
     }
 
     let result = '';
     let model =  setup_model_for_debugging();
-    result += run_unit_test( "update_model_with_api_keys", 'we get the debug api keys',  api_key_test_function, 'not used', [model] );
+    result += run_unit_test( "update_model_with_secrets", 'we get the debug api keys',  api_key_test_function, 'not used', [model] );
 
     return result;
 }
