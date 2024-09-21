@@ -163,6 +163,7 @@ function default_process_error( xhr ){
 
 
 function get_remote_data( urlToGet ){
+    let data = '';
     $.ajax({
         url: urlToGet,
         type: "GET",
