@@ -68,9 +68,20 @@ on getEvents(dateRangeStart, dateRangeEnd)
 				set startTime to time string of eventStartDate
 				set endTime to time string of eventEndDate
 				
-				set eventStartDateTime to (year of eventStartDate) & "-" & (month of eventStartDate as number) & "-" & (day of eventStartDate) & "T" & startTime & "+00:00"
+				set dayOfEvent to day of eventStartDate as number
 				
-				set eventJson to "{\"start-date\":\"" & eventStartDateTime & "\", \"display-date\":\"" & theDay & " " & dateStamp & "\", \"start-time\":\"" & startTime & "\", \"end-time\": \"" & endTime & "\", \"description\": \"" & eventsDesc & "\", \"location\": \"" & eventsLocation & "\"}" as string
+				if dayOfEvent < 10 then
+					set dayOfEvent to "0" & dayOfEvent as string
+				end if
+				
+				set monthOfEvent to month of eventStartDate as number
+				if monthOfEvent < 10 then
+					set monthOfEvent to "0" & monthOfEvent as string
+				end if
+				
+				set eventStartDateTime to (year of eventStartDate) & "-" & monthOfEvent & "-" & dayOfEvent & "T" & startTime & "+00:00"
+				
+				set eventJson to "{\"startDate\":\"" & eventStartDateTime & "\", \"displayDate\":\"" & theDay & " " & dateStamp & "\", \"startTime\":\"" & startTime & "\", \"endTime\": \"" & endTime & "\", \"description\": \"" & eventsDesc & "\", \"location\": \"" & eventsLocation & "\"}" as string
 				
 				if counter < allEventsCount then
 					set eventJson to eventJson & ","
