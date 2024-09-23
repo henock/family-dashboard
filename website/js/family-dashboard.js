@@ -174,13 +174,15 @@ function update_urls_if_debugging( model ) {
     let urls = {}
 
     if(model.config.debugging){
-        urls.runtimeConfig  = 'data-for-running-locally/debug-runtime-config.json';
-        urls.lastCodeUpdate = 'data-for-running-locally/last-code-update.json';
-        urls.secrets        = 'data-for-running-locally/debug-secrets.json';
+        urls.runtimeConfig       = 'data-for-running-locally/debug-runtime-config.json';
+        urls.lastCodeUpdate      = 'data-for-running-locally/last-code-update.json';
+        urls.secrets             = 'data-for-running-locally/debug-secrets.json';
+        urls.familyICalendarUrl  = 'data-for-running-locally/family-calendar.json';
     }else{
-        urls.runtimeConfig  = 'data/runtime-config.json';
-        urls.lastCodeUpdate = 'data/last-code-update.json';
-        urls.secrets        = 'data/secrets.json';
+        urls.runtimeConfig       = 'data/runtime-config.json';
+        urls.lastCodeUpdate      = 'data/last-code-update.json';
+        urls.secrets             = 'data/secrets.json';
+        urls.familyICalendarUrl  = 'data/family-calendar.json';
     }
     model.config.urls = urls;
 }

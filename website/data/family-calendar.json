@@ -1,0 +1,36 @@
+{
+  "events": [
+    {
+      "startDate": "2024-10-13T12:40:00+00:00",
+      "displayDate": "Sunday 13/10/2024",
+      "startTime": "12:40:00",
+      "endTime": "13:40:00",
+      "description": "Ben splash party for Sennai",
+      "location": "Dulwich Sports Club Giant Arches Road, London, SE24 9HP, England"
+    },
+    {
+      "startDate": "2024-10-05T08:00:00+00:00",
+      "displayDate": "Saturday 05/10/2024",
+      "startTime": "08:00:00",
+      "endTime": "09:00:00",
+      "description": "All lower school boys to attend  open morning",
+      "location": "missing value"
+    },
+    {
+      "startDate": "2024-10-13T10:00:00+00:00",
+      "displayDate": "Sunday 13/10/2024",
+      "startTime": "10:00:00",
+      "endTime": "11:00:00",
+      "description": "Tsegi day meeting",
+      "location": "missing value"
+    },
+    {
+      "startDate": "2024-10-04T15:45:00+00:00",
+      "displayDate": "Friday 04/10/2024",
+      "startTime": "15:45:00",
+      "endTime": "16:45:00",
+      "description": "Melkam and sennai play date at J&J",
+      "location": "missing value"
+    }
+  ]
+}

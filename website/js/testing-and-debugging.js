@@ -32,6 +32,10 @@ function is_running_remote_tests(){
     return 'true' === get_url_parameter('doNotSkipRemoteTests');
 }
 
+function wrap_in_text_area( text ){
+    return '<textarea style="width:800px; height:150px; margin:6px;">' + text + '</textarea>'
+}
+
 function get_url_parameter( paramToGet ){
     let searchParams = new URLSearchParams( window.location.search );
     return searchParams.get(paramToGet);
@@ -176,8 +180,8 @@ function write_unit_test_result( message, pass ){
     let result = '<table class="pt-2" border="1">';
     result += '<tr><th>Test #</th><th>Function under test</th><th>comment</th><th>result</th><th>params passed in</th></th></tr>';
     result += setup_model_unit_test();  //SHOULD BE THE FIRST TEST!!
-//    result += should_parse_calendar_event();
-//    result +=  download_calendar_unit_test();
+    result += should_sort_calendar_events();
+    result += download_calendar_unit_test();
     result += set_tasks_on_model_from_remote_data_unit_test();
     result += reload_the_dashboard_unit_test();
     result += calculate_progress_bar_percentage_unit_test();
@@ -584,8 +588,52 @@ function is_train_departing_in_the_future_unit_test(){
     return result;
 }
 
+function download_calendar_unit_test(){
 
-async function extract_trains_details_unit_test(){
+    function check_for_calendar_events( expected, result, parameters ){
+        let model = parameters[0];
+        let testResult =  ("2024-10-04T15:45:00+00:00" === model.data.calendar.events[0].startDate  );
+        return {
+            passed: testResult,
+            expectedValue: "Earliest event with date 2024-10-04T15:45:00+00:00",
+            testedValue:   model.data.calendar.events[0].startDate
+        }
+    }
+
+    let result = '';
+
+    let model =  setup_model_for_debugging();
+    result += run_unit_test( "download_calendar", 'download and sort the debugging calendar from local',  check_for_calendar_events, 'not used', [model] );
+
+    return result;
+}
+
+function should_sort_calendar_events(){
+    var calendar = JSON.parse('{"events":['+
+                    '{"startDate":"2024-10-13T12:40:00+00:00", '+
+                         '"displayDate":"Sunday 13/10/2024", '+
+                         '"startTime":"12:40:00", '+
+                         '"endTime": "13:40:00", '+
+                         '"description": "Ben splash party for boys", '+
+                         '"location": "Sports Club Giant Arches Road, London, SE24 9HP, England"},'+
+                     '{"startDate":"2024-10-05T08:00:00+00:00", '+
+                        '"displayDate":"Saturday 05/10/2024", '+
+                        '"startTime":"08:00:00", '+
+                        '"endTime": "09:00:00", '+
+                        '"description": "All lower school boys to attend open morning", '+
+                        '"location": "missing value"}'+
+                ']}');
+
+    let result = '';
+    let events = calendar.events;
+    let model =  setup_model_for_debugging();
+    result = run_unit_test( 'sort_on_event_dates', "2024-10-13 > 2024-10-05", compare_exact, 1, [events[0], events[1]] );
+    result += run_unit_test( 'sort_on_event_dates', "2024-10-13 < 2024-10-05", compare_exact, -1, [events[1], events[0]] );
+    result += run_unit_test( 'sort_on_event_dates', "2024-10-13 == 2024-10-13", compare_exact, 0, [events[0], events[0]] );
+    return result;
+}
+
+function extract_trains_details_unit_test(){
     let result = '';
     let now = clock.get_Date();
 
