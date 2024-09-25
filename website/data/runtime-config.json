@@ -1,6 +1,5 @@
 {
   "reloadDashboardEvery": "500",
-  "familyICalendarUrl":"<Apple iCalandar read only URL>",
   "trains": {
     "show": true,
     "updateEvery": "3600"
@@ -12,9 +11,15 @@
     "updateEvery": "1800"
   },
   "backgroundColor": {
+    "changeColours": false,
     "changeEverySeconds": 60,
     "colors": ["#374E46", "#27320D", "#6250C1", "#9594B8", "#3D3D80", "#851F7D", "#042952", "#15242C", "#8A4A5A", "#3E4A41", "#3F561F", "#4C7E1F"],
     "degrees": [94.51554152506534, 287.1388483576243, 177.26260834890698, 194.42521066503983, 177.26260834890698, 149.9062612695598, 350.0594061819226, 7.480021307372748, 39.388682041211034, 29.890333630677617, 159.48928481407586, 239.96065372940942, 342.6281266860184, 342.6281266860184]
+  },
+  "calendar": {
+    "show": true,
+    "daysIntoTheFuture": "7",
+    "updateEvery": "120"
   },
   "tasks": {
     "show": true,

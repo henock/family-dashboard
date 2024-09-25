@@ -50,6 +50,7 @@ function setup_model( debugging ){
 
 function update_model( model ){
     update_model_with_tasks( model, clock.get_Date() );
+    update_model_with_calendar_events( model, clock.get_Date() );
     update_model_with_trains( model, clock.get_Date() );
     update_model_with_weather( model, clock.get_Date() );
     reload_the_dashboard( model, clock.get_Date() );
@@ -87,11 +88,12 @@ function update_UI( model ){
     update_date_and_time_ui( model, now );
     update_timezones_ui( model, now );
     update_tasks_ui( model, now );
+    update_calendar_ui( model, now );
     update_trains_ui( model, now );
     update_weather_ui( model, now );
     update_school_run_ui( model, now );
     remove_overdue_messages();
-    changeBackgroundColors( model.runtimeConfig.backgroundColor );
+    changeBackgroundColors( model );
 }
 
 function update_date_and_time_ui( model, now ){
@@ -156,6 +158,7 @@ function update_model_with_runtime_config( model ){
         model.config.showTasks = data.tasks.show
         model.config.showTravel = data.trains.show
         model.config.showWeather = data.weather.show
+        model.config.showCalendar = data.calendar.show
         model.config.showTimeZones = data.timeZones.show
         model.config.showSchoolRunCountDown = data.schoolRunCountDown.show
         sanitise_dates_for_commute_config( model.runtimeConfig.transport.commute, clock.get_Date() );
@@ -201,6 +204,11 @@ function create_empty_model( debugging ){
         },
         secrets : {},
         data : {
+            calendar : {
+                dataDownloaded: false,
+                nextDownloadDataTime: inThePast,
+                nextRebuildUiTime: inThePast
+            },
             tasks : {
                 dataDownloaded: false,
                 nextDownloadDataTime: inThePast,

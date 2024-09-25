@@ -30,10 +30,12 @@ function getRandomGradient( backgroundColor ) {
     return 'linear-gradient('+(randomDegrees)+'deg, '+color1+' 0%, '+color2+' 100%)';
 }
 
-function changeBackgroundColors( backgroundColor ) {
-    if( update_background_count++ % update_background_every_seconds == 0 ){
-        change.style.background = getRandomGradient( backgroundColor );
-        update_background_count = 1;
+function changeBackgroundColors( model ) {
+    if( model.runtimeConfig.backgroundColor.changeColours){
+        if( update_background_count++ % update_background_every_seconds == 0 ){
+            change.style.background = getRandomGradient( model.runtimeConfig.backgroundColor );
+            update_background_count = 1;
+        }
     }
 }
 

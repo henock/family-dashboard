@@ -76,3 +76,40 @@ tr td{
 .hidden-link:hover{
     color: red;
 }
+
+.calendar-event{
+    margin-left: 5px;
+}
+
+.calendar-event .short-day{
+    font-size: 35px;
+    color: white;
+    margin-left: 5px;
+}
+
+.calendar-event .day-number{
+    color: white;
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+
+.calendar-event .start-time{
+    color: red;
+    padding-right: 10px;
+}
+
+.calendar-event .end-time{
+    color: red;
+    padding-right: 10px;
+}
+
+.calendar-event .description{
+    color: red;
+    padding-right: 10px;
+}
+
+.calendar-event .location{
+    color: red;
+    padding-right: 10px;
+}
+

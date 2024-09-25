@@ -50,7 +50,7 @@
                                 <div class="col-3  weather-element">
                                     <div class="row">
                                         <div class="col sunrise-icon">
-                                            <img src="img/weather-icons/sunrise.png" width="60px">
+                                            <img  alt="sunrise" src="img/weather-icons/sunrise.png" width="60px">
                                         </div>
                                         <div class="col"></div>
                                     </div>
@@ -64,7 +64,7 @@
                                 <div class="col-3 weather-element">
                                     <div class="row float-right">
                                         <div class="col sunset-icon">
-                                            <img src="img/weather-icons/sunset.png" width="60px">
+                                            <img alt="sunet" src="img/weather-icons/sunset.png" width="60px">
                                         </div>
                                         <div class="col"></div>
                                     </div>
@@ -82,7 +82,7 @@
                                     <div class="col"></div><div class="col text-right"><a href="?" class="hidden-link" title="Run in normal mode.">N</a>ext up<a href="?debug=true" class="hidden-link" title="Run in debug mode">d</a>a<a title="Run unit tests" class="hidden-link" href="?testing=true">t</a>e</div>
                                 </div>
                                 <div class="row task-element">
-                                    <div class="col pr-2"><img width="18px;" height="18px;" src="img/trello-app-icon.png"/></div>
+                                    <div class="col pr-2"><img alt="trello-icon" width="18px;" height="18px;" src="img/trello-app-icon.png"/></div>
                                     <div id="tasks-update" next-refresh-time="" refresh-period-in-seconds="" class="col refresh-time text-right" ></div>
                                 </div>
                                 <div class="row task-element">
@@ -128,9 +128,9 @@
                                         <div id="weather-date-plus-Xhrs" class="col text-center"></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col text-center"><img  id="weather-image-now" width="70px" src=""/></div>
+                                        <div class="col text-center"><img alt="weather-now" id="weather-image-now" width="70px" src=""/></div>
                                         <div class="col-2"></div>
-                                        <div class="col text-center"><img id="weather-image-plus-Xhrs"  width="70px" src=""/></div>
+                                        <div class="col text-center"><img alt="weather-in-future" id="weather-image-plus-Xhrs"  width="70px" src=""/></div>
                                     </div>
                                     <div class="row">
                                         <div id="weather-text-now" class="col text-center"></div>
@@ -182,11 +182,11 @@
                                         <div id="weather-date-day-4" class="col text-center"></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col text-center"><img id="weather-image-day-0" width="70px" src=""/></div>
-                                        <div class="col text-center"><img id="weather-image-day-1" width="70px" src=""/></div>
-                                        <div class="col text-center"><img id="weather-image-day-2" width="70px" src=""/></div>
-                                        <div class="col text-center"><img id="weather-image-day-3" width="70px" src=""/></div>
-                                        <div class="col text-center"><img id="weather-image-day-4" width="70px" src=""/></div>
+                                        <div class="col text-center"><img alt="weather-image-day-0" id="weather-image-day-0" width="70px" src=""/></div>
+                                        <div class="col text-center"><img alt="weather-image-day-1" id="weather-image-day-1" width="70px" src=""/></div>
+                                        <div class="col text-center"><img alt="weather-image-day-2" id="weather-image-day-2" width="70px" src=""/></div>
+                                        <div class="col text-center"><img alt="weather-image-day-3" id="weather-image-day-3" width="70px" src=""/></div>
+                                        <div class="col text-center"><img alt="weather-image-day-4" id="weather-image-day-4" width="70px" src=""/></div>
                                     </div>
                                     <div class="row">
                                         <div id="weather-text-day-0" class="col text-center"></div>
@@ -277,7 +277,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="all-tasks" class="col-4 task-element border">
+                <div id="calendar" class="col-2 calendar-element border">
+                    <div class="row">
+                        <div id="calendar-events" class="col">
+                        </div>
+                    </div>
+                </div>
+                <div id="all-tasks" class="col-2 task-element border">
                     <div class="row">
                         <div id="tasks" class="col">
                         </div>
@@ -288,7 +294,7 @@
                 <div class="col">
                     <div class="row pt-2">
                         <form class="well form-search">
-                            <label>Set the relative time (seconds)</label>
+                            <label for="change-time">Set the relative time (seconds)</label>
                             <input id="change-time" type="text" class="span3 search-query" placeholder="-5000…">
                         </form>
                     </div>

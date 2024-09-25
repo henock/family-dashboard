@@ -65,6 +65,18 @@ function compare_html( a, b ){
     }
 }
 
+function remove_white_space( txt ){
+    return txt.replaceAll(' ', '' ).replaceAll('\n', '' );
+}
+
+function compare_html_and_visualise( a, b ){
+    return {
+        passed: remove_white_space(a) === remove_white_space(b),
+        expectedValue: a,
+        testedValue:  b
+    }
+}
+
 function compare_with_stringify(expected, actual){
     let testResult = JSON.stringify(expected) === JSON.stringify(actual);
     return {
@@ -182,6 +194,7 @@ function write_unit_test_result( message, pass ){
     result += setup_model_unit_test();  //SHOULD BE THE FIRST TEST!!
     result += should_sort_calendar_events();
     result += download_calendar_unit_test();
+    result += should_build_calendar_html();
     result += set_tasks_on_model_from_remote_data_unit_test();
     result += reload_the_dashboard_unit_test();
     result += calculate_progress_bar_percentage_unit_test();
@@ -375,7 +388,7 @@ function build_transport_eta_countdown_element_unit_test(){
     let expectedResult = '          <div class=\"row\">              <div class=\"col-2 text-primary\">' + timeMinutes +
                          ' </div>              <div class=\"col-2\"></div>              <div class=\"col-3 text-primary\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00s</div>          </div>';
 
-    result += run_unit_test( "build_transport_eta_countdown_element", 'eta countdown element',  compare_html, expectedResult, [train, transportId,  dateMinus20s] );
+    result += run_unit_test( "build_transport_eta_countdown_element", 'eta countdown element',  compare_html_and_visualise, expectedResult, [train, transportId,  dateMinus20s] );
     return result;
 }
 
@@ -397,7 +410,7 @@ function build_train_row_unit_test(){
                             "<div class=\"col-1\">[1] </div> <div class=\"col-2\"><span class=\"text-success\">VIC</span></div> " +
                             "<div id=\"CST-VIC-1-eta\" class=\"col-8 p-0\"></div></div>";
 
-    result += run_unit_test( "build_train_row", 'valid row for commuteTo destination',  compare_html, expectedResult, [train, startingStations, 1] );
+    result += run_unit_test( "build_train_row", 'valid row for commuteTo destination',  compare_html_and_visualise, expectedResult, [train, startingStations, 1] );
 
 
     expectedResult = "<div id=\"CST-VIC-1\" class=\"row text-monospace text-nowrap\"> " +
@@ -405,7 +418,7 @@ function build_train_row_unit_test(){
                             "<div id=\"CST-VIC-1-eta\" class=\"col-8 p-0\"></div></div>";
 
     train.isCommuteToDestination = false;
-    result += run_unit_test( "build_train_row", 'valid row for non commuteTo destination',  compare_html, expectedResult, [train, startingStations, 1] );
+    result += run_unit_test( "build_train_row", 'valid row for non commuteTo destination',  compare_html_and_visualise, expectedResult, [train, startingStations, 1] );
     return result;
 }
 
@@ -626,10 +639,61 @@ function should_sort_calendar_events(){
 
     let result = '';
     let events = calendar.events;
-    let model =  setup_model_for_debugging();
+
     result = run_unit_test( 'sort_on_event_dates', "2024-10-13 > 2024-10-05", compare_exact, 1, [events[0], events[1]] );
     result += run_unit_test( 'sort_on_event_dates', "2024-10-13 < 2024-10-05", compare_exact, -1, [events[1], events[0]] );
     result += run_unit_test( 'sort_on_event_dates', "2024-10-13 == 2024-10-13", compare_exact, 0, [events[0], events[0]] );
+    return result;
+}
+
+
+function should_build_calendar_html(){
+
+    let html = `<table class=\"calendar-event\">
+                    <tr class=\"border-bottom pb-2\">
+                        <td>
+                            <div class=\"row short-day\">Sun</div>
+                            <div class=\"row day-number\">13</div>
+                        </td>
+                        <td>
+                            <div class=\"col pl-4\">
+                                <div class=\"row\"><span class=\"span6 start-time\">12:40</span>-<span class=\"pl-2 end-time\">13:40</span></div>
+                                <div class=\"row\"><span class=\"span6 description\">Ben splash party for boys</span><span class=\"location\">(Sports Club Gia...)</span></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class=\"border-bottom pb-2\">
+                        <td>
+                            <div class=\"row short-day\">Sat</div>
+                            <div class=\"row day-number\">5</div>
+                        </td>
+                        <td>
+                            <div class=\"col pl-4\">
+                                <div class=\"row\"><span class=\"span6 start-time\">08:00</span>-<span class=\"pl-2 end-time\">09:00</span></div>
+                                <div class=\"row\"><span class=\"span6 description\">All lower school boys to attend open morning</span><span class=\"location\"></span></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>`;
+
+    var calendar = JSON.parse('{"events":['+
+                    '{"startDate":"2024-10-13T12:40:00+00:00", '+
+                         '"displayDate":"Sunday 13/10/2024", '+
+                         '"startTime":"12:40:00", '+
+                         '"endTime": "13:40:00", '+
+                         '"description": "Ben splash party for boys", '+
+                         '"location": "Sports Club Giant Arches Road, London, SE24 9HP, England"},'+
+                     '{"startDate":"2024-10-05T08:00:00+00:00", '+
+                        '"displayDate":"Saturday 05/10/2024", '+
+                        '"startTime":"08:00:00", '+
+                        '"endTime": "09:00:00", '+
+                        '"description": "All lower school boys to attend open morning", '+
+                        '"location": "missing value"}'+
+                ']}');
+
+    let result = '';
+    let events = calendar.events;
+    result += run_unit_test("build_calendar_events_for_ui", 'builds the html for calendar events', compare_html_and_visualise, html, [events])
     return result;
 }
 
