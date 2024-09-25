@@ -90,11 +90,11 @@ function clone_object( o ){
     return JSON.parse(JSON.stringify( o ));
 }
 
-function build_anchor_for( text, counter, aClass ){
+function build_anchor_for( text, counter ){
     if( counter ){
-        return '<a class="'+ aClass + '" id="' +  text + '-' + counter + '">' +  text + '</a>';
+        return '<a id="' +  text + '-' + counter + '"/>';
     }else {
-        return '<a class="'+ aClass + '" id="' +  text + '">' +  text + '</a>';
+        return '<a id="' +  text + '"/>';
     }
 }
 
@@ -126,20 +126,30 @@ function build_link_toggle_remote_tests(){
 function skip_unit_test( function_under_test, testCounter, comment){
     skippedTests++;
     skippedTestLinks.push( build_link_to_anchor( function_under_test, testCounter, "text-warning" ));
-    return '<tr class="text-warning"><td>'+ skippedTests +'</td><td > ' + build_anchor_for( function_under_test, testCounter, "text-warning" ) + ' </td><td colspan="3">'
+    return '<tr class="text-warning"><td>'+ skippedTests +'</td><td > ' + build_anchor_for( function_under_test, testCounter) + ' </td><td colspan="3">'
             + comment + '</td></tr>';
 }
 
-// TODO - ADD LOGS INTO TEST OUTPUT TABLE
 
+function generate_test_result_row( testResult, function_under_test, comment){
+    let rowClass = testResult.passed ? 'text-success' : 'text-danger';
+
+    return `
+        <tr class="${rowClass}">
+            <td>${build_anchor_for( function_under_test, testCounter)} ${testResult.passed ? ++passedTests : ++failedTests}</td>
+            <td>${function_under_test}</td>
+            <td>${comment}</td>
+            ${testResult.passed ? '<td></td>': '<td>'+ testResult.expectedValue + '</td><td>' + testResult.testedValue +'</td>'}
+        </tr>
+   `;
+}
+
+
+// TODO - ADD LOGS INTO TEST OUTPUT TABLE
 /// UNIT TEST RUNNER /////
 function run_unit_test( function_under_test, comment, test_function, expected_result, parameters ){
     let testResult;
     testCounter++;
-
-    function add_fail_row( field_name, value ){
-        return "<tr><th>" + field_name + "</td><td> " + value + "</td></tr>";
-    }
 
     try {
         let result = window[function_under_test].apply(null, parameters);
@@ -149,33 +159,15 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
         console.log( err.stack );
         testResult = {
             passed: false,
-            expectedValue: 'A working test',
-            testedValue: err.stack.replaceAll( "\n", "<br/>")
+            testedValue: 'Testing framework failure <br/>' + err.stack.replaceAll( "\n", "<br/>")
         }
     }
 
-    let anchor = ' href="#'+function_under_test +'">' + function_under_test + '</a>';
-    let anchor_top_link = build_link_to_anchor( "top", null,  "text-primary" )
-
-    if( testResult.passed ){
-        passedTests++;
-        return '<tr><td>'+ passedTests +'</td><td class="text-success">' + anchor_top_link+ ': ' +  build_anchor_for( function_under_test, testCounter, "text-success" ) + ' </td><td>'
-                + comment + '</td><td>'
-                +  testResult.testedValue + '</td><td>'
-                +  testResult.expectedValue + '</td></tr>';
-    }else{
-        failedTests++;
+    if(!testResult.passed){
         failedTestLinks.push( build_link_to_anchor( function_under_test, testCounter, "text-danger" ));
-
-        return '<tr><td class="text-danger">'+ failedTests +'</td><td colspan="6" class="text-danger bg-secondary">' + '<table border="1" class="m-3 bg-dark">'
-                                + add_fail_row( 'Back to top',   anchor_top_link   )
-                                + add_fail_row( 'function',  build_anchor_for( function_under_test, testCounter, "text-danger" ) )
-                                + add_fail_row( 'comment',  comment )
-                                + add_fail_row( 'params',  JSON.stringify( parameters ))
-                                + add_fail_row( 'expected',  JSON.stringify( testResult.expectedValue ))
-                                + add_fail_row( 'actual',  JSON.stringify( testResult.testedValue ))
-                                + '</table></td></tr>';
     }
+
+   return generate_test_result_row(testResult, function_under_test, comment);
 }
 
 function write_unit_test_result( message, pass ){
@@ -184,13 +176,45 @@ function write_unit_test_result( message, pass ){
 }
 
 
+function generate_test_summary(allTestResults){
+    let totalTests = passedTests + failedTests;
+    let testSummary = `
+        <table class="p-2 border-1">
+            <tr><td>${build_anchor_for( "top" , undefined )}</td></tr>
+            <tr><td><a href="?">Run in normal mode.</a></td></tr>
+            <tr><td><a href="?debug=true">Run in debug mode</a></td></tr>
+            <tr class="text-success">
+                <td class="display-2">Passed</td><td class="display-2">${passedTests}</td>
+            </tr>
+            <tr class="text-warning">
+                <td class="display-2">Skipped</td>
+                <td class="display-2">${ skippedTests}</td>
+                <td>${build_link_to_anchors( skippedTestLinks )}<br/>${build_link_toggle_remote_tests()}</td>
+            </tr>
+            <tr class="text-danger">
+                <td class="display-2">Failed</td>
+                <td class="display-2">${ failedTests}</td>
+                <td>${build_link_to_anchors( failedTestLinks )}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>Test id</th>
+                <th>Function under test</th>
+                <th>comment</th>
+                ${ failedTests > 0 ? '<th>expected</th><th>actual</th>': ''}
+            </tr>
+            ${allTestResults}
+        </table>
+    `;
+    return testSummary;
+}
+
 
 
 ///////////////////  TESTS ////////////////////
  function run_all_unit_tests(){
-
-    let result = '<table class="pt-2" border="1">';
-    result += '<tr><th>Test #</th><th>Function under test</th><th>comment</th><th>result</th><th>params passed in</th></th></tr>';
+    let result = '';
     result += setup_model_unit_test();  //SHOULD BE THE FIRST TEST!!
     result += should_sort_calendar_events();
     result += download_calendar_unit_test();
@@ -222,19 +246,7 @@ function write_unit_test_result( message, pass ){
     result += get_boundary_window_for_school_run_unit_test();
     result += get_seconds_until_unit_test();
     result += display_time_period_from_seconds_into_future_unit_test();
-    result += '</table>';
-
-    let totals = '<table class="p-2 border-1">'
-                    + '<tr><td>'+  build_anchor_for( "top" , undefined ) +'</td></tr>'
-                    + '<tr><td><a href="?">Run in normal mode.</a></td></tr>'
-                    + '<tr><td><a href="?debug=true">Run in debug mode</a></td></tr>'
-                    + '<tr class="text-success"><td class="display-2">Passed</td><td class="display-2">' + passedTests + '</td></tr>'
-                    + '<tr class="text-warning"><td class="display-2">Skipped</td><td class="display-2">' + skippedTests + '</td><td>'+
-                                                    build_link_to_anchors( skippedTestLinks )+'<br/>'+
-                                                    build_link_toggle_remote_tests() +'</td></tr>'
-                    + '<tr class="text-danger"><td class="display-2">Failed</td><td class="display-2">' + failedTests + '</td><td>'+
-                                                    build_link_to_anchors( failedTestLinks )+'</td></tr></table>'
-    write_message( totals + result , 'text-success', -1 , true );
+    write_message( generate_test_summary(result) , '', -1 , true );
 }
 
 // Template for future tests
@@ -691,10 +703,8 @@ function should_build_calendar_html(){
                         '"location": "missing value"}'+
                 ']}');
 
-    let result = '';
     let events = calendar.events;
-    result += run_unit_test("build_calendar_events_for_ui", 'builds the html for calendar events', compare_html_and_visualise, html, [events])
-    return result;
+    return run_unit_test("build_calendar_events_for_ui", 'builds the html for calendar events', compare_html_and_visualise, html, [events]);
 }
 
 function extract_trains_details_unit_test(){
