@@ -23,16 +23,17 @@ function set_tasks_into_ui( model ){
     for (const [groupName, groupsTasks] of sortedTasks ){
         let taskHtml = '';
         groupsTasks.forEach( function( task ){
-            taskHtml += '<tr class="task-group-'+ groupCounter + ' h3"><td>' + task.daysSinceAssigned + '</td><td> ' +task.name+'</td></tr>';
+            taskHtml += `<tr class="task-group-${groupCounter} h3"><td>${task.daysSinceAssigned}</td><td>${task.name}</td></tr>`;
         });
-        groupLists +=  '<div class="row border-top pb-2">' +
-                        '<div class="col">' +
-                            '<span class="display-4">'+ groupName +'</span>' +
-                            '<table>' +
-                                taskHtml +
-                            '</table>' +
-                        '</div>' +
-                    '</div>';
+        groupLists +=  `<div class="row border-top pb-2">
+                        <div class="col">
+                            <span class="display-4">${groupName}</span>
+                            <table>
+                                ${taskHtml}
+                            </table>
+                        </div>
+                    </div>
+                    `;
         groupCounter++;
     }
     $('#tasks').html( groupLists );
@@ -41,7 +42,7 @@ function set_tasks_into_ui( model ){
 function update_model_with_tasks( model, date ){
     if( model.config.showTasks && model.data.tasks.nextDownloadDataTime < date ){
          download_tasks( model );
-         model.data.tasks.nextDownloadDataTime = now_plus_seconds( date, model.runtimeConfig.tasks.updateEvery );
+         model.data.tasks.nextDownloadDataTime = date_plus_seconds( date, model.runtimeConfig.tasks.updateEvery );
          model.data.tasks.lastUpdatedTime = clock.get_Date();
     }
 }

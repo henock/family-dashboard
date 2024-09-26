@@ -70,13 +70,12 @@ function insert_all_trains( model ){
             border = 'border-top border-left';
         }
 
-        $('#train-travel').append( "<div class='col "+ border +" align-top'><div id='"+ startingStation.code +"' class='pt-2'></div></div>");
+        $('#train-travel').append( `<div class="col ${border} align-top"><div id="${startingStation.code}" class="pt-2"></div></div>`);
         let stationElementId = "#" + startingStation.code
-        $(stationElementId).html(
-            '<div class="row">'
-            +'  <div class="col h5 text-center">'+ TRAIN_GLYPH + startingStation.name + '</div>'
-            +'</div>'
-        );
+        $(stationElementId).html(  `<div class="row">
+                                        <div class="col h5 text-center">${TRAIN_GLYPH + startingStation.name}</div>
+                                    </div>
+                                    `);
         let now = clock.get_Date();
         startingStation.departures.forEach(function(train, index){
             if( now < train.departureTime ){
@@ -101,11 +100,11 @@ function build_train_row( train, startingStation, index){
     platform = train.platform == null ? '': '['+ train.platform + '] ';
     let transportId =  build_transport_id( startingStation, train, index) ;
     let destinationStationCodeSpan = highlightCommuteToDestinations( train.destinationStationCode, train.isCommuteToDestination );
-    let trainRow =   '<div id="' + transportId + '" class="row text-monospace text-nowrap">'
-                    +' <div class="col-1">'+platform+'</div>'
-                    +' <div class="col-2">' + destinationStationCodeSpan + '</div>'
-                    +' <div id="' + transportId + '-eta" class="col-8 p-0"></div>'
-                    +'</div>';
+    let trainRow = `<div id="${transportId}" class="row text-monospace text-nowrap">
+                        <div class="col-1">${platform}</div>
+                        <div class="col-2">${destinationStationCodeSpan}</div>
+                        <div id="${transportId}-eta" class="col-8 p-0"></div>
+                    </div>`;
     return trainRow;
 }
 
@@ -116,22 +115,22 @@ function build_transport_eta_countdown_element( train, transportId, date ){
     let countDownTime = display_time_period_from_seconds_into_future(get_seconds_until( train.departureTime));
     let paddedTimeMinutes = get_padded_time_minutes(train.departureTime);
     if( train.departureTime > date ){
-        let div ='          <div class="row">'
-                +'              <div class="col-2 text-'+ classForBoundaryWindow +'">'+ paddedTimeMinutes +' ' + boundaryWindow.emoji + '</div>'
-                +'              <div class="col-2"></div>'
-                +'              <div class="col-3 text-'+ classForBoundaryWindow +'">'+ countDownTime +'</div>'
-                +'          </div>'
+        let div =   `<div class="row">
+                        <div class="col-2 text-${classForBoundaryWindow}">${paddedTimeMinutes}  ${boundaryWindow.emoji}</div>
+                        <div class="col-2"></div>
+                        <div class="col-3 text-${classForBoundaryWindow}">${countDownTime}</div>
+                    </div>`
             if( boundaryWindow.name !== TOO_EARLY && boundaryWindow.name !== OUT_OF_TIME ){
-                div +='     <div class="row">'
-                +'              <div class="col-10">'
-                +'                  <div class="progress" style="height: 15px;">'
-                +'                      <div id="'+ transportId +'-progress-bar" class="progress-bar bg-'+ classForBoundaryWindow +'" role="progressbar"'
-                +'                                              aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: '+
-                                                                boundaryWindow.progressBarPercentage +'%"></div>'
-                +'                  </div>'
-                +'              </div>'
-                +'              <div class="col-2>'
-                +'          </div>'
+                div += `<div class="row">
+                          <div class="col-10">
+                              <div class="progress" style="height: 15px;">
+                                  <div id="${transportId}-progress-bar" class="progress-bar bg-${classForBoundaryWindow}"
+                                        role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                                        style="width: ${boundaryWindow.progressBarPercentage}%"></div>
+                              </div>
+                          </div>
+                          <div class="col-2>
+                      </div>`
             }
         return div;
     }else {

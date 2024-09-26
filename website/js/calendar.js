@@ -1,6 +1,6 @@
 
 function update_model_with_calendar_events( model, date ){
-    if( model.config.showCalendar && model.data.tasks.nextDownloadDataTime < date ){
+    if( model.config.showCalendar && model.data.calendar.nextDownloadDataTime < date ){
          download_calendar( model );
          model.data.calendar.nextDownloadDataTime = date_plus_seconds( date, model.runtimeConfig.calendar.updateEvery );
          model.data.calendar.lastUpdatedTime = clock.get_Date();
