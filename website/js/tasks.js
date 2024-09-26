@@ -41,7 +41,7 @@ function set_tasks_into_ui( model ){
 function update_model_with_tasks( model, date ){
     if( model.config.showTasks && model.data.tasks.nextDownloadDataTime < date ){
          download_tasks( model );
-         model.data.tasks.nextDownloadDataTime = date_plus_seconds( date, model.runtimeConfig.tasks.updateEvery );
+         model.data.tasks.nextDownloadDataTime = now_plus_seconds( date, model.runtimeConfig.tasks.updateEvery );
          model.data.tasks.lastUpdatedTime = clock.get_Date();
     }
 }

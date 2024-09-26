@@ -177,7 +177,7 @@ function set_time_on_date( date, timeAsString ){
 function seconds_from_string( str ){
     if( str instanceof Date){
         return str;
-    } else if( str.includes( "now" ) || str.includes( "departure" )){
+    } else if( str.includes( "+" ) || str.includes( "-" )){
         let isPlus = str.includes("+");
         let splitPos = (isPlus ?  str.indexOf('+') : str.indexOf('-'));
         let amount = str.substring( splitPos +1, str.length-1 );

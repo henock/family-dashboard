@@ -136,7 +136,7 @@ function generate_test_result_row( testResult, function_under_test, comment){
 
     return `
         <tr class="${rowClass}">
-            <td>${build_anchor_for( function_under_test, testCounter)} ${testResult.passed ? ++passedTests : ++failedTests}</td>
+            <td>${build_link_to_anchor('top')} ${build_anchor_for( function_under_test, testCounter)} ${testResult.passed ? ++passedTests : ++failedTests}</td>
             <td>${function_under_test}</td>
             <td>${comment}</td>
             ${testResult.passed ? '<td></td>': '<td>'+ testResult.expectedValue + '</td><td>' + testResult.testedValue +'</td>'}
