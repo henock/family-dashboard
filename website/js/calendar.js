@@ -19,17 +19,17 @@ function update_calendar_ui( model, now ){
 
 function redact_text( private, text ){
     if(private){
-        return `${text.substring(0,6)} **** REDACTED **** ${text.substr(-3)}`;
+        return `${text.substring(0,4)} **** REDACTED **** ${text.substr(-2)}`;
     }else{
         return text;
     }
 }
 
-
 function build_calendar_events_for_ui( calendar ){
-    let eventsHtml =  `<div><table class="calendar-event">`;
+    let eventsHtml =  `<div><table class="calendar-event border-bottom">`;
     let eventCounter = 0;
     let shortDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
+    let previousDay = '';
     for (event of calendar.events) {
         let startDate = new Date(event.startDate);
         let startTime = event.startTime.substring(0, 5 );
@@ -38,14 +38,18 @@ function build_calendar_events_for_ui( calendar ){
         let dayNumber = startDate.getDate();
         let privateEvent = event.description.startsWith("P:");
         let description = redact_text( privateEvent, event.description);
+        description = replace_funny_quotes( description );
         let location = '';
+        let shortDate = get_date_with_dashes(startDate);
+        let sameDayAsPrevious = (shortDate == previousDay);
+        previousDay = shortDate;
         if( "missing value" !== event.location ){
             location = '(' + redact_text( privateEvent, event.location.substring(0,15)) + '...)'
         }
-        eventsHtml +=  `<tr class="border-bottom pb-2">
+        eventsHtml +=  `<tr class="border-top ${sameDayAsPrevious?'border-dark':''} pb-2">
                             <td>
-                                <div class="row short-day">${shortDay}</div>
-                                <div class="row day-number">${dayNumber}</div>
+                                <div class="row short-day${sameDayAsPrevious?'-dark':''}">${shortDay}</div>
+                                <div class="row day-number${sameDayAsPrevious?'-dark':''}">${dayNumber}</div>
                             </td>
                             <td>
                                 <div class="col pl-4">
@@ -70,7 +74,7 @@ function download_calendar( model ){
 
     try {
         model.data.calendar = get_remote_data(urlToGet);
-        let result = model.data.calendar.events.sort(sort_on_event_dates)
+        let result = model.data.calendar.events.sort(sort_on_event_dates);
         model.data.calendar.dataDownloaded = true;
     } catch (e) {
         log_error( "Unable to retrieve calendar from: '" + urlToGet +

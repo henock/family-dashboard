@@ -106,6 +106,10 @@ function colour_special_fields( field, regex ){
     }
 }
 
+function replace_funny_quotes( text ){
+    return text.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/�/g, "'");
+}
+
 function calculate_progress_bar_percentage( startTimeStamp, endTimeStamp, currentTimeStamp ){
     if( currentTimeStamp < startTimeStamp || currentTimeStamp > endTimeStamp ){
         return 0;

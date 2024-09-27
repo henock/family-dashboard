@@ -73,6 +73,7 @@ tr td{
 .hidden-link{
     color: white;
 }
+
 .hidden-link:hover{
     color: red;
 }
@@ -89,6 +90,18 @@ tr td{
 
 .calendar-event .day-number{
     color: white;
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+
+.calendar-event .short-day-dark{
+    font-size: 35px;
+    color: black;
+    margin-left: 5px;
+}
+
+.calendar-event .day-number-dark{
+    color: black;
     margin-left: 5px;
     margin-bottom: 15px;
 }

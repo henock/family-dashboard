@@ -661,10 +661,46 @@ function should_sort_calendar_events(){
 
 function should_build_calendar_html(){
 
-    let html = `<div><table class="calendar-event"><tr class="border-bottom pb-2">
+    let html = `<div><table class="calendar-event border-bottom"><tr class="border-top  pb-2">
+                                            <td>
+                                                <div class="row short-day">Sat</div>
+                                                <div class="row day-number">5</div>
+                                            </td>
+                                            <td>
+                                                <div class="col pl-4">
+                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                                                    <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location"></span></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                       <tr class="border-top border-dark pb-2">
+                                            <td>
+                                                <div class="row short-day-dark">Sat</div>
+                                                <div class="row day-number-dark">5</div>
+                                            </td>
+                                            <td>
+                                                <div class="col pl-4">
+                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                                                    <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location">(Spor **** REDACTED **** ia...)</span></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                       <tr class="border-top  pb-2">
                                             <td>
                                                 <div class="row short-day">Sun</div>
                                                 <div class="row day-number">13</div>
+                                            </td>
+                                            <td>
+                                                <div class="col pl-4">
+                                                    <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                                                    <div class="row"><span class="span6 description">Event's description with funny quote</span><span class="location"></span></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                       <tr class="border-top border-dark pb-2">
+                                            <td>
+                                                <div class="row short-day-dark">Sun</div>
+                                                <div class="row day-number-dark">13</div>
                                             </td>
                                             <td>
                                                 <div class="col pl-4">
@@ -673,39 +709,15 @@ function should_build_calendar_html(){
                                                 </div>
                                             </td>
                                         </tr>
-                                       <tr class="border-bottom pb-2">
+                                       <tr class="border-top border-dark pb-2">
                                             <td>
-                                                <div class="row short-day">Sun</div>
-                                                <div class="row day-number">13</div>
+                                                <div class="row short-day-dark">Sun</div>
+                                                <div class="row day-number-dark">13</div>
                                             </td>
                                             <td>
                                                 <div class="col pl-4">
                                                     <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
                                                     <div class="row"><span class="span6 description">Event description with location</span><span class="location">(Sports Club Gia...)</span></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                       <tr class="border-bottom pb-2">
-                                            <td>
-                                                <div class="row short-day">Sat</div>
-                                                <div class="row day-number">5</div>
-                                            </td>
-                                            <td>
-                                                <div class="col pl-4">
-                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
-                                                    <div class="row"><span class="span6 description">P:Priv **** REDACTED **** ion</span><span class="location"></span></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                       <tr class="border-bottom pb-2">
-                                            <td>
-                                                <div class="row short-day">Sat</div>
-                                                <div class="row day-number">5</div>
-                                            </td>
-                                            <td>
-                                                <div class="col pl-4">
-                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
-                                                    <div class="row"><span class="span6 description">P:Priv **** REDACTED **** ion</span><span class="location">(Sports **** REDACTED **** Gia...)</span></div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -715,6 +727,24 @@ function should_build_calendar_html(){
                                 {
                                     "fileUpdatedAt": "2024-09-27T00:19:51+00:00",
                                     "events":[
+                                        {"startDate":"2024-10-05T08:00:00+00:00",
+                                            "displayDate":"Saturday 05/10/2024",
+                                            "startTime":"08:00:00",
+                                            "endTime": "09:00:00",
+                                            "description": "P:Private Event description with no location",
+                                            "location": "missing value"},
+                                         {"startDate":"2024-10-05T08:00:00+00:00",
+                                            "displayDate":"Saturday 05/10/2024",
+                                            "startTime":"08:00:00",
+                                            "endTime": "09:00:00",
+                                            "description": "P:Private Event description with no location",
+                                            "location": "Sports Club Giant Arches Road, London, SE24 9HP, England"},
+                                        {"startDate":"2024-10-13T12:40:00+00:00",
+                                             "displayDate":"Sunday 13/10/2024",
+                                             "startTime":"12:40:00",
+                                             "endTime": "13:40:00",
+                                             "description": "Event�s description with funny quote",
+                                             "location": "missing value"},
                                         {"startDate":"2024-10-13T12:40:00+00:00",
                                              "displayDate":"Sunday 13/10/2024",
                                              "startTime":"12:40:00",
@@ -726,19 +756,8 @@ function should_build_calendar_html(){
                                              "startTime":"12:40:00",
                                              "endTime": "13:40:00",
                                              "description": "Event description with location",
-                                             "location": "Sports Club Giant Arches Road, London, SE24 9HP, England"},
-                                         {"startDate":"2024-10-05T08:00:00+00:00",
-                                            "displayDate":"Saturday 05/10/2024",
-                                            "startTime":"08:00:00",
-                                            "endTime": "09:00:00",
-                                            "description": "P:Private Event description with no location",
-                                            "location": "missing value"},
-                                         {"startDate":"2024-10-05T08:00:00+00:00",
-                                            "displayDate":"Saturday 05/10/2024",
-                                            "startTime":"08:00:00",
-                                            "endTime": "09:00:00",
-                                            "description": "P:Private Event description with no location",
-                                            "location": "Sports Club Giant Arches Road, London, SE24 9HP, England"}
+                                             "location": "Sports Club Giant Arches Road, London, SE24 9HP, England"}
+
                                     ]
                                 }`
                     );

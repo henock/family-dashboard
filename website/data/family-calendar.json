@@ -1,12 +1,12 @@
 {
-  "fileUpdatedAt": "2024-09-27T19:15:30+00:00",
+  "fileUpdatedAt": "2024-09-27T22:38:05+00:00",
   "events": [
     {
       "startDate": "2024-10-13T12:40:00+00:00",
       "displayDate": "Sunday 13/10/2024",
       "startTime": "12:40:00",
       "endTime": "13:40:00",
-      "description": "Ben splash party for Sennai",
+      "description": "P:Ben splash party for Sennai",
       "location": "Dulwich Sports Club Giant Arches Road, London, SE24 9HP, England"
     },
     {
@@ -42,14 +42,6 @@
       "location": "missing value"
     },
     {
-      "startDate": "2024-10-13T12:45:00+00:00",
-      "displayDate": "Sunday 13/10/2024",
-      "startTime": "12:45:00",
-      "endTime": "14:15:00",
-      "description": "Sennai invited to Ben�s swimming party",
-      "location": "missing value"
-    },
-    {
       "startDate": "2024-10-07T18:20:00+00:00",
       "displayDate": "Monday 07/10/2024",
       "startTime": "18:20:00",
@@ -64,6 +56,14 @@
       "endTime": "22:00:00",
       "description": "Dulwich international day ",
       "location": "Dulwich College Dulwich Common, London, SE21 7LD, England"
+    },
+    {
+      "startDate": "2024-10-01T13:00:00+00:00",
+      "displayDate": "Tuesday 01/10/2024",
+      "startTime": "13:00:00",
+      "endTime": "15:45:00",
+      "description": "Sennai football tournament ",
+      "location": "missing value"
     }
   ]
 }

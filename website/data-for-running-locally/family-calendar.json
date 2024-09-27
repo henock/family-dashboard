@@ -1,12 +1,12 @@
 {
-  "fileUpdatedAt": "2024-09-27T00:19:51+00:00",
+  "fileUpdatedAt": "2024-09-27T22:38:05+00:00",
   "events": [
     {
       "startDate": "2024-10-13T12:40:00+00:00",
       "displayDate": "Sunday 13/10/2024",
       "startTime": "12:40:00",
       "endTime": "13:40:00",
-      "description": "Ben splash party for Sennai",
+      "description": "P:Ben splash party for Sennai",
       "location": "Dulwich Sports Club Giant Arches Road, London, SE24 9HP, England"
     },
     {
@@ -30,7 +30,39 @@
       "displayDate": "Friday 04/10/2024",
       "startTime": "15:45:00",
       "endTime": "16:45:00",
-      "description": "Melkam and sennai play date at J&J",
+      "description": "P:Melkam and sennai play date at J&J",
+      "location": "missing value"
+    },
+    {
+      "startDate": "2024-10-18T20:00:00+00:00",
+      "displayDate": "Friday 18/10/2024",
+      "startTime": "20:00:00",
+      "endTime": "21:00:00",
+      "description": "Lambasting movie at Brixton",
+      "location": "missing value"
+    },
+    {
+      "startDate": "2024-10-07T18:20:00+00:00",
+      "displayDate": "Monday 07/10/2024",
+      "startTime": "18:20:00",
+      "endTime": "20:30:00",
+      "description": "Year 7 parent evening ",
+      "location": "missing value"
+    },
+    {
+      "startDate": "2024-10-11T19:00:00+00:00",
+      "displayDate": "Friday 11/10/2024",
+      "startTime": "19:00:00",
+      "endTime": "22:00:00",
+      "description": "Dulwich international day ",
+      "location": "Dulwich College Dulwich Common, London, SE21 7LD, England"
+    },
+    {
+      "startDate": "2024-10-01T13:00:00+00:00",
+      "displayDate": "Tuesday 01/10/2024",
+      "startTime": "13:00:00",
+      "endTime": "15:45:00",
+      "description": "Sennai football tournament ",
       "location": "missing value"
     }
   ]
