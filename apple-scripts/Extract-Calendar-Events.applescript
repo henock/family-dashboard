@@ -48,8 +48,28 @@ on replaceNewLines(oldText)
 	return newText
 end replaceNewLines
 
+on convertToUtcDateTime(iosDate)
+	
+	set dateStamp to short date string of iosDate
+	set theDay to weekday of iosDate
+	set startTime to time string of iosDate
+	set dayOfEvent to day of iosDate as number
+	
+	if dayOfEvent < 10 then
+		set dayOfEvent to "0" & dayOfEvent as string
+	end if
+	
+	set monthOfEvent to month of iosDate as number
+	if monthOfEvent < 10 then
+		set monthOfEvent to "0" & monthOfEvent as string
+	end if
+	
+	set eventStartDateTime to (year of iosDate) & "-" & monthOfEvent & "-" & dayOfEvent & "T" & startTime & "+00:00"
+	return eventStartDateTime
+	
+end convertToUtcDateTime
+
 on getEvents(dateRangeStart, dateRangeEnd)
-	--set {dateRangeStart, dateRangeEnd} to getDateRange()
 	set counter to 0
 	set jsonEvents to {}
 	tell application "Calendar"
@@ -100,7 +120,9 @@ on main()
 	
 	set jsonEvents to getEvents(today, endDate)
 	
-	set json to "{\"events\":[" & jsonEvents & "]}"
+	set fileUpdatedAt to convertToUtcDateTime(today)
+	
+	set json to "{ \"fileUpdatedAt\":\"" & fileUpdatedAt & "\", \"events\":[" & jsonEvents & "]}"
 	
 	set jsonMinusNewLines to replaceNewLines(json)
 	

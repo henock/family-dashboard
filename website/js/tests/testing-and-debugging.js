@@ -159,7 +159,7 @@ function run_unit_test( function_under_test, comment, test_function, expected_re
         console.log( err.stack );
         testResult = {
             passed: false,
-            testedValue: 'Testing framework failure <br/>' + err.stack.replaceAll( "\n", "<br/>")
+            testedValue: err.stack.replaceAll( "\n", "<br/>")
         }
     }
 
@@ -661,50 +661,89 @@ function should_sort_calendar_events(){
 
 function should_build_calendar_html(){
 
-    let html = `<table class=\"calendar-event\">
-                    <tr class=\"border-bottom pb-2\">
-                        <td>
-                            <div class=\"row short-day\">Sun</div>
-                            <div class=\"row day-number\">13</div>
-                        </td>
-                        <td>
-                            <div class=\"col pl-4\">
-                                <div class=\"row\"><span class=\"span6 start-time\">12:40</span>-<span class=\"pl-2 end-time\">13:40</span></div>
-                                <div class=\"row\"><span class=\"span6 description\">Ben splash party for boys</span><span class=\"location\">(Sports Club Gia...)</span></div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class=\"border-bottom pb-2\">
-                        <td>
-                            <div class=\"row short-day\">Sat</div>
-                            <div class=\"row day-number\">5</div>
-                        </td>
-                        <td>
-                            <div class=\"col pl-4\">
-                                <div class=\"row\"><span class=\"span6 start-time\">08:00</span>-<span class=\"pl-2 end-time\">09:00</span></div>
-                                <div class=\"row\"><span class=\"span6 description\">All lower school boys to attend open morning</span><span class=\"location\"></span></div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>`;
+    let html = `<div><table class="calendar-event"><tr class="border-bottom pb-2">
+                                            <td>
+                                                <div class="row short-day">Sun</div>
+                                                <div class="row day-number">13</div>
+                                            </td>
+                                            <td>
+                                                <div class="col pl-4">
+                                                    <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                                                    <div class="row"><span class="span6 description">Event description with no location</span><span class="location"></span></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                       <tr class="border-bottom pb-2">
+                                            <td>
+                                                <div class="row short-day">Sun</div>
+                                                <div class="row day-number">13</div>
+                                            </td>
+                                            <td>
+                                                <div class="col pl-4">
+                                                    <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                                                    <div class="row"><span class="span6 description">Event description with location</span><span class="location">(Sports Club Gia...)</span></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                       <tr class="border-bottom pb-2">
+                                            <td>
+                                                <div class="row short-day">Sat</div>
+                                                <div class="row day-number">5</div>
+                                            </td>
+                                            <td>
+                                                <div class="col pl-4">
+                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                                                    <div class="row"><span class="span6 description">P:Priv **** REDACTED **** ion</span><span class="location"></span></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                       <tr class="border-bottom pb-2">
+                                            <td>
+                                                <div class="row short-day">Sat</div>
+                                                <div class="row day-number">5</div>
+                                            </td>
+                                            <td>
+                                                <div class="col pl-4">
+                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                                                    <div class="row"><span class="span6 description">P:Priv **** REDACTED **** ion</span><span class="location">(Sports **** REDACTED **** Gia...)</span></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                       </table></div><div class="pt-2 pl-2">Last calendar update: 2024-09-27 at 01:19</div>`;
 
-    var calendar = JSON.parse('{"events":['+
-                    '{"startDate":"2024-10-13T12:40:00+00:00", '+
-                         '"displayDate":"Sunday 13/10/2024", '+
-                         '"startTime":"12:40:00", '+
-                         '"endTime": "13:40:00", '+
-                         '"description": "Ben splash party for boys", '+
-                         '"location": "Sports Club Giant Arches Road, London, SE24 9HP, England"},'+
-                     '{"startDate":"2024-10-05T08:00:00+00:00", '+
-                        '"displayDate":"Saturday 05/10/2024", '+
-                        '"startTime":"08:00:00", '+
-                        '"endTime": "09:00:00", '+
-                        '"description": "All lower school boys to attend open morning", '+
-                        '"location": "missing value"}'+
-                ']}');
+    var calendar = JSON.parse(`
+                                {
+                                    "fileUpdatedAt": "2024-09-27T00:19:51+00:00",
+                                    "events":[
+                                        {"startDate":"2024-10-13T12:40:00+00:00",
+                                             "displayDate":"Sunday 13/10/2024",
+                                             "startTime":"12:40:00",
+                                             "endTime": "13:40:00",
+                                             "description": "Event description with no location",
+                                             "location": "missing value"},
+                                        {"startDate":"2024-10-13T12:40:00+00:00",
+                                             "displayDate":"Sunday 13/10/2024",
+                                             "startTime":"12:40:00",
+                                             "endTime": "13:40:00",
+                                             "description": "Event description with location",
+                                             "location": "Sports Club Giant Arches Road, London, SE24 9HP, England"},
+                                         {"startDate":"2024-10-05T08:00:00+00:00",
+                                            "displayDate":"Saturday 05/10/2024",
+                                            "startTime":"08:00:00",
+                                            "endTime": "09:00:00",
+                                            "description": "P:Private Event description with no location",
+                                            "location": "missing value"},
+                                         {"startDate":"2024-10-05T08:00:00+00:00",
+                                            "displayDate":"Saturday 05/10/2024",
+                                            "startTime":"08:00:00",
+                                            "endTime": "09:00:00",
+                                            "description": "P:Private Event description with no location",
+                                            "location": "Sports Club Giant Arches Road, London, SE24 9HP, England"}
+                                    ]
+                                }`
+                    );
 
-    let events = calendar.events;
-    return run_unit_test("build_calendar_events_for_ui", 'builds the html for calendar events', compare_html_and_visualise, html, [events]);
+    return run_unit_test("build_calendar_events_for_ui", 'builds the html for calendar events', compare_html_and_visualise, html, [calendar]);
 }
 
 function extract_trains_details_unit_test(){

@@ -9,7 +9,7 @@ function update_model_with_calendar_events( model, date ){
 
 function update_calendar_ui( model, now ){
     if( model.config.showCalendar && model.data.calendar && model.data.calendar.dataDownloaded ){
-        eventsHtml = build_calendar_events_for_ui( model.data.calendar.events);
+        eventsHtml = build_calendar_events_for_ui( model.data.calendar);
         $('#calendar-events').html( eventsHtml );
         $(".calendar-element").removeClass( "d-none");
     }else{
@@ -17,19 +17,31 @@ function update_calendar_ui( model, now ){
     }
 }
 
+function redact_text( private, text ){
+    if(private){
+        return `${text.substring(0,6)} **** REDACTED **** ${text.substr(-3)}`;
+    }else{
+        return text;
+    }
+}
 
-function build_calendar_events_for_ui( events ){
-    let eventsHtml =  '<table class="calendar-event">';
+
+function build_calendar_events_for_ui( calendar ){
+    let eventsHtml =  `<div><table class="calendar-event">`;
     let eventCounter = 0;
     let shortDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
-    for (event of events) {
+    for (event of calendar.events) {
         let startDate = new Date(event.startDate);
         let startTime = event.startTime.substring(0, 5 );
         let endTime = event.endTime.substring(0, 5 );
         let shortDay = shortDays[startDate.getDay()];
         let dayNumber = startDate.getDate();
-        let description = event.description;
-        let location = "missing value" !== event.location ? '('+ event.location.substring(0,15) + '...)': '';
+        let privateEvent = event.description.startsWith("P:");
+        let description = redact_text( privateEvent, event.description);
+        let location = '';
+        if( "missing value" !== event.location ){
+            location = '(' + redact_text( privateEvent, event.location.substring(0,15)) + '...)'
+        }
         eventsHtml +=  `<tr class="border-bottom pb-2">
                             <td>
                                 <div class="row short-day">${shortDay}</div>
@@ -45,7 +57,11 @@ function build_calendar_events_for_ui( events ){
                        `;
         eventCounter++;
     }
-    eventsHtml += '</table>';
+
+    let fileUpdatedAtDate = new Date(calendar.fileUpdatedAt)
+    let fileUpdatedAt = get_date_with_dashes(fileUpdatedAtDate) + ' at ' + get_padded_time_minutes(fileUpdatedAtDate)
+
+    eventsHtml += `</table></div><div class="pt-2 pl-2">Last calendar update: ${fileUpdatedAt}</div>`;
     return eventsHtml;
 }
 

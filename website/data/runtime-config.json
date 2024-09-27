@@ -22,7 +22,7 @@
     "updateEvery": "120"
   },
   "tasks": {
-    "show": true,
+    "show": false,
     "todoListId": "<your todoListId>",
     "updateEvery": "120"
   },
