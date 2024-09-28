@@ -64,7 +64,7 @@ on convertToUtcDateTime(iosDate)
 		set monthOfEvent to "0" & monthOfEvent as string
 	end if
 	
-	set eventStartDateTime to (year of iosDate) & "-" & monthOfEvent & "-" & dayOfEvent & "T" & startTime & "+00:00"
+	set eventStartDateTime to (year of iosDate) & "-" & monthOfEvent & "-" & dayOfEvent & "T" & startTime & "+00:00" as string
 	return eventStartDateTime
 	
 end convertToUtcDateTime

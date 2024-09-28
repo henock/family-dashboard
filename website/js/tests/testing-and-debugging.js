@@ -12,14 +12,12 @@ function running_unit_tests(){
 function debug_using_different_time(){
     $("#debug-config").removeClass('d-none');
     $("#change-time").on("input", function() {
-       let differentTime = $(this).val();
-       if(!isNaN(differentTime)){
-          clock.get_Date = function(){
-              return date_plus_seconds( new Date(), differentTime);
-          }
-          log_warn( "Running in debug using a different time: " + differentTime + ' new time:' + clock.get_Date(), 10 );
+       let adjustedTimeInSeconds = $(this).val();
+       if(!isNaN(adjustedTimeInSeconds)){
+          clock.adjust_current_time_by(adjustedTimeInSeconds);
+          log_warn( "Running in debug using a different time: " + adjustedTimeInSeconds + ' new time:' + clock.get_Date(), 10 );
        }else{
-         log_error( "Running in debug using a non number different time: " + differentTime, 10 );
+         log_error( "Running in debug using a non number different time: " + adjustedTimeInSeconds, 10 );
        }
     });
 }
@@ -218,6 +216,7 @@ function generate_test_summary(allTestResults){
     result += setup_model_unit_test();  //SHOULD BE THE FIRST TEST!!
     result += should_sort_calendar_events();
     result += download_calendar_unit_test();
+    result += should_display_last_calendar_update();
     result += should_build_calendar_html();
     result += set_tasks_on_model_from_remote_data_unit_test();
     result += reload_the_dashboard_unit_test();
@@ -659,6 +658,20 @@ function should_sort_calendar_events(){
 }
 
 
+function should_display_last_calendar_update(){
+    let theCurrentTime = "12:05";
+    let theCurrentShortDate = "2024-09-27";
+    let lastUpdateDate = new Date(theCurrentShortDate);
+    let dateAndTime = set_time_on_date(lastUpdateDate, theCurrentTime );
+    clock.currentDate = dateAndTime;
+    clock.adjust_current_time_by(+10);
+
+    let result = run_unit_test( 'display_last_calendar_update', "Shows only the time, if update is from today", compare_exact, theCurrentTime, [lastUpdateDate] );
+    clock.adjust_current_time_by(-25*3600);
+    result += run_unit_test( 'display_last_calendar_update', "Shows date and time if update is from another day", compare_exact, theCurrentShortDate + " at " + theCurrentTime, [lastUpdateDate] );
+    return result;
+}
+
 function should_build_calendar_html(){
 
     let html = `<div><table class="calendar-event border-bottom"><tr class="border-top  pb-2">
@@ -693,7 +706,7 @@ function should_build_calendar_html(){
                                             <td>
                                                 <div class="col pl-4">
                                                     <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
-                                                    <div class="row"><span class="span6 description">Event's description with funny quote</span><span class="location"></span></div>
+                                                    <div class="row"><span class="span6 description">Event description with funny quotes (', ', ') replaced</span><span class="location"></span></div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -743,7 +756,7 @@ function should_build_calendar_html(){
                                              "displayDate":"Sunday 13/10/2024",
                                              "startTime":"12:40:00",
                                              "endTime": "13:40:00",
-                                             "description": "Event�s description with funny quote",
+                                             "description": "Event description with funny quotes (�, \u2018, \u2019) replaced",
                                              "location": "missing value"},
                                         {"startDate":"2024-10-13T12:40:00+00:00",
                                              "displayDate":"Sunday 13/10/2024",

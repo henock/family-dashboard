@@ -1,13 +1,21 @@
-let clock = {};
+let clock = {
+    currentDate: null,
+    adjustedTimeInSeconds : 0,
 
-clock.get_Date = function(){
-    return new Date();
+    adjust_current_time_by: function ( seconds ){
+        this.adjustedTimeInSeconds = seconds;
+    },
+
+    get_Date: function (){
+        if( this.currentDate == null ){
+            return new Date( new Date().getTime() + (this.adjustedTimeInSeconds * 1000) );
+        }else {
+            return new Date( this.currentDate.getTime() + (this.adjustedTimeInSeconds * 1000) );
+        }
+    }
 }
 
 
-function set_clock( other_clock ){
-    clock = other_clock;
-}
 
 
 function pad_with_leading_zero( num ){
@@ -27,6 +35,11 @@ function pad_with_leading_spaces( full_length, a_string ){
 }
 
 function now_plus_seconds( seconds_to_add ){
+    return date_plus_seconds( clock.get_Date(), seconds_to_add );
+}
+
+function now_plus_hours( hours_to_add ){
+    let seconds_to_add = hours_to_add * 3600;
     return date_plus_seconds( clock.get_Date(), seconds_to_add );
 }
 
