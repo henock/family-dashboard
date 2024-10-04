@@ -1,5 +1,5 @@
 {
-  "reloadDashboardEvery": "500",
+  "reloadDashboardEvery": "86400",
   "trains": {
     "show": true,
     "updateEvery": "600"

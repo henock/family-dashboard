@@ -62,9 +62,7 @@ function build_boys_time_table_for_ui(boysTimeTable){
 }
 
 function time_table_day_to_show( now ){
-    if( now === undefined ){
-        now = clock.get_Date();
-    }
+    now = (now ? now : clock.get_Date());
     let dayToShow = 0;
     if(is_week_day( now )){
         dayToShow = now.getDay()-1;  //Time table starts on Monday not Sunday
@@ -73,9 +71,7 @@ function time_table_day_to_show( now ){
 }
 
 function work_out_which_week_we_are_in( now ){
-    if( now === undefined ){
-      now = clock.get_Date();
-    }
+    now = (now ? now : clock.get_Date());
     let weekNumber = get_week_number(now);
     if(is_week_day( now )){
         return (weekNumber % 2 == 0 ? "A": "B");
@@ -89,10 +85,9 @@ function work_out_which_week_we_are_in( now ){
 function build_html_for_classes( classes ){
     let html = "";
     let aClass = null;
-    for(let i = 0; i < classes.length;i++){
-        aClass = classes[i];
+    classes.forEach(function(aClass){
         html+=`<div class="row ml-1 class-name${aClass.recreation?'-play-time':''}
                     ${aClass.name.replaceAll(' ', '-')} ">${aClass.name}</div>`;
-    }
+    });
     return html;
 }

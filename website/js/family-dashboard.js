@@ -9,7 +9,7 @@ $(document).ready(function () {
 });
 
 function update_dashboard() {
-    globalModel =  get_global_model();
+    globalModel = get_global_model();
     update_model( globalModel );
     update_UI( globalModel );
 }
@@ -41,7 +41,7 @@ function setup_model_for_production(){
 function setup_model( debugging ){
     model = create_empty_model( debugging );
     update_model_with_runtime_config( model );
-    update_urls_if_debugging( model )
+    update_urls_if_debugging( model );
     download_last_code_update_file( model );
     update_model_with_secrets( model );
     update_model_with_station_to_code_maps( model );
@@ -54,17 +54,16 @@ function update_model( model ){
     update_model_with_trains( model, clock.get_Date() );
     update_model_with_boys_time_table( model, clock.get_Date() );
     update_model_with_weather( model, clock.get_Date() );
-    reload_the_dashboard( model, clock.get_Date() );
+    reload_the_dashboard( model, clock.get_Date(), function(){location.reload(true);});
 }
 
-function reload_the_dashboard( model, date ) {
+function reload_the_dashboard( model, date, reload_dashboard_function ) {
     if( !model.data.nextDashboardReload  ) {
         model.data.nextDashboardReload = now_plus_seconds( model.runtimeConfig.reloadDashboardEvery );
         return false;
     } else if( model.data.nextDashboardReload < date ) {
+        reload_dashboard_function(); // reloads the whole dashboard
         return true;
-        model.data.nextDashboardReload = now_plus_seconds( model.runtimeConfig.reloadDashboardEvery );
-        location.reload(true); // reloads the whole dashboard
     }else{
         return false;
     }
@@ -75,7 +74,7 @@ function download_last_code_update_file( model ){
     try{
         let data =  get_remote_data( urlToGet );
         model.data.lastCodeUpdate = date_from_string( data.lastCodeUpdate );
-        model.data.nextDashboardReload = date_from_string( model.runtimeConfig.reloadDashboardEvery );
+        model.data.nextDashboardReload = now_plus_seconds( model.runtimeConfig.reloadDashboardEvery );
     }catch( e ){
         log_error( "Unable to retrieve last code update from: '" + urlToGet +
                     "' I got back: '" + e.statusText +"'");
@@ -99,11 +98,11 @@ function update_UI( model ){
 }
 
 function update_date_and_time_ui( model, now ){
-    let monthAsString = now.toLocaleString('default', { month: 'short' })   //TODO - Can I do this better?
+    let monthAsString = now.toLocaleString("default", { month: "short" });   //TODO - Can I do this better?
 
-    let date = now.getDate() + ' ' + monthAsString + '. ' + now.getFullYear();
+    let date = now.getDate() + " " + monthAsString + ". " + now.getFullYear();
     let time = get_padded_time_seconds( now );
-    let local_time_zone = (now.isDstObserved() ? ' (British Summer Time)' : 'GMT');
+    let local_time_zone = (now.isDstObserved() ? " (British Summer Time)" : "GMT");
 
     $("#date").html( date );
     $("#local-time").html( time );
@@ -136,11 +135,11 @@ function update_model_with_station_to_code_maps( model ){
             let nameToCode = new Map();
             let codeToName = new Map();
 
-            for (var i = 0; i < entries.length; i++ ){
-                entry = entries[i];
+            entries.forEach( (entry) =>{
                 nameToCode.set( entry[0], entry[1] );
                 codeToName.set( entry[1], entry[0] );
-            };
+            });
+
             model.stationCodeToNameMap = codeToName;
             model.stationNameToCodeMap = nameToCode;
         }catch( e ){
@@ -152,18 +151,18 @@ function update_model_with_station_to_code_maps( model ){
 }
 
 function update_model_with_runtime_config( model ){
-    let urlToGet = model.config.debugging ?  "data-for-running-locally/debug-runtime-config.json"
-                                          :  "data/runtime-config.json";
+    let urlToGet = (model.config.debugging ?  "data-for-running-locally/debug-runtime-config.json"
+                                          :  "data/runtime-config.json");
     try {
         let data =  get_remote_data( urlToGet );
         model.runtimeConfig = data;
-        model.config.showTasks = data.tasks.show
-        model.config.showTravel = data.trains.show
-        model.config.showWeather = data.weather.show
-        model.config.showCalendar = data.calendar.show
-        model.config.showTimeZones = data.timeZones.show
-        model.config.showBoysTimeTable = data.boysTimeTable.show
-        model.config.showSchoolRunCountDown = data.schoolRunCountDown.show
+        model.config.showTasks = data.tasks.show;
+        model.config.showTravel = data.trains.show;
+        model.config.showWeather = data.weather.show;
+        model.config.showCalendar = data.calendar.show;
+        model.config.showTimeZones = data.timeZones.show;
+        model.config.showBoysTimeTable = data.boysTimeTable.show;
+        model.config.showSchoolRunCountDown = data.schoolRunCountDown.show;
         sanitise_dates_for_commute_config( model.runtimeConfig.transport.commute, clock.get_Date() );
     }catch( e ) {
         log_error( "Unable to retrieve runtime config from: '" + urlToGet +
@@ -177,20 +176,20 @@ function update_model_with_runtime_config( model ){
 }
 
 function update_urls_if_debugging( model ) {
-    let urls = {}
+    let urls = {};
 
     if(model.config.debugging){
-        urls.runtimeConfig       = 'data-for-running-locally/debug-runtime-config.json';
-        urls.lastCodeUpdate      = 'data-for-running-locally/last-code-update.json';
-        urls.secrets             = 'data-for-running-locally/debug-secrets.json';
-        urls.familyICalendarUrl  = 'data-for-running-locally/family-calendar.json';
-        urls.boysTimeTable       = 'data/boys-time-table.json';
+        urls.runtimeConfig       = "data-for-running-locally/debug-runtime-config.json";
+        urls.lastCodeUpdate      = "data-for-running-locally/last-code-update.json";
+        urls.secrets             = "data-for-running-locally/debug-secrets.json";
+        urls.familyICalendarUrl  = "data-for-running-locally/family-calendar.json";
+        urls.boysTimeTable       = "data/boys-time-table.json";
     }else{
-        urls.runtimeConfig       = 'data/runtime-config.json';
-        urls.lastCodeUpdate      = 'data/last-code-update.json';
-        urls.secrets             = 'data/secrets.json';
-        urls.familyICalendarUrl  = 'data/family-calendar.json';
-        urls.boysTimeTable       = 'data/boys-time-table.json';
+        urls.runtimeConfig       = "data/runtime-config.json";
+        urls.lastCodeUpdate      = "data/last-code-update.json";
+        urls.secrets             = "data/secrets.json";
+        urls.familyICalendarUrl  = "data/family-calendar.json";
+        urls.boysTimeTable       = "data/boys-time-table.json";
     }
     model.config.urls = urls;
 }
@@ -241,11 +240,11 @@ function create_empty_model( debugging ){
                 futureDays: []
             }
         }
-    }
+    };
 }
 
 function sanitise_dates_for_commute_config( commutes , date ){
-    date = date ? date : clock.get_Date();
+    date = (date ? date : clock.get_Date());
     commutes.forEach(function( commute ){
         commute.noNeedToLeaveBefore = seconds_from_string( commute.noNeedToLeaveBefore );
         commute.minimumWalkTransitTime = seconds_from_string( commute.minimumWalkTransitTime );

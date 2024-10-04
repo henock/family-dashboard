@@ -344,16 +344,17 @@ function set_tasks_on_model_from_remote_data_unit_test(){
 function reload_the_dashboard_unit_test(){
     let result = '';
 
+    let do_nothing_function = function(){};
     let now = clock.get_Date();
     model = {}
     model.data = {}
     model.data.nextDashboardReload = now_plus_seconds( -10 );
     result += run_unit_test( "reload_the_dashboard", 'Reload dashboard called when nextDashboardReload has expired',
-                                compare_exact, true, [model, now] );
+                                compare_exact, true, [model, now, do_nothing_function] );
 
     model.data.nextDashboardReload = now_plus_seconds( 10 );
     result += run_unit_test( "reload_the_dashboard", 'Reload dashboard NOT called when nextDashboardReload has yet to expire',
-                                compare_exact, false, [model, now] );
+                                compare_exact, false, [model, now, do_nothing_function] );
     return result;
 }
 
