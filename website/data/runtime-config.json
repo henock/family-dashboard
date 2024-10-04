@@ -21,6 +21,10 @@
     "daysIntoTheFuture": "7",
     "updateEvery": "120"
   },
+  "boysTimeTable": {
+    "show": true,
+    "displayDetailed": false
+  },
   "tasks": {
     "show": false,
     "todoListId": "<your todoListId>",

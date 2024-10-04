@@ -1,0 +1,658 @@
+{
+  "Melkam": {
+    "class-times": [
+      {
+        "time": "08:35-08:45"
+      },
+      {
+        "time": "08:50-09:45"
+      },
+      {
+        "time": "09:50-10:45"
+      },
+      {
+        "time": "11:20-12:15"
+      },
+      {
+        "time": "12:20-13:15"
+      },
+      {
+        "time": "14:40-15:45"
+      }
+    ],
+    "subjects": [
+      {
+        "name": "Registration",
+        "teacher": "Mr Ayoola",
+        "class": "7R-RG",
+        "location": "LS08"
+      },
+      {
+        "name": "👨🏽‍🏫 Form Period",
+        "teacher": "Mr Ayoola",
+        "class": "7R-FP",
+        "location": "LS08"
+      },
+      {
+        "name": "🏟️ Games",
+        "teacher": ""
+      },
+      {
+        "name": "🎷 Music",
+        "teacher": "Mrs Kelly",
+        "class": "7R-MU",
+        "location": "UMR"
+      },
+      {
+        "name": "🇪🇸 Spanish",
+        "teacher": "Ms Folletto",
+        "class": "7.R/FS-SP",
+        "location": "LS10"
+      },
+      {
+        "name": "🧪 Science",
+        "teacher": "Ms Passmore",
+        "class": "7R-LSC",
+        "location": "LSC1"
+      },
+      {
+        "name": "🧮 Maths",
+        "teacher": "Mr Ayoola",
+        "class": "7R-MA"
+      },
+      {
+        "name": "🙋🏽 Wellbeing",
+        "teacher": "Mr Ayoola",
+        "class": "7R-WB",
+        "location": "LS08"
+      },
+      {
+        "name": "🎭 Drama",
+        "teacher": "Miss Ibbotson",
+        "class": "7.R/DR-DR1",
+        "location": "EAT"
+      },
+      {
+        "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English",
+        "teacher": "Miss Nairne",
+        "class": "7R-EN",
+        "location": "NS205"
+      },
+      {
+        "name": "📜 History",
+        "teacher": "Mr Barrett-Greene",
+        "class": "7R-HI",
+        "location": "LS08"
+      },
+      {
+        "name": "🏺 Classics",
+        "teacher": "Mr Thompson",
+        "class": "7R-CLA",
+        "location": "LS08"
+      },
+      {
+        "name": "🛠️ D & T",
+        "teacher": "Mr Vaughan",
+        "class": "7.R/DT-DT2",
+        "location": "DT1"
+      },
+      {
+        "name": "🇨🇳 Chinese",
+        "teacher": "Miss Chow",
+        "class": "7.R/CN-CN1",
+        "location": "LS08"
+      },
+      {
+        "name": "♱ Religion & Philosophy",
+        "teacher": "Mr Crossley",
+        "class": "7R-RP",
+        "location": "LS08"
+      },
+      {
+        "name": "🏟️ Physical Education",
+        "teacher": "Mr Hanks",
+        "class": "7.PB-PE03",
+        "location": "PEC"
+      },
+      {
+        "name": "👨🏽‍🎨 Art",
+        "teacher": "Mr Mills",
+        "class": "7.R/AR-AR2",
+        "location": "S7"
+      },
+      {
+        "name": "🗺️ Geography",
+        "teacher": "Mr Canham",
+        "class": "7R-GG",
+        "location": "LS08"
+      },
+      {
+        "name": "🧑🏽‍💻 Informatics",
+        "teacher": "Mr Cartwright",
+        "class": "7.R/IT-IT1",
+        "location": "LSIT01"
+      }
+    ],
+    "weeks": [
+      {
+        "name": "Week A",
+        "days": [
+          {
+            "name": "Monday",
+            "classes": [
+              {
+                "name": "👨🏽‍🏫 Form Period"
+              },
+              {
+                "name": "🏟️ Games"
+              },
+              {
+                "name": "🎷 Music"
+              },
+              {
+                "name": "🇪🇸 Spanish"
+              },
+              {
+                "name": "🧪 Science"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "classes": [
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🎭 Drama"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "📜 History"
+              },
+              {
+                "name": "🏺 Classics"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "classes": [
+              {
+                "name": "🇪🇸 Spanish",
+                "location": "LS01"
+              },
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🏺 Classics"
+              },
+              {
+                "name": "🙋🏽 Wellbeing"
+              },
+              {
+                "name": "🇨🇳 Chinese"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "classes": [
+              {
+                "name": "♱ Religion & Philosophy"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🗺️ Geography"
+              },
+              {
+                "name": "👨🏽‍🎨 Art"
+              },
+              {
+                "name": "🛠️ D & T"
+              }
+            ]
+          },
+          {
+            "name": "Friday",
+            "classes": [
+              {
+                "name": "🧑🏽‍💻 Informatics"
+              },
+              {
+                "name": "🧪 Science"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🇪🇸 Spanish",
+                "location": "LS08"
+              },
+              {
+                "name": "🏟️ Games"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Week B",
+        "days": [
+          {
+            "name": "Monday",
+            "classes": [
+              {
+                "name": "👨🏽‍🏫 Form Period"
+              },
+              {
+                "name": "🏟️ Games"
+              },
+              {
+                "name": "🧪 Science"
+              },
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🗺️ Geography"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "classes": [
+              {
+                "name": "🏟️ Physical Education"
+              },
+              {
+                "name": "🧪 Science"
+              },
+              {
+                "name": "🎭 Drama"
+              },
+              {
+                "name": "🏺 Classics"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "classes": [
+              {
+                "name": "🏺 Classics"
+              },
+              {
+                "name": "🇪🇸 Spanish",
+                "location": "LS03"
+              },
+              {
+                "name": "🛠️ D & T"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🧮 Maths"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "classes": [
+              {
+                "name": "👨🏽‍🏫 Form Period"
+              },
+              {
+                "name": "📜 History"
+              },
+              {
+                "name": "👨🏽‍🎨 Art"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "♱ Religion & Philosophy"
+              }
+            ]
+          },
+          {
+            "name": "Friday",
+            "classes": [
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🇪🇸 Spanish",
+                "location": "LS02"
+              },
+              {
+                "name": "🇨🇳 Chinese"
+              },
+              {
+                "name": "🧑🏽‍💻 Informatics"
+              },
+              {
+                "name": "🏟️ Games"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Sennai": {
+    "class-times": [
+      {
+        "time": "08:55-9:50"
+      },
+      {
+        "time": "09:50-10:45"
+      },
+      {
+        "time": "10:45-11:10"
+      },
+      {
+        "time": "11:10-12:05"
+      },
+      {
+        "time": "12:05-12:35"
+      },
+      {
+        "time": "12:40-13:35"
+      },
+      {
+        "time": "13:35-14:15"
+      },
+      {
+        "time": "14:15-14:25"
+      },
+      {
+        "time": "14:25-14:50"
+      },
+      {
+        "time": "14:50-15:45"
+      },
+      {
+        "time": "Home learning"
+      }
+    ],
+    "subjects": [
+      {
+        "name": "🧮 Maths",
+        "teacher": "Mr Daly"
+      },
+      {
+        "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English",
+        "teacher": "Mr Daly"
+      },
+      {
+        "name": "🎷 Music",
+        "teacher": "Miss Wilcox"
+      },
+      {
+        "name": "🧪 Science",
+        "teacher": "Mr Daly"
+      },
+      {
+        "name": "🏟️ PE"
+      },
+      {
+        "name": "🧑🏽‍💻 Computing",
+        "teacher": "Mr Daly"
+      },
+      {
+        "name": "🎭 Dance/Drama",
+        "teacher": "Miss Ibitson"
+      },
+      {
+        "name": "🏟️ Games"
+      },
+      {
+        "name": "🇫🇷 French",
+        "teacher": "Ms Austin"
+      },
+      {
+        "name": "♱ RS",
+        "teacher": "Reverend Buckler"
+      },
+      {
+        "name": "🛠️ DT",
+        "teacher": "MS Rowe"
+      },
+      {
+        "name": "🎲 Lunch & Clubs"
+      },
+      {
+        "name": "👨🏽‍🏫 Form Period",
+        "teacher": "Mr Daly"
+      },
+      {
+        "name": "🔬 Humanities",
+        "teacher": "Mr Daly"
+      },
+      {
+        "name": "🎤 Singing",
+        "teacher": "Miss Wilcox"
+      },
+      {
+        "name": "📚 Library",
+        "teacher": "Miss Forbes"
+      },
+      {
+        "name": "🙋🏽 Wellbeing",
+        "teacher": "Mr Daly"
+      },
+      {
+        "name": "👨🏽‍🎨 Art",
+        "teacher": "Ms Rowe"
+      }
+    ],
+    "weeks": [
+      {
+        "name": "Week A",
+        "days": [
+          {
+            "name": "Monday",
+            "classes": [
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🎷 Music"
+              },
+              {
+                "name": "⚽ Break",
+                "recreation": true
+              },
+              {
+                "name": "🏟️ Games"
+              },
+              {
+                "name": "🍛 Lunch",
+                "recreation": true
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🎲 Lunch & Clubs",
+                "recreation": true
+              },
+              {
+                "name": "👨🏽‍🏫 Form Period"
+              },
+              {
+                "name": "🔬 Humanities"
+              },
+              {
+                "name": "🧮 Maths"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "classes": [
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🧪 Science"
+              },
+              {
+                "name": "⚽ Break",
+                "recreation": true
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🍛 Lunch",
+                "recreation": true
+              },
+              {
+                "name": "🇫🇷 French"
+              },
+              {
+                "name": "🎲 Lunch & Clubs",
+                "recreation": true
+              },
+              {
+                "name": "🏟️ Games"
+              },
+              {
+                "name": "🏟️ Games"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "classes": [
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🧪 Science"
+              },
+              {
+                "name": "⚽ Break",
+                "recreation": true
+              },
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🍛 Lunch",
+                "recreation": true
+              },
+              {
+                "name": "RS"
+              },
+              {
+                "name": "🎲 Lunch & Clubs",
+                "recreation": true
+              },
+              {
+                "name": "👨🏽‍🏫 Form Period"
+              },
+              {
+                "name": "🔬 Humanities"
+              },
+              {
+                "name": "🧮 Maths"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "classes": [
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🏟️ PE"
+              },
+              {
+                "name": "⚽ Break",
+                "recreation": true
+              },
+              {
+                "name": "🎭 Dance/Drama"
+              },
+              {
+                "name": "🍛 Lunch",
+                "recreation": true
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🎲 Lunch & Clubs",
+                "recreation": true
+              },
+              {
+                "name": "🎤 Singing"
+              },
+              {
+                "name": "🙋🏽 Wellbeing"
+              },
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              }
+            ]
+          },
+          {
+            "name": "Friday",
+            "classes": [
+              {
+                "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+              },
+              {
+                "name": "🧑🏽‍💻 Computing"
+              },
+              {
+                "name": "⚽ Break",
+                "recreation": true
+              },
+              {
+                "name": "🧮 Maths"
+              },
+              {
+                "name": "🍛 Lunch",
+                "recreation": true
+              },
+              {
+                "name": "🛠️ DT"
+              },
+              {
+                "name": "🎲 Lunch & Clubs",
+                "recreation": true
+              },
+              {
+                "name": "📚 Library"
+              },
+              {
+                "name": "👨🏽‍🎨 Art"
+              },
+              {
+                "name": "🔬 Humanities"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

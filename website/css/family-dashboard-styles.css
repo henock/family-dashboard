@@ -126,3 +126,20 @@ tr td{
     padding-right: 10px;
 }
 
+.class-name {
+    color: white;
+    padding-left: 5px;
+    list-style-type: none;
+    text-align: left;
+}
+
+.class-name-play-time {
+    color  : green;
+    padding-left: 5px;
+    list-style-type: none;
+    text-align: left;
+}
+
+.text-black{
+    color: black;
+}

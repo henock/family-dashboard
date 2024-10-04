@@ -52,6 +52,7 @@ function update_model( model ){
     update_model_with_tasks( model, clock.get_Date() );
     update_model_with_calendar_events( model, clock.get_Date() );
     update_model_with_trains( model, clock.get_Date() );
+    update_model_with_boys_time_table( model, clock.get_Date() );
     update_model_with_weather( model, clock.get_Date() );
     reload_the_dashboard( model, clock.get_Date() );
 }
@@ -88,6 +89,7 @@ function update_UI( model ){
     update_date_and_time_ui( model, now );
     update_timezones_ui( model, now );
     update_tasks_ui( model, now );
+    update_boys_time_table_ui( model, now );
     update_calendar_ui( model, now );
     update_trains_ui( model, now );
     update_weather_ui( model, now );
@@ -160,6 +162,7 @@ function update_model_with_runtime_config( model ){
         model.config.showWeather = data.weather.show
         model.config.showCalendar = data.calendar.show
         model.config.showTimeZones = data.timeZones.show
+        model.config.showBoysTimeTable = data.boysTimeTable.show
         model.config.showSchoolRunCountDown = data.schoolRunCountDown.show
         sanitise_dates_for_commute_config( model.runtimeConfig.transport.commute, clock.get_Date() );
     }catch( e ) {
@@ -181,11 +184,13 @@ function update_urls_if_debugging( model ) {
         urls.lastCodeUpdate      = 'data-for-running-locally/last-code-update.json';
         urls.secrets             = 'data-for-running-locally/debug-secrets.json';
         urls.familyICalendarUrl  = 'data-for-running-locally/family-calendar.json';
+        urls.boysTimeTable       = 'data/boys-time-table.json';
     }else{
         urls.runtimeConfig       = 'data/runtime-config.json';
         urls.lastCodeUpdate      = 'data/last-code-update.json';
         urls.secrets             = 'data/secrets.json';
         urls.familyICalendarUrl  = 'data/family-calendar.json';
+        urls.boysTimeTable       = 'data/boys-time-table.json';
     }
     model.config.urls = urls;
 }
@@ -195,12 +200,13 @@ function create_empty_model( debugging ){
     return {
         isDefaultModel: true,
         config : {
-            debugging: debugging,
-            showTimeZones: false,
-            showSchoolRunCountDown: false,
-            showWeather: false,
+            showTasks: false,
             showTravel: false,
-            showTasks: false
+            showWeather: false,
+            showTimeZones: false,
+            boysTimeTable: false,
+            debugging: debugging,
+            showSchoolRunCountDown: false
         },
         secrets : {},
         data : {

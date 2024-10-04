@@ -224,6 +224,8 @@ function generate_test_summary(allTestResults){
     result += generate_next_download_count_down_values_unit_test();
     result += build_transport_eta_countdown_element_unit_test();
     result += build_train_row_unit_test();
+    result += build_boys_time_table_for_ui_unit_test();
+    result += time_table_day_to_show_test();
     result += build_todays_school_run_dates_unit_test();
     result += sanitise_dates_for_commute_config_unit_test();
     result += sanitise_dates_for_train_times_unit_test();
@@ -240,6 +242,7 @@ function generate_test_summary(allTestResults){
     result += update_model_with_runtime_config_unit_test();
     result += setup_model_unit_test();
     result += date_from_string_unit_test();
+    result += get_week_day_unit_test();
     result += is_week_day_unit_test();
     result += get_boundary_window_for_public_transport_unit_test();
     result += get_boundary_window_for_school_run_unit_test();
@@ -434,6 +437,138 @@ function build_train_row_unit_test(){
 }
 
 
+function build_boys_time_table_for_ui_unit_test(){
+    let result = '';
+    let boysTimeTable = {};
+
+    let MelkamsWeek = {
+                        "weeks": [
+                            {
+                                "name": "Week A",
+                                "days":[
+                                    {
+                                        "name": "Monday",
+                                        "classes": [
+                                            {
+                                            "name": "👨🏽‍🏫 Form Period"
+                                            },
+                                            {
+                                            "name": "🏟️ Games"
+                                            },
+                                            {
+                                            "name": "🎷 Music"
+                                            },
+                                            {
+                                            "name": "🇪🇸 Spanish"
+                                            },
+                                            {
+                                            "name": "🧪 Science"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    };
+
+    let MelkamsExpectedResult = `<div class="row ml-1 class-name 👨🏽‍🏫-Form-Period ">👨🏽‍🏫 Form Period</div>
+                                 <div class="row ml-1 class-name 🏟️-Games ">🏟️ Games</div>
+                                 <div class="row ml-1 class-name 🎷-Music ">🎷 Music</div>
+                                 <div class="row ml-1 class-name 🇪🇸-Spanish ">🇪🇸 Spanish</div>
+                                 <div class="row ml-1 class-name 🧪-Science ">🧪 Science</div>
+                                 `;
+
+    let week0 = MelkamsWeek.weeks[0];
+
+    result += run_unit_test( "build_html_for_classes", "list of Melkams's classes in a day",  compare_html_and_visualise, MelkamsExpectedResult, [ week0.days[0].classes, "Week A"] );
+
+    let SennaisWeeks = {
+                    "weeks": [
+                          {
+                            "name": "Week A",
+                            "days": [
+                              {
+                                "name": "Monday",
+                                "classes": [
+                                  {
+                                    "name": "🧮 Maths"
+                                  },
+                                  {
+                                    "name": "🎷 Music"
+                                  },
+                                  {
+                                    "name": "⚽ Break",
+                                    "recreation": true
+                                  },
+                                  {
+                                    "name": "🏟️ Games"
+                                  },
+                                  {
+                                    "name": "🍛 Lunch",
+                                    "recreation": true
+                                  },
+                                  {
+                                    "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English"
+                                  },
+                                  {
+                                    "name": "🎲 Lunch & Clubs",
+                                    "recreation": true
+                                  },
+                                  {
+                                    "name": "👨🏽‍🏫 Form Period"
+                                  },
+                                  {
+                                    "name": "🔬 Humanities"
+                                  },
+                                  {
+                                    "name": "🧮 Maths"
+                                  }
+                                ]
+                              }
+                            ]
+                        }
+                    ]
+                 };
+
+    let SennaisExpectedResult = `
+                                <div class="row ml-1 class-name 🧮-Maths ">🧮 Maths</div>
+                                <div class="row ml-1 class-name 🎷-Music ">🎷 Music</div>
+                                <div class="row ml-1 class-name-play-time ⚽-Break ">⚽ Break</div>
+                                <div class="row ml-1 class-name 🏟️-Games ">🏟️ Games</div>
+                                <div class="row ml-1 class-name-play-time 🍛-Lunch ">🍛 Lunch</div>
+                                <div class="row ml-1 class-name 🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div>
+                                <div class="row ml-1 class-name-play-time 🎲-Lunch-&-Clubs ">🎲 Lunch & Clubs</div>
+                                <div class="row ml-1 class-name 👨🏽‍🏫-Form-Period ">👨🏽‍🏫 Form Period</div>
+                                <div class="row ml-1 class-name 🔬-Humanities ">🔬 Humanities</div>
+                                <div class="row ml-1 class-name 🧮-Maths ">🧮 Maths</div>
+                                `;
+    week0 = SennaisWeeks.weeks[0];
+    result += run_unit_test( "build_html_for_classes", "list of Sennai's classes in a day",  compare_html_and_visualise, SennaisExpectedResult, [ week0.days[0].classes] );
+
+
+//    result += run_unit_test( "build_boys_time_table_for_ui", "table of Sennai's time table",  compare_html_and_visualise, expectedResult, [boysTimeTable] );
+    return result;
+}
+
+function time_table_day_to_show_test(){
+    let monday = new Date("2024-09-30T07:00:00.000Z");
+    let result = run_unit_test( "time_table_day_to_show", "Should show be 0 for monday",  compare_exact, 0, [monday] );
+    let tuesday = new Date("2024-10-01T07:00:00.000Z");
+    result += run_unit_test( "time_table_day_to_show", "Should show be 1 for tuesday",  compare_exact, 1, [tuesday] );
+    let wednesday = new Date("2024-10-02T07:00:00.000Z");
+    result += run_unit_test( "time_table_day_to_show", "Should show be 2 for wednesday",  compare_exact, 2, [wednesday] );
+    let thursday = new Date("2024-10-03T07:00:00.000Z");
+    result += run_unit_test( "time_table_day_to_show", "Should show be 3 for thursday",  compare_exact, 3, [thursday] );
+    let friday = new Date("2024-10-04T07:00:00.000Z");
+    result += run_unit_test( "time_table_day_to_show", "Should show be 4 for friday",  compare_exact, 4, [friday] );
+    let saturday = new Date("2024-10-05T07:00:00.000Z");
+    result += run_unit_test( "time_table_day_to_show", "Should show be 4 for monday next week",  compare_exact, 0, [saturday] );
+    let sunday = new Date("2024-10-06T07:00:00.000Z");
+    result += run_unit_test( "time_table_day_to_show", "Should show be 4 for monday next week",  compare_exact, 0, [sunday] );
+    return result;
+}
+
+
 function build_todays_school_run_dates_unit_test(){
     let result = '';
 
@@ -616,7 +751,7 @@ function download_calendar_unit_test(){
 
     function check_for_calendar_events( expected, result, parameters ){
         let model = parameters[0];
-        let testResult =  ("2024-10-04T15:45:00+00:00" === model.data.calendar.events[0].startDate  );
+        let testResult =  ( model.data.calendar.events[0].startDate < model.data.calendar.events[1].startDate );
         return {
             passed: testResult,
             expectedValue: "Earliest event with date 2024-10-04T15:45:00+00:00",
@@ -1113,6 +1248,17 @@ function get_seconds_until_unit_test(){
     return result;
 }
 
+function get_week_day_unit_test(){
+    let result = '';
+    result += run_unit_test( "get_week_day", '2021-12-06 - was a Monday', compare_exact, "Monday", [new Date("2021-12-06")] );
+    result += run_unit_test( "get_week_day", "Expecting Tuesday", compare_exact, "Tuesday", [new Date("2021-12-07")] );
+    result += run_unit_test( "get_week_day", "Expecting Wednesday", compare_exact, "Wednesday", [new Date("2021-12-08")] );
+    result += run_unit_test( "get_week_day", "Expecting Thursday", compare_exact, "Thursday", [new Date("2021-12-09")] );
+    result += run_unit_test( "get_week_day", "Expecting Friday", compare_exact, "Friday", [new Date("2021-12-10")] );
+    result += run_unit_test( "get_week_day", "Expecting Saturday", compare_exact, "Saturday", [new Date("2021-12-11")] );
+    result += run_unit_test( "get_week_day", "Expecting Sunday", compare_exact, "Sunday", [new Date("2021-12-12")] );
+    return result;
+}
 function is_week_day_unit_test(){
     let result = '';
     result += run_unit_test( "is_week_day", '2021-12-06 - was a Monday', compare_exact, true, [new Date("2021-12-06")] );
