@@ -44,7 +44,7 @@ function build_calendar_events_for_ui( calendar ){
         let sameDayAsPrevious = (shortDate == previousDay);
         previousDay = shortDate;
         if( "missing value" !== event.location ){
-            location = '(' + redact_text( privateEvent, event.location.substring(0,15)) + '...)'
+            location = "🌍"
         }
         eventsHtml +=  `<tr class="border-top ${sameDayAsPrevious?'border-dark':''} pb-2">
                             <td>

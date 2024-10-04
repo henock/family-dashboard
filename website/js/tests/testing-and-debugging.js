@@ -829,67 +829,72 @@ function should_display_last_calendar_update(){
 
 function should_build_calendar_html(){
 
-    let html = `<div><table class="calendar-event border-bottom"><tr class="border-top  pb-2">
-                                            <td>
-                                                <div class="row short-day">Sat</div>
-                                                <div class="row day-number">5</div>
-                                            </td>
-                                            <td>
-                                                <div class="col pl-4">
-                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
-                                                    <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location"></span></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                       <tr class="border-top border-dark pb-2">
-                                            <td>
-                                                <div class="row short-day-dark">Sat</div>
-                                                <div class="row day-number-dark">5</div>
-                                            </td>
-                                            <td>
-                                                <div class="col pl-4">
-                                                    <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
-                                                    <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location">(Spor **** REDACTED **** ia...)</span></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                       <tr class="border-top  pb-2">
-                                            <td>
-                                                <div class="row short-day">Sun</div>
-                                                <div class="row day-number">13</div>
-                                            </td>
-                                            <td>
-                                                <div class="col pl-4">
-                                                    <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
-                                                    <div class="row"><span class="span6 description">Event description with funny quotes (', ', ') replaced</span><span class="location"></span></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                       <tr class="border-top border-dark pb-2">
-                                            <td>
-                                                <div class="row short-day-dark">Sun</div>
-                                                <div class="row day-number-dark">13</div>
-                                            </td>
-                                            <td>
-                                                <div class="col pl-4">
-                                                    <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
-                                                    <div class="row"><span class="span6 description">Event description with no location</span><span class="location"></span></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                       <tr class="border-top border-dark pb-2">
-                                            <td>
-                                                <div class="row short-day-dark">Sun</div>
-                                                <div class="row day-number-dark">13</div>
-                                            </td>
-                                            <td>
-                                                <div class="col pl-4">
-                                                    <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
-                                                    <div class="row"><span class="span6 description">Event description with location</span><span class="location">(Sports Club Gia...)</span></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                       </table></div><div class="pt-2 pl-2">Last calendar update: 2024-09-27 at 01:19</div>`;
+    let html =  `
+    <div>
+        <table class="calendar-event border-bottom"><tr class="border-top  pb-2">
+                <td>
+                    <div class="row short-day">Sat</div>
+                    <div class="row day-number">5</div>
+                </td>
+                <td>
+                    <div class="col pl-4">
+                        <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                        <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location"></span></div>
+                    </div>
+                </td>
+            </tr>
+           <tr class="border-top border-dark pb-2">
+                <td>
+                    <div class="row short-day-dark">Sat</div>
+                    <div class="row day-number-dark">5</div>
+                </td>
+                <td>
+                    <div class="col pl-4">
+                        <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                        <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location">🌍</span></div>
+                    </div>
+                </td>
+            </tr>
+           <tr class="border-top  pb-2">
+                <td>
+                    <div class="row short-day">Sun</div>
+                    <div class="row day-number">13</div>
+                </td>
+                <td>
+                    <div class="col pl-4">
+                        <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                        <div class="row"><span class="span6 description">Event description with funny quotes (', ', ') replaced</span><span class="location"></span></div>
+                    </div>
+                </td>
+            </tr>
+           <tr class="border-top border-dark pb-2">
+                <td>
+                    <div class="row short-day-dark">Sun</div>
+                    <div class="row day-number-dark">13</div>
+                </td>
+                <td>
+                    <div class="col pl-4">
+                        <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                        <div class="row"><span class="span6 description">Event description with no location</span>
+                        <span class="location"></span></div>
+                    </div>
+                </td>
+            </tr>
+           <tr class="border-top border-dark pb-2">
+                <td>
+                    <div class="row short-day-dark">Sun</div>
+                    <div class="row day-number-dark">13</div>
+                </td>
+                <td>
+                    <div class="col pl-4">
+                        <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                        <div class="row"><span class="span6 description">Event description with location</span>
+                        <span class="location">🌍</span></div>
+                    </div>
+                </td>
+            </tr>
+           </table></div><div class="pt-2 pl-2">Last calendar update: 2024-09-27 at 01:19</div>
+                `;
 
     var calendar = JSON.parse(`
                                 {
