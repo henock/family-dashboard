@@ -72,9 +72,18 @@ function time_table_day_to_show( now ){
     return dayToShow;
 }
 
-function work_out_which_week_we_are_in(){
-    let weekNumber = get_week_number(clock.get_Date());
-    return weekNumber % 2 == (0 ? "A": "B");
+function work_out_which_week_we_are_in( now ){
+    if( now === undefined ){
+      now = clock.get_Date();
+    }
+    let weekNumber = get_week_number(now);
+    if(is_week_day( now )){
+        return (weekNumber % 2 == 0 ? "A": "B");
+    }else{
+        //Becomes the other week (as on Sat/Sun we want to show
+        //The details for the following Monday
+        return (weekNumber % 2 == 1 ? "A": "B");
+    }
 }
 
 function build_html_for_classes( classes ){

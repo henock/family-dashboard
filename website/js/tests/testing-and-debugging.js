@@ -226,6 +226,7 @@ function generate_test_summary(allTestResults){
     result += build_train_row_unit_test();
     result += build_boys_time_table_for_ui_unit_test();
     result += time_table_day_to_show_test();
+    result += work_out_which_week_we_are_in_test();
     result += build_todays_school_run_dates_unit_test();
     result += sanitise_dates_for_commute_config_unit_test();
     result += sanitise_dates_for_train_times_unit_test();
@@ -565,6 +566,24 @@ function time_table_day_to_show_test(){
     result += run_unit_test( "time_table_day_to_show", "Should show be 4 for monday next week",  compare_exact, 0, [saturday] );
     let sunday = new Date("2024-10-06T07:00:00.000Z");
     result += run_unit_test( "time_table_day_to_show", "Should show be 4 for monday next week",  compare_exact, 0, [sunday] );
+    return result;
+}
+
+function work_out_which_week_we_are_in_test(){
+    let monday = new Date("2024-09-30T07:00:00.000Z");
+    let result = run_unit_test( "work_out_which_week_we_are_in", "Should show be A for monday 2024-09-30",  compare_exact, "A", [monday] );
+    let tuesday = new Date("2024-10-01T07:00:00.000Z");
+    result += run_unit_test( "work_out_which_week_we_are_in", "Should show be A for tuesday 2024-10-01",  compare_exact, "A", [tuesday] );
+    let wednesday = new Date("2024-10-02T07:00:00.000Z");
+    result += run_unit_test( "work_out_which_week_we_are_in", "Should show be A for wednesday 2024-10-02",  compare_exact, "A", [wednesday] );
+    let thursday = new Date("2024-10-03T07:00:00.000Z");
+    result += run_unit_test( "work_out_which_week_we_are_in", "Should show be A for thursday 2024-10-03",  compare_exact, "A", [thursday] );
+    let friday = new Date("2024-10-04T07:00:00.000Z");
+    result += run_unit_test( "work_out_which_week_we_are_in", "Should show be A for friday 2024-10-04",  compare_exact, "A", [friday] );
+    let saturday = new Date("2024-10-05T07:00:00.000Z");
+    result += run_unit_test( "work_out_which_week_we_are_in", "Should show be B for monday next week 2024-10-05",  compare_exact, "B", [saturday] );
+    let sunday = new Date("2024-10-06T07:00:00.000Z");
+    result += run_unit_test( "work_out_which_week_we_are_in", "Should show be B for monday next week 2024-10-06",  compare_exact, "B", [sunday] );
     return result;
 }
 
