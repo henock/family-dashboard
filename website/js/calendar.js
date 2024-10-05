@@ -64,17 +64,20 @@ function build_calendar_events_for_ui( calendar ){
 
     let fileUpdatedAtDate = new Date(calendar.fileUpdatedAt)
 
-    eventsHtml += `</table></div><div class="pt-2 pl-2">Last calendar update: ${display_last_calendar_update( fileUpdatedAtDate )}</div>`;
+    eventsHtml += `</table></div>${display_last_calendar_update( fileUpdatedAtDate )}`;
     return eventsHtml;
 }
 
 function display_last_calendar_update( fileUpdatedAtDate ){
     let fileUpdatedAt = '';
-    if( get_date_with_dashes(fileUpdatedAtDate) != get_date_with_dashes(clock.get_Date())){
-        fileUpdatedAt += get_date_with_dashes(fileUpdatedAtDate) + ' at ';
+    let textClass = 'text-success';
+    let dateWithDashes = get_date_with_dashes(fileUpdatedAtDate);
+    if( dateWithDashes !== get_date_with_dashes(clock.get_Date())){
+        fileUpdatedAt += dateWithDashes + ' at ';
+        textClass = 'text-danger';
     }
-    fileUpdatedAt += get_padded_time_minutes(fileUpdatedAtDate)
-    return fileUpdatedAt;
+    fileUpdatedAt += get_padded_time_minutes(fileUpdatedAtDate);
+    return  `<div class="pt-2 pl-2 ${textClass}">Last calendar update: ${fileUpdatedAt}</div>`;
 }
 
 function download_calendar( model ){

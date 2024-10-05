@@ -821,9 +821,11 @@ function should_display_last_calendar_update(){
     clock.currentDate = dateAndTime;
     clock.adjust_current_time_by(+10);
 
-    let result = run_unit_test( 'display_last_calendar_update', "Shows only the time, if update is from today", compare_exact, theCurrentTime, [lastUpdateDate] );
+    let result = run_unit_test( 'display_last_calendar_update', "Shows only the time, if update is from today",
+                                compare_html_and_visualise, '<div class="pt-2 pl-2 text-success">Last calendar update: 12:05</div>', [lastUpdateDate] );
     clock.adjust_current_time_by(-25*3600);
-    result += run_unit_test( 'display_last_calendar_update', "Shows date and time if update is from another day", compare_exact, theCurrentShortDate + " at " + theCurrentTime, [lastUpdateDate] );
+    result += run_unit_test( 'display_last_calendar_update', "Shows date and time if update is from another day",
+                                compare_html_and_visualise, '<div class="pt-2 pl-2 text-danger">Last calendar update: 2024-09-27 at 12:05</div>', [lastUpdateDate] );
     return result;
 }
 
@@ -893,7 +895,7 @@ function should_build_calendar_html(){
                     </div>
                 </td>
             </tr>
-           </table></div><div class="pt-2 pl-2">Last calendar update: 2024-09-27 at 01:19</div>
+           </table></div><div class="pt-2 pl-2 text-danger">Last calendar update: 2024-09-27 at 01:19</div>
                 `;
 
     var calendar = JSON.parse(`

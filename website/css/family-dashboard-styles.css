@@ -107,22 +107,22 @@ tr td{
 }
 
 .calendar-event .start-time{
-    color: red;
+    color: white;
     padding-right: 10px;
 }
 
 .calendar-event .end-time{
-    color: red;
+    color: white;
     padding-right: 10px;
 }
 
 .calendar-event .description{
-    color: red;
+    color: white;
     padding-right: 10px;
 }
 
 .calendar-event .location{
-    color: red;
+    color: white;
     padding-right: 10px;
 }
 
