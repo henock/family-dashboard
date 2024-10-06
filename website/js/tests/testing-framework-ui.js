@@ -7,6 +7,10 @@ function displayAsTextArea( text ){
     return `<textarea style="width:600px; height:150px; margin:6px;">${text}</textarea>`;
 }
 
+function displayStringified( anObject ){
+    return JSON.stringify( anObject );
+}
+
 function buildLinkToAnchor( text, aClass, anchor ){
     var classText = ( aClass ? `class="${aClass}"`: "");
     if( anchor ){

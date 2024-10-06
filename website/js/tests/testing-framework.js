@@ -4,6 +4,25 @@ function stringifyComparator(a, b){
     return JSON.stringify(a) === JSON.stringify(b);
 }
 
+function dateTimeComparatorInsensitive(a, b){
+    return dateTimeComparatorActual(a, b, true);
+}
+function dateTimeComparatorExact(a, b){
+    return dateTimeComparatorActual(a, b, false);
+}
+
+function dateTimeComparatorActual(a, b, ignoreMillis){
+    var aTimeStamp = a.getTime();
+    var bTimeStamp = b.getTime();
+    if( ignoreMillis ){
+        let lowerBound = bTimeStamp - 1001;
+        let upperBound = bTimeStamp + 1001;
+        return lowerBound < aTimeStamp && aTimeStamp < upperBound;
+    }else{
+        return aTimeStamp === bTimeStamp;
+    }
+}
+
 function removeWhiteSpace( txt ){
     return txt.replaceAll(' ', '' ).replaceAll('\n', '' );
 }
