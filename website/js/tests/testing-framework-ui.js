@@ -45,7 +45,7 @@ function buildHtmlForTestResults( listOfResults, hasFailedTests ){
         if( result.isTestGroup){
             html += `<tr>
                         <td class="pr-3">${buildLinkToAnchor("Top") }</td>
-                        <td colspan="4" class="text-left pb-4 pt-4">${result.groupName}</td>
+                        <td colspan="4" class="text-left pb-4 pt-4 text-warning h3">${result.groupName}</td>
                      </tr>
                      ${addHeadingRow(hasFailedTests)}
                      `;

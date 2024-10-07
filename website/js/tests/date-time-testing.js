@@ -10,7 +10,7 @@ const ONE_HOUR = 60 * ONE_MIN;
 function runUnitTestsForDateTime(){
     var allTestResults = [];
 
-    allTestResults.push(addTestGrouping( "Testing the date and time utilities"));
+    allTestResults.push(addTestGrouping( "Date and time functions tests"));
 
 
     allTestResults.push(
