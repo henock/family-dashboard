@@ -64,6 +64,7 @@ function runUnitTest( functionUnderTest, comment, parameters, expectedResult, di
 function runUnitTestSuite( testSuite ){
     var results = [addTestGrouping( testSuite.groupName )];
     testSuite.tests.forEach(function( test ){
+        (test.beforeTest ? test.beforeTest(): '');
         results.push(
             runUnitTest( test.functionUnderTest,
                          test.comment,
@@ -72,6 +73,7 @@ function runUnitTestSuite( testSuite ){
                          test.displayFormatter,
                          test.comparator,
                          test.expectedErrorMgs ));
+        (test.afterTest ? test.afterTest() : '');
         });
     return results;
 }
