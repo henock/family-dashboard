@@ -2,7 +2,8 @@
 
 function runAllTests(){
     var allTestResults = [];
-    allTestResults.push.apply(allTestResults, runUnitTestForTestFramework());
+    allTestResults.push.apply(allTestResults, runUnitTestsForTestFramework());
+    allTestResults.push.apply(allTestResults, runUnitTestsForDateTime());
     displayTestResults( allTestResults );
 }
 
