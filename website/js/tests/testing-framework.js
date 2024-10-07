@@ -60,3 +60,18 @@ function runUnitTest( functionUnderTest, comment, parameters, expectedResult, di
     }
     return testResult;
 }
+
+function runUnitTestSuite( testSuite ){
+    var results = [addTestGrouping( testSuite.groupName )];
+    testSuite.tests.forEach(function( test ){
+        results.push(
+            runUnitTest( test.functionUnderTest,
+                         test.comment,
+                         test.parameters,
+                         test.expectedResult,
+                         test.displayFormatter,
+                         test.comparator,
+                         test.expectedErrorMgs ));
+        });
+    return results;
+}
