@@ -10,7 +10,7 @@ const TWELVE_HOURS			= AN_HOUR * 12;
 const TWENTY_FOUR_HOURS		= AN_HOUR * 24;
 
 
-var dashboardDate = {}
+var dashboardDate = new Date();
 
 function setDashboardDate( otherDate ){
     dashboardDate = (otherDate && otherDate instanceof Date? otherDate: new Date());
@@ -46,8 +46,8 @@ function calculateDateFor( text ){
     }
 
     if( sign === "+"){
-        return new Date(new Date().getTime() + (amount * multiplier));
+        return new Date(dashboardDate.getTime() + (amount * multiplier));
     }else{
-        return new Date(new Date().getTime() - (amount * multiplier));
+        return new Date(dashboardDate.getTime() - (amount * multiplier));
     }
 }
