@@ -114,6 +114,7 @@ on getEvents(dateRangeStart, dateRangeEnd)
 	return jsonEvents
 end getEvents
 
+
 on main()
 	set today to (current date)
 	set endDate to (today + 27 * days)

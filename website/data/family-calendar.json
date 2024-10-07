@@ -1,5 +1,5 @@
 {
-  "fileUpdatedAt": "2024-09-28T16:10:48+00:00",
+  "fileUpdatedAt": "2024-10-05T01:44:38+00:00",
   "events": [
     {
       "startDate": "2024-10-13T12:40:00+00:00",
@@ -23,14 +23,6 @@
       "startTime": "10:00:00",
       "endTime": "11:00:00",
       "description": "Tsegi day meeting",
-      "location": "missing value"
-    },
-    {
-      "startDate": "2024-10-04T15:45:00+00:00",
-      "displayDate": "Friday 04/10/2024",
-      "startTime": "15:45:00",
-      "endTime": "16:45:00",
-      "description": "P:Melkam and sennai play date at J&J",
       "location": "missing value"
     },
     {
@@ -58,11 +50,19 @@
       "location": "Dulwich College Dulwich Common, London, SE21 7LD, England"
     },
     {
-      "startDate": "2024-10-01T13:00:00+00:00",
-      "displayDate": "Tuesday 01/10/2024",
-      "startTime": "13:00:00",
-      "endTime": "15:45:00",
-      "description": "Sennai football tournament ",
+      "startDate": "2024-10-21T09:20:00+00:00",
+      "displayDate": "Monday 21/10/2024",
+      "startTime": "09:20:00",
+      "endTime": "10:20:00",
+      "description": "Melkam�s Gp appointment",
+      "location": "missing value"
+    },
+    {
+      "startDate": "2024-10-14T18:10:00+00:00",
+      "displayDate": "Monday 14/10/2024",
+      "startTime": "18:10:00",
+      "endTime": "18:20:00",
+      "description": "Meeting Sennai�s form teacher",
       "location": "missing value"
     }
   ]
