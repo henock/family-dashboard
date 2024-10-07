@@ -17,6 +17,20 @@ function setDashboardDate( otherDate ){
     return dashboardDate;
 }
 
+function getPaddedTimeSeconds( date ){
+    date = (date ? date : dashboardDate);
+    let time = 	getPaddedTimeMinutes(date) + ':' +
+                padWithLeadingZero(date.getSeconds());
+    return time;
+}
+
+function getPaddedTimeMinutes( date ){
+    date = (date ? date : dashboardDate);
+    let time = 	padWithLeadingZero(date.getHours()) + ':' +
+                padWithLeadingZero(date.getMinutes());
+    return time;
+}
+
 function nowPlusSecond( seconds ){
     return calculateDateFor( "now+" + seconds + "s" );
 }

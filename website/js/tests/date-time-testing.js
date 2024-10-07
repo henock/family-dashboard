@@ -32,16 +32,28 @@ function runUnitTestsForDateTime(){
     calculateDateForTest(allTestResults);
 
     allTestResults.push(
-        runUnitTest( "nowPlusSecond", "now+10s",
-                    [10],
-                    "2001-09-09T01:46:50.000Z",
-                    displayStringified , stringifyComparator));
+        runUnitTest( "nowPlusSecond", "now+10s", [10], "2001-09-09T01:46:50.000Z",
+                        displayStringified , stringifyComparator));
 
     allTestResults.push(
-        runUnitTest( "nowPlusSecond", "now-10s",
-                    [-10],
-                    "2001-09-09T01:46:30.000Z",
-                    displayStringified , stringifyComparator));
+        runUnitTest( "nowPlusSecond", "now-10s", [-10], "2001-09-09T01:46:30.000Z",
+                        displayStringified , stringifyComparator));
+
+    allTestResults.push(
+        runUnitTest( "getPaddedTimeSeconds", "get time from dashboard", [], "02:46:40",
+                        displayStringified , stringifyComparator));
+
+    allTestResults.push(
+        runUnitTest( "getPaddedTimeSeconds", "get time from dashboard", [aDate], "04:33:20",
+                        displayStringified , stringifyComparator));
+
+    allTestResults.push(
+        runUnitTest( "getPaddedTimeMinutes", "get time from dashboard", [], "02:46",
+                        displayStringified , stringifyComparator));
+
+    allTestResults.push(
+        runUnitTest( "getPaddedTimeMinutes", "get time from dashboard", [aDate], "04:33",
+                        displayStringified , stringifyComparator));
 
      return allTestResults;
 }
