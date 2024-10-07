@@ -3,6 +3,16 @@
 const SPACE_CHARACTER 		= '&nbsp;';
 
 
+function getUrlParameter( paramToGet ){
+    let searchParams = new URLSearchParams( window.location.search );
+    return searchParams.get(paramToGet);
+}
+
+function isDebugOn(){
+    runningInDebugMode = ("true" === getUrlParameter("debug"));
+    return runningInDebugMode;
+}
+
 function padWithLeadingSpaces( fullLength, aString ){
     let len = aString.length;
     for (var i = len; i < fullLength; i++) {
@@ -19,6 +29,7 @@ function padWithLeadingZero( num ){
      }
 }
 
+//TODO - Refactor to split out UI from logic
 function writeMessage( message, aClass, removeAfterSeconds, asHtml ){
     let removeTime = (removeAfterSeconds ? nowPlusSecond(removeAfterSeconds) : nowPlusSecond( 5 ));
     let now = dashboardDate;
@@ -58,4 +69,24 @@ function logWarn( message, removeAfterSeconds ){
 function logError( message, removeAfterSeconds ){
     console.trace( message );
     return writeMessage( message, "text-danger p-1", removeAfterSeconds, false );
+}
+
+function getRemoteData( urlToGet ){
+    let data = '';
+    $.ajax({
+        url: urlToGet,
+        type: "GET",
+        async: false,
+        success: function( response ) {
+            data = response;
+        },
+        error: function ( xhr ){
+            if( xhr ){
+                logError( xhr.status +': Error calling ' + urlToGet + ', got the response  ('+xhr.responseText +').');
+            } else{
+                logError( ' Error calling ' + urlToGet + ' ( Unknown error ).');
+            }
+        }
+    });
+    return data;
 }
