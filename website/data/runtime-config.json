@@ -23,6 +23,7 @@
   },
   "boysTimeTable": {
     "show": true,
+    "showNextDayAfterHour": 15,
     "displayDetailed": false
   },
   "tasks": {
