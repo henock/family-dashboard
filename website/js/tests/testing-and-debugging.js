@@ -225,6 +225,7 @@ function generate_test_summary(allTestResults){
     result += build_transport_eta_countdown_element_unit_test();
     result += build_train_row_unit_test();
     result += build_boys_time_table_for_ui_unit_test();
+    result += build_html_for_classes_unit_test();
     result += time_table_day_to_show_test();
     result += work_out_which_week_we_are_in_test();
     result += build_todays_school_run_dates_unit_test();
@@ -440,6 +441,79 @@ function build_train_row_unit_test(){
 
 
 function build_boys_time_table_for_ui_unit_test(){
+    model =  setup_model_for_debugging();
+    let date = new Date("Wed, 25 Sep 2024 14:59:59 GMT");
+    clock.set_new_date_to(date);
+    let expectedResult = `<div class="row">
+                                          <div class="row col-12 pl-4 border-bottom"><h3>Tuesday</h3></div>
+                                          <div id="Melkam" class="col">
+                                              <h3 class="text-success">Melkam</h3>
+                                              <div class="row pl-3 pb-2 mb-2 border-bottom text-success">Week B</div>
+                                              <div class="row ml-1 class-name
+                                              🏟️-Physical-Education ">🏟️ Physical Education</div><div class="row ml-1 class-name
+                                              🧪-Science ">🧪 Science</div><div class="row ml-1 class-name
+                                              🎭-Drama ">🎭 Drama</div><div class="row ml-1 class-name
+                                              🏺-Classics ">🏺 Classics</div><div class="row ml-1 class-name
+                                              🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div>
+                                          </div>
+                                          <div id="Sennai" class="col border-left">
+                                              <h3 class="text-danger">Sennai</h3>
+                                              <div class="row pl-2 pb-2 mb-2 border-bottom text-black">Week B</div>
+                                              <div class="row ml-1 class-name
+                                              🧮-Maths ">🧮 Maths</div><div class="row ml-1 class-name
+                                              🧪-Science ">🧪 Science</div><div class="row ml-1 class-name-play-time
+                                              ⚽-Break ">⚽ Break</div><div class="row ml-1 class-name
+                                              🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name-play-time
+                                              🍛-Lunch ">🍛 Lunch</div><div class="row ml-1 class-name
+                                              🇫🇷-French ">🇫🇷 French</div><div class="row ml-1 class-name-play-time
+                                              🎲-Lunch-&-Clubs ">🎲 Lunch & Clubs</div><div class="row ml-1 class-name
+                                              🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name
+                                              🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name
+                                              🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div>
+                                          </div>
+                                     </div>
+                                     `;
+    let result = run_unit_test( "build_boys_time_table_for_ui", "Table of classes for today",
+                compare_html_and_visualise, expectedResult, [model.data.boysTimeTable, 15] );
+
+    date = new Date("Wed, 25 Sep 2024 15:00:01 GMT");
+    clock.set_new_date_to(date);
+    expectedResult = `<div class="row">
+                                      <div class="row col-12 pl-4 border-bottom"><h3>Thursday (tomorrow)</h3></div>
+                                      <div id="Melkam" class="col">
+                                          <h3 class="text-success">Melkam</h3>
+                                          <div class="row pl-3 pb-2 mb-2 border-bottom text-success">Week B</div>
+                                          <div class="row ml-1 class-name
+                                          🏺-Classics ">🏺 Classics</div><div class="row ml-1 class-name
+                                          🇪🇸-Spanish ">🇪🇸 Spanish</div><div class="row ml-1 class-name
+                                          🛠️-D-&-T ">🛠️ D & T</div><div class="row ml-1 class-name
+                                          🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name
+                                          🧮-Maths ">🧮 Maths</div>
+                                      </div>
+                                      <div id="Sennai" class="col border-left">
+                                          <h3 class="text-danger">Sennai</h3>
+                                          <div class="row pl-2 pb-2 mb-2 border-bottom text-black">Week B</div>
+                                          <div class="row ml-1 class-name
+                                          🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name
+                                          🧪-Science ">🧪 Science</div><div class="row ml-1 class-name-play-time
+                                          ⚽-Break ">⚽ Break</div><div class="row ml-1 class-name
+                                          🧮-Maths ">🧮 Maths</div><div class="row ml-1 class-name-play-time
+                                          🍛-Lunch ">🍛 Lunch</div><div class="row ml-1 class-name
+                                          RS ">RS</div><div class="row ml-1 class-name-play-time
+                                          🎲-Lunch-&-Clubs ">🎲 Lunch & Clubs</div><div class="row ml-1 class-name
+                                          👨🏽‍🏫-Form-Period ">👨🏽‍🏫 Form Period</div><div class="row ml-1 class-name
+                                          🔬-Humanities ">🔬 Humanities</div><div class="row ml-1 class-name
+                                          🧮-Maths ">🧮 Maths</div>
+                                      </div>
+                                 </div>
+                                 `;
+    result += run_unit_test( "build_boys_time_table_for_ui", "Table of classes for tomorrow",
+                compare_html_and_visualise, expectedResult, [model.data.boysTimeTable, 13] );
+    return result;
+}
+
+
+function build_html_for_classes_unit_test(){
     let result = '';
     let boysTimeTable = {};
 

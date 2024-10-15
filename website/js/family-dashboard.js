@@ -45,6 +45,7 @@ function setup_model( debugging ){
     download_last_code_update_file( model );
     update_model_with_secrets( model );
     update_model_with_station_to_code_maps( model );
+    update_model_with_boys_time_table( model, clock.get_Date() );
     return model;
 }
 
@@ -52,7 +53,6 @@ function update_model( model ){
     update_model_with_tasks( model, clock.get_Date() );
     update_model_with_calendar_events( model, clock.get_Date() );
     update_model_with_trains( model, clock.get_Date() );
-    update_model_with_boys_time_table( model, clock.get_Date() );
     update_model_with_weather( model, clock.get_Date() );
     reload_the_dashboard( model, clock.get_Date(), function(){location.reload(true);});
 }
@@ -93,6 +93,7 @@ function update_UI( model ){
     update_trains_ui( model, now );
     update_weather_ui( model, now );
     update_school_run_ui( model, now );
+    update_boys_time_table_ui( model, now );
     remove_overdue_messages();
     changeBackgroundColors( model );
 }
@@ -161,7 +162,7 @@ function update_model_with_runtime_config( model ){
         model.config.showWeather = data.weather.show;
         model.config.showCalendar = data.calendar.show;
         model.config.showTimeZones = data.timeZones.show;
-        model.config.showBoysTimeTable = data.boysTimeTable.show;
+        model.config.boysTimeTable = data.boysTimeTable;
         model.config.showSchoolRunCountDown = data.schoolRunCountDown.show;
         sanitise_dates_for_commute_config( model.runtimeConfig.transport.commute, clock.get_Date() );
     }catch( e ) {

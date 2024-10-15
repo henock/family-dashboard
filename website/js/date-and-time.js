@@ -8,6 +8,10 @@ let clock = {
         this.adjustedTimeInSeconds = seconds;
     },
 
+    set_new_date_to: function ( new_date ){
+        this.currentDate = new_date;
+    },
+
     get_Date: function (){
         if( this.currentDate == null ){
             return new Date( new Date().getTime() + (this.adjustedTimeInSeconds * 1000) );
@@ -16,8 +20,6 @@ let clock = {
         }
     }
 }
-
-
 
 
 function pad_with_leading_zero( num ){
