@@ -83,7 +83,7 @@ tr td{
 }
 
 .calendar-event .short-day{
-    font-size: 35px;
+    font-size: 30px;
     color: white;
     margin-left: 5px;
 }
@@ -95,7 +95,7 @@ tr td{
 }
 
 .calendar-event .short-day-dark{
-    font-size: 35px;
+    font-size: 30px;
     color: black;
     margin-left: 5px;
 }
@@ -117,6 +117,7 @@ tr td{
 }
 
 .calendar-event .description{
+    font-size: 15px;
     color: white;
     padding-right: 10px;
 }
