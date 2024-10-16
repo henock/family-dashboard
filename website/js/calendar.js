@@ -51,7 +51,7 @@ function build_calendar_events_for_ui( calendar ){
                                 <div class="row short-day${sameDayAsPrevious?'-dark':''}">${shortDay}</div>
                                 <div class="row day-number${sameDayAsPrevious?'-dark':''}">${dayNumber}</div>
                             </td>
-                            <td>
+                            <td class="pl-1">
                                 <div class="col pl-4">
                                     <div class="row"><span class="span6 start-time">${startTime}</span>-<span class="pl-2 end-time">${endTime}</span></div>
                                     <div class="row"><span class="span6 description">${description}</span><span class="location">${location}</span></div>
