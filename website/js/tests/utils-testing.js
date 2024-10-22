@@ -128,6 +128,12 @@ function runUnitTestsForUtils(){
                 comment: "logError message only with 20 second delay",
                 parameters: ["a message", 20],
                 expectedResult: `<li class='text-danger p-1' remove-time="1000000020000"><xmp> [02:46:40] a message</xmp></li>`
+            },
+            {
+                functionUnderTest: "getRemoteData",
+                comment: "Returns the contents of the test file",
+                parameters: ["/family-dashboard/website/data-for-testing/get-remote-data-unit-test-file.txt"],
+                expectedResult: `test-file-contents`
             }
         ]
     });
