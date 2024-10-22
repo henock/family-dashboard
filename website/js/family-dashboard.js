@@ -152,7 +152,7 @@ function update_model_with_station_to_code_maps( model ){
 }
 
 function update_model_with_runtime_config( model ){
-    let urlToGet = (model.config.debugging ?  "data-for-running-locally/debug-runtime-config.json"
+    let urlToGet = (model.config.debugging ?  "data-for-testing/debug-runtime-config.json"
                                           :  "data/runtime-config.json");
     try {
         let data =  get_remote_data( urlToGet );
@@ -180,10 +180,10 @@ function update_urls_if_debugging( model ) {
     let urls = {};
 
     if(model.config.debugging){
-        urls.runtimeConfig       = "data-for-running-locally/debug-runtime-config.json";
-        urls.lastCodeUpdate      = "data-for-running-locally/last-code-update.json";
-        urls.secrets             = "data-for-running-locally/debug-secrets.json";
-        urls.familyICalendarUrl  = "data-for-running-locally/family-calendar.json";
+        urls.runtimeConfig       = "data-for-testing/debug-runtime-config.json";
+        urls.lastCodeUpdate      = "data-for-testing/last-code-update.json";
+        urls.secrets             = "data-for-testing/debug-secrets.json";
+        urls.familyICalendarUrl  = "data-for-testing/family-calendar.json";
         urls.boysTimeTable       = "data/boys-time-table.json";
     }else{
         urls.runtimeConfig       = "data/runtime-config.json";

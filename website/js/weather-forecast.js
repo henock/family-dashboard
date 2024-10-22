@@ -80,7 +80,7 @@ function build_weather_url( location, timeStep, apiKey ){
 function update_model_with_weather_now_and_future_hour( model ){
     let urlToGet = '';
     if(model.config.debugging){
-        urlToGet = "data-for-running-locally/tomorrow-timelines-1h.json";
+        urlToGet = "data-for-testing/tomorrow-timelines-1h.json";
     } else{
         urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1h', model.secrets.tomorrowIo.apiKey);
     }
@@ -119,7 +119,7 @@ function update_model_with_weather_now_and_future_hour( model ){
 function update_model_with_weather_next_five_days(model){
     let urlToGet = '';
     if(model.config.debugging){
-        urlToGet = "data-for-running-locally/tomorrow-timelines-1d.json";
+        urlToGet = "data-for-testing/tomorrow-timelines-1d.json";
     } else{
         urlToGet = build_weather_url( model.runtimeConfig.weather.location, '1d', model.secrets.tomorrowIo.apiKey);
     }

@@ -198,7 +198,7 @@ function get_train_station_departures( commute, model ){
     let urlToGet = "";
     let startingStationCode =  model.stationNameToCodeMap.get( commute.from );
     if(model.config.debugging){
-        urlToGet = "data-for-running-locally/transportapi-" + startingStationCode +".json";
+        urlToGet = "data-for-testing/transportapi-" + startingStationCode +".json";
     } else{
         let now = clock.get_Date();
         let fullDate = get_date_with_dashes( now );
