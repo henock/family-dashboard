@@ -215,6 +215,7 @@ function generate_test_summary(allTestResults){
     let result = '';
     result += setup_model_unit_test();  //SHOULD BE THE FIRST TEST!!
     result += should_sort_calendar_events();
+    result += should_get_remote_data();
     result += download_calendar_unit_test();
     result += should_display_last_calendar_update();
     result += should_build_calendar_html();
@@ -886,6 +887,11 @@ function should_sort_calendar_events(){
     return result;
 }
 
+function should_get_remote_data(){
+    return run_unit_test( 'get_remote_data', "get remote-data-unit-test-file.txt", compare_exact, 'test-file-contents',
+                                ["data-for-running-locally/remote-data-unit-test-file.txt"] );
+}
+
 
 function should_display_last_calendar_update(){
     let theCurrentTime = "12:05";
@@ -905,72 +911,67 @@ function should_display_last_calendar_update(){
 
 function should_build_calendar_html(){
 
-    let html =  `
-    <div>
-        <table class="calendar-event border-bottom"><tr class="border-top  pb-2">
-                <td>
-                    <div class="row short-day">Sat</div>
-                    <div class="row day-number">5</div>
-                </td>
-                <td>
-                    <div class="col pl-4">
-                        <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
-                        <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location"></span></div>
-                    </div>
-                </td>
-            </tr>
-           <tr class="border-top border-dark pb-2">
-                <td>
-                    <div class="row short-day-dark">Sat</div>
-                    <div class="row day-number-dark">5</div>
-                </td>
-                <td>
-                    <div class="col pl-4">
-                        <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
-                        <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location">🌍</span></div>
-                    </div>
-                </td>
-            </tr>
-           <tr class="border-top  pb-2">
-                <td>
-                    <div class="row short-day">Sun</div>
-                    <div class="row day-number">13</div>
-                </td>
-                <td>
-                    <div class="col pl-4">
-                        <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
-                        <div class="row"><span class="span6 description">Event description with funny quotes (', ', ') replaced</span><span class="location"></span></div>
-                    </div>
-                </td>
-            </tr>
-           <tr class="border-top border-dark pb-2">
-                <td>
-                    <div class="row short-day-dark">Sun</div>
-                    <div class="row day-number-dark">13</div>
-                </td>
-                <td>
-                    <div class="col pl-4">
-                        <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
-                        <div class="row"><span class="span6 description">Event description with no location</span>
-                        <span class="location"></span></div>
-                    </div>
-                </td>
-            </tr>
-           <tr class="border-top border-dark pb-2">
-                <td>
-                    <div class="row short-day-dark">Sun</div>
-                    <div class="row day-number-dark">13</div>
-                </td>
-                <td>
-                    <div class="col pl-4">
-                        <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
-                        <div class="row"><span class="span6 description">Event description with location</span>
-                        <span class="location">🌍</span></div>
-                    </div>
-                </td>
-            </tr>
-           </table></div><div class="pt-2 pl-2 text-danger">Last calendar update: 2024-09-27 at 01:19</div>
-                `;
+    let html =  `<div><table class="calendar-event border-bottom"><tr class="border-top  pb-2">
+                                             <td>
+                                                 <div class="row short-day">Sat</div>
+                                                 <div class="row day-number">5</div>
+                                             </td>
+                                             <td class="pl-1">
+                                                 <div class="col pl-4">
+                                                     <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                                                     <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location"></span></div>
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                        <tr class="border-top border-dark pb-2">
+                                             <td>
+                                                 <div class="row short-day-dark">Sat</div>
+                                                 <div class="row day-number-dark">5</div>
+                                             </td>
+                                             <td class="pl-1">
+                                                 <div class="col pl-4">
+                                                     <div class="row"><span class="span6 start-time">08:00</span>-<span class="pl-2 end-time">09:00</span></div>
+                                                     <div class="row"><span class="span6 description">P:Pr **** REDACTED **** on</span><span class="location">🌍</span></div>
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                        <tr class="border-top  pb-2">
+                                             <td>
+                                                 <div class="row short-day">Sun</div>
+                                                 <div class="row day-number">13</div>
+                                             </td>
+                                             <td class="pl-1">
+                                                 <div class="col pl-4">
+                                                     <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                                                     <div class="row"><span class="span6 description">Event description with funny quotes (', ', ') replaced</span><span class="location"></span></div>
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                        <tr class="border-top border-dark pb-2">
+                                             <td>
+                                                 <div class="row short-day-dark">Sun</div>
+                                                 <div class="row day-number-dark">13</div>
+                                             </td>
+                                             <td class="pl-1">
+                                                 <div class="col pl-4">
+                                                     <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                                                     <div class="row"><span class="span6 description">Event description with no location</span><span class="location"></span></div>
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                        <tr class="border-top border-dark pb-2">
+                                             <td>
+                                                 <div class="row short-day-dark">Sun</div>
+                                                 <div class="row day-number-dark">13</div>
+                                             </td>
+                                             <td class="pl-1">
+                                                 <div class="col pl-4">
+                                                     <div class="row"><span class="span6 start-time">12:40</span>-<span class="pl-2 end-time">13:40</span></div>
+                                                     <div class="row"><span class="span6 description">Event description with location</span><span class="location">🌍</span></div>
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                        </table></div><div class="pt-2 pl-2 text-danger">Last calendar update: 2024-09-27 at 01:19</div>`;
 
     var calendar = JSON.parse(`
                                 {
@@ -1006,7 +1007,6 @@ function should_build_calendar_html(){
                                              "endTime": "13:40:00",
                                              "description": "Event description with location",
                                              "location": "Sports Club Giant Arches Road, London, SE24 9HP, England"}
-
                                     ]
                                 }`
                     );
