@@ -39,30 +39,33 @@ function addHeadingRow( hasFailedTests ){
             </tr>`;
 }
 
+function buildHtmlForTestGroup(result, hasFailedTests){
+    return `<tr>
+               <td class="pr-3">${buildLinkToAnchor("Top") }</td>
+               <td colspan="4" class="text-left pb-4 pt-4 text-warning h3">${result.groupName}</td>
+            </tr>
+            ${addHeadingRow(hasFailedTests)}
+            `;
+}
+
+function buildHtmlForTests(result){
+    const textClass = (result.passed ? "text-success": "text-danger");
+    const formattedExpectedResult = result.displayFormatter(result.expectedResult);
+    const formattedActualResult   = result.displayFormatter(result.actualResult);
+    return `<tr class="${textClass}">
+                <td><a id="${result.id}"/> ${result.id}</td>
+                <td>${(result.functionUnderTest ? result.functionUnderTest:result.sectionUnderTest)}</td>
+                <td>${result.comment}</td>
+                ${( result.passed ? "<td></td>": "<td>"+ formattedExpectedResult +
+                                    "</td><td>" + formattedActualResult +"</td>")}
+            </tr>
+           `;
+}
+
 function buildHtmlForTestResults( listOfResults, hasFailedTests ){
     var html = "";
-    listOfResults.forEach(function( result ){
-        if( result.isTestGroup){
-            html += `<tr>
-                        <td class="pr-3">${buildLinkToAnchor("Top") }</td>
-                        <td colspan="4" class="text-left pb-4 pt-4 text-warning h3">${result.groupName}</td>
-                     </tr>
-                     ${addHeadingRow(hasFailedTests)}
-                     `;
-        }else{
-            let textClass = (result.passed ? "text-success": "text-danger");
-            let formattedExpectedResult = result.displayFormatter(result.expectedResult);
-            let formattedActualResult   = result.displayFormatter(result.actualResult);
-            html += `
-                <tr class="${textClass}">
-                    <td><a id="${result.id}"/> ${result.id}</td>
-                    <td>${result.functionUnderTest}</td>
-                    <td>${result.comment}</td>
-                    ${( result.passed ? "<td></td>": "<td>"+ formattedExpectedResult +
-                                        "</td><td>" + formattedActualResult +"</td>")}
-                </tr>
-               `;
-        }
+    listOfResults.forEach( result => {
+        html += result.isTestGroup ? buildHtmlForTestGroup(result,hasFailedTests): buildHtmlForTests(result);
     });
 
     return html;

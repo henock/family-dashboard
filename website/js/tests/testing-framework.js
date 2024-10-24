@@ -4,9 +4,19 @@ function stringifyComparator(a, b){
     return JSON.stringify(a) === JSON.stringify(b);
 }
 
+function compareHtmlAndVisualise( a, b ){
+    return {
+        passed: remove_white_space(a) === remove_white_space(b),
+        expectedValue: a,
+        testedValue:  b
+    }
+}
+
+
 function dateTimeComparatorInsensitive(a, b){
     return dateTimeComparatorActual(a, b, true);
 }
+
 function dateTimeComparatorExact(a, b){
     return dateTimeComparatorActual(a, b, false);
 }
