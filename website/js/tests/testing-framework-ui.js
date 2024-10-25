@@ -23,8 +23,9 @@ function buildLinkToAnchor( text, aClass, anchor ){
 function buildLinksToTests( results ){
     var html = "<ol>";
     results.forEach( function( result ){
-        let textClass = (result.passed ? "text-success": "text-danger");
-        html += `<li>${ buildLinkToAnchor(result.functionUnderTest, textClass, result.id ) }</li>`;
+        const textClass = (result.passed ? "text-success": "text-danger");
+        const functionUnderTest = (result.functionUnderTest ? result.functionUnderTest:result.sectionUnderTest)
+        html += `<li>${ buildLinkToAnchor(functionUnderTest, textClass, result.id ) }</li>`;
     });
 
     return (html += "</ol>");
@@ -121,7 +122,7 @@ function displayTestResults( allTestResults ){
             <tr class="text-danger">
                 <td class="display-2">Failed</td>
                 <td class="display-2">${failedTests.length}</td>
-                <td>${ buildLinksToTests(failedTests)}</td>
+                <td>${buildLinksToTests(failedTests)}</td>
             </tr>
         </table>
         <table>
