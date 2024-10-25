@@ -34,8 +34,9 @@ function addHeadingRow( hasFailedTests ){
     return `<tr>
                 <th>Test id</th>
                 <th>Function under test</th>
-                <th>comment</th>
-                ${ (hasFailedTests ? "<th>expected</th><th>actual</th>": "")}
+                <th>Comment</th>
+                <th>As text area</th>
+                ${ (hasFailedTests ? "<th>Expected</th><th>Actual</th>": "")}
             </tr>`;
 }
 
@@ -48,24 +49,50 @@ function buildHtmlForTestGroup(result, hasFailedTests){
             `;
 }
 
+function toggleToTextArea(event){
+    const checkboxId = event.id;
+    const id = checkboxId.substr("checkbox-".length);
+    if(event.checked){
+        document.getElementById("expected-" + id ).classList.add('d-none');
+        document.getElementById("actual-" + id ).classList.add('d-none');
+        document.getElementById("text-area-expected-" + id ).classList.remove('d-none');
+        document.getElementById("text-area-actual-" + id ).classList.remove('d-none');
+    }else{
+        document.getElementById("text-area-expected-" + id ).classList.add('d-none');
+        document.getElementById("text-area-actual-" + id ).classList.add('d-none');
+        document.getElementById("expected-" + id ).classList.remove('d-none');
+        document.getElementById("actual-" + id ).classList.remove('d-none');
+    }
+}
+
 function buildHtmlForTests(result){
     const textClass = (result.passed ? "text-success": "text-danger");
     const formattedExpectedResult = result.displayFormatter(result.expectedResult);
     const formattedActualResult   = result.displayFormatter(result.actualResult);
+    const expectedResultInTextArea = displayAsTextArea(result.expectedResult);
+    const actualResultInTextArea   = displayAsTextArea(result.actualResult);
     return `<tr class="${textClass}">
                 <td><a id="${result.id}"/> ${result.id}</td>
                 <td>${(result.functionUnderTest ? result.functionUnderTest:result.sectionUnderTest)}</td>
                 <td>${result.comment}</td>
-                ${( result.passed ? "<td></td>": "<td>"+ formattedExpectedResult +
-                                    "</td><td>" + formattedActualResult +"</td>")}
+                <td><input  class="${( result.passed ? 'd-none' :'')}" type="checkbox" id="checkbox-${result.id}"
+                    onchange="toggleToTextArea(this)"/>
+                </td>
+                <td id="expected-${result.id}">${( result.passed ? "": formattedExpectedResult)}</td>
+                <td id="actual-${result.id}">${( result.passed ? "": formattedActualResult)}</td>
+                <td class="d-none" id="text-area-expected-${result.id}">${( result.passed ? "": expectedResultInTextArea)}</td>
+                <td class="d-none" id="text-area-actual-${result.id}">${( result.passed ? "": actualResultInTextArea)}</td>
             </tr>
            `;
 }
 
 function buildHtmlForTestResults( listOfResults, hasFailedTests ){
     var html = "";
+
     listOfResults.forEach( result => {
-        html += result.isTestGroup ? buildHtmlForTestGroup(result,hasFailedTests): buildHtmlForTests(result);
+        html += result.isTestGroup
+                    ? buildHtmlForTestGroup(result,hasFailedTests)
+                    : buildHtmlForTests(result);
     });
 
     return html;
@@ -102,5 +129,5 @@ function displayTestResults( allTestResults ){
         </table>
         `;
 
-    $("#tests").html( testResultTable );
+    document.getElementById("tests").innerHTML = testResultTable;
 }
