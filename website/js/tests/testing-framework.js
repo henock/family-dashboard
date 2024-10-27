@@ -41,6 +41,11 @@ function ignoreSpaceComparator( a, b ) {
     return removeWhiteSpace(a) === removeWhiteSpace(b);
 }
 
+function regexComparator(regex, str) {
+    regex = new RegExp(regex);
+    return  regex.test(str);
+}
+
 function addTestGrouping( groupName ){
     return { groupName: groupName, isTestGroup: true };
 }

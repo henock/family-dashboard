@@ -124,6 +124,42 @@ function runUnitTestsForTestFramework() {
                 expectedResult: false
             },
             {
+                functionUnderTest: "regexComparator",
+                comment:"should pass any string for .*",
+                parameters: [ ".*", "Some random text"],
+                expectedResult: true
+            },
+            {
+                functionUnderTest: "regexComparator",
+                comment:"should pass any string for .*random.*",
+                parameters: [ ".*random.*", "Some random text"],
+                expectedResult: true
+            },
+            {
+                functionUnderTest: "regexComparator",
+                comment:"should pass any string for Some.*text",
+                parameters: [ "Some.*text", "Some random text"],
+                expectedResult: true
+            },
+            {
+                functionUnderTest: "regexComparator",
+                comment:"should pass any string for A.*text",
+                parameters: [ "A.*text", "A much longer but still random text"],
+                expectedResult: true
+            },
+            {
+                functionUnderTest: "regexComparator",
+                comment:"should pass any string for A.*but.*text",
+                parameters: [ "A.*but.*text", "A much longer but still random text"],
+                expectedResult: true
+            },
+            {
+                functionUnderTest: "regexComparator",
+                comment:"should pass any string for A.*but.*text",
+                parameters: [ "A.*bob.*text", "A much <a href=\"bob\">longer</a> but still random text"],
+                expectedResult: true
+            },
+            {
                 functionUnderTest: "addTwoNumbersTogether",
                 comment: "should pass for a passing test",
                 parameters: [1, 2],
