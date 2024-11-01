@@ -51,9 +51,12 @@ function buildHtmlForTestGroup(result, hasFailedTests){
 }
 
 function toggleToTextArea(event){
-    const checkboxId = event.id;
-    const id = checkboxId.substr("checkbox-".length);
-    if(event.checked){
+    const buttonId = event.id;
+    const button = document.getElementById("button-" +buttonId );
+    const id = buttonId.substr("button-".length);
+    alert( buttonId);
+    alert( button);
+    if("false" === button.isToggledOn ){
         document.getElementById("expected-" + id ).classList.add('d-none');
         document.getElementById("actual-" + id ).classList.add('d-none');
         document.getElementById("text-area-expected-" + id ).classList.remove('d-none');
@@ -76,8 +79,8 @@ function buildHtmlForTests(result){
                 <td><a id="${result.id}"/> ${result.id}</td>
                 <td>${(result.functionUnderTest ? result.functionUnderTest:result.sectionUnderTest)}</td>
                 <td>${result.comment}</td>
-                <td><input  class="${( result.passed ? 'd-none' :'')}" type="checkbox" id="checkbox-${result.id}"
-                    onchange="toggleToTextArea(this)"/>
+                <td><input  class="${( result.passed ? 'd-none' :'')}" type="button" isToggledOn="false" value="switch" id="button-${result.id}"
+                    onclick="toggleToTextArea(this)"/>
                 </td>
                 <td id="expected-${result.id}">${( result.passed ? "": formattedExpectedResult)}</td>
                 <td id="actual-${result.id}">${( result.passed ? "": formattedActualResult)}</td>
