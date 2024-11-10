@@ -33,15 +33,14 @@ function update_boys_time_table_ui( model, now ){
     }
 }
 
-function build_boys_time_table_for_ui( boysTimeTable, showNextDayAfterHour ){
-    const weekday = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
 
+
+function build_boys_time_table_for_ui( boysTimeTable, showNextDayAfterHour ){
     let weekType = work_out_which_week_we_are_in();
     let weekToShow = (weekType == "A" ? 0:1);
-    let dayToShow = time_table_day_to_show(clock.get_Date());
+    let dayToShow = time_table_day_to_show(clock.get_Date(), showNextDayAfterHour);
     let isAfterSchool = clock.get_Date().getHours() > showNextDayAfterHour;
-    dayToShow = isAfterSchool ? dayToShow+1: dayToShow;
-    dayToShowString = isAfterSchool ? weekday[dayToShow+1] + " (tomorrow)": weekday[dayToShow];
+    dayToShowString = weekday[dayToShow] + (isAfterSchool ? " (tomorrow)"  + clock.get_Date(): "");
 
     let MelkamsClasses = boysTimeTable.Melkam.weeks[weekToShow].days[dayToShow].classes;
     let SennaisClasses = boysTimeTable.Sennai.weeks[0].days[dayToShow].classes;
@@ -64,13 +63,16 @@ function build_boys_time_table_for_ui( boysTimeTable, showNextDayAfterHour ){
            `;
 }
 
-function time_table_day_to_show( now ){
+function time_table_day_to_show( now, showNextDayAfterHour ){
     now = (now ? now : clock.get_Date());
-    let dayToShow = 0;
-    if(is_week_day( now )){
-        dayToShow = now.getDay()-1;  //Time table starts on Monday not Sunday
+    const SUNDAY = 0;
+    const FRIDAY = 5;
+    const MONDAY = 1;
+    let dayToShow = now.getDay();
+    if(now.getHours() >= showNextDayAfterHour){
+        dayToShow += 1; //show next day after school hours
     }
-    return dayToShow;
+    return dayToShow == SUNDAY || dayToShow > FRIDAY ? MONDAY: dayToShow;
 }
 
 function work_out_which_week_we_are_in( now ){

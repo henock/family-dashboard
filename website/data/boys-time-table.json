@@ -138,6 +138,10 @@
         "name": "Week A",
         "days": [
           {
+            "name": "Sunday",
+            "classes": []
+          },
+          {
             "name": "Monday",
             "classes": [
               {
@@ -244,6 +248,10 @@
       {
         "name": "Week B",
         "days": [
+          {
+            "name": "Sunday",
+            "classes": []
+          },
           {
             "name": "Monday",
             "classes": [
@@ -461,6 +469,10 @@
       {
         "name": "Week A",
         "days": [
+          {
+            "name": "Sunday",
+            "classes": []
+          },
           {
             "name": "Monday",
             "classes": [

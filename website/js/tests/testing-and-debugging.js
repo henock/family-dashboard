@@ -443,73 +443,77 @@ function build_train_row_unit_test(){
 
 function build_boys_time_table_for_ui_unit_test(){
     model =  setup_model_for_debugging();
-    let date = new Date("Wed, 25 Sep 2024 14:59:59 GMT");
+    let showNextDayAfterHour = 15;
+    let date = new Date("2024-11-11T14:58:59.000Z");
     clock.set_new_date_to(date);
+    clock.adjust_current_time_by(0);  // clears current time in case other tests have not done so.
     let expectedResult = `<div class="row">
-                                          <div class="row col-12 pl-4 border-bottom"><h3>Tuesday</h3></div>
+                                          <div class="row col-12 pl-4 border-bottom"><h3>Monday</h3></div>
                                           <div id="Melkam" class="col">
                                               <h3 class="text-success">Melkam</h3>
-                                              <div class="row pl-3 pb-2 mb-2 border-bottom text-success">Week B</div>
+                                              <div class="row pl-3 pb-2 mb-2 border-bottom text-success">Week A</div>
                                               <div class="row ml-1 class-name
-                                              🏟️-Physical-Education ">🏟️ Physical Education</div><div class="row ml-1 class-name
-                                              🧪-Science ">🧪 Science</div><div class="row ml-1 class-name
-                                              🎭-Drama ">🎭 Drama</div><div class="row ml-1 class-name
-                                              🏺-Classics ">🏺 Classics</div><div class="row ml-1 class-name
-                                              🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div>
+                                              👨🏽‍🏫-Form-Period ">👨🏽‍🏫 Form Period</div><div class="row ml-1 class-name
+                                              🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name
+                                              🎷-Music ">🎷 Music</div><div class="row ml-1 class-name
+                                              🇪🇸-Spanish ">🇪🇸 Spanish</div><div class="row ml-1 class-name
+                                              🧪-Science ">🧪 Science</div>
                                           </div>
                                           <div id="Sennai" class="col border-left">
                                               <h3 class="text-danger">Sennai</h3>
-                                              <div class="row pl-2 pb-2 mb-2 border-bottom text-black">Week B</div>
+                                              <div class="row pl-2 pb-2 mb-2 border-bottom text-black">Week A</div>
                                               <div class="row ml-1 class-name
                                               🧮-Maths ">🧮 Maths</div><div class="row ml-1 class-name
-                                              🧪-Science ">🧪 Science</div><div class="row ml-1 class-name-play-time
+                                              🎷-Music ">🎷 Music</div><div class="row ml-1 class-name-play-time
                                               ⚽-Break ">⚽ Break</div><div class="row ml-1 class-name
-                                              🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name-play-time
+                                              🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name-play-time
                                               🍛-Lunch ">🍛 Lunch</div><div class="row ml-1 class-name
-                                              🇫🇷-French ">🇫🇷 French</div><div class="row ml-1 class-name-play-time
+                                              🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name-play-time
                                               🎲-Lunch-&-Clubs ">🎲 Lunch & Clubs</div><div class="row ml-1 class-name
-                                              🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name
-                                              🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name
-                                              🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div>
+                                              👨🏽‍🏫-Form-Period ">👨🏽‍🏫 Form Period</div><div class="row ml-1 class-name
+                                              🔬-Humanities ">🔬 Humanities</div><div class="row ml-1 class-name
+                                              🧮-Maths ">🧮 Maths</div>
                                           </div>
                                      </div>
                                      `;
-    let result = run_unit_test( "build_boys_time_table_for_ui", "Table of classes for today",
-                compare_html_and_visualise, expectedResult, [model.data.boysTimeTable, 15] );
+    let result = run_unit_test( "build_boys_time_table_for_ui", `Table of classes for today: ${date}
+                                                                 and showNextDayAfterHour=${showNextDayAfterHour}`,
+                compare_html_and_visualise, expectedResult, [model.data.boysTimeTable, showNextDayAfterHour] );
 
-    date = new Date("Wed, 25 Sep 2024 15:00:01 GMT");
+    date = new Date("2024-11-11T15:00:01.000Z");
     clock.set_new_date_to(date);
     expectedResult = `<div class="row">
-                                      <div class="row col-12 pl-4 border-bottom"><h3>Thursday (tomorrow)</h3></div>
+                                      <div class="row col-12 pl-4 border-bottom"><h3>Tuesday</h3></div>
                                       <div id="Melkam" class="col">
                                           <h3 class="text-success">Melkam</h3>
-                                          <div class="row pl-3 pb-2 mb-2 border-bottom text-success">Week B</div>
+                                          <div class="row pl-3 pb-2 mb-2 border-bottom text-success">Week A</div>
                                           <div class="row ml-1 class-name
-                                          🏺-Classics ">🏺 Classics</div><div class="row ml-1 class-name
-                                          🇪🇸-Spanish ">🇪🇸 Spanish</div><div class="row ml-1 class-name
-                                          🛠️-D-&-T ">🛠️ D & T</div><div class="row ml-1 class-name
+                                          🧮-Maths ">🧮 Maths</div><div class="row ml-1 class-name
+                                          🎭-Drama ">🎭 Drama</div><div class="row ml-1 class-name
                                           🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name
-                                          🧮-Maths ">🧮 Maths</div>
+                                          📜-History ">📜 History</div><div class="row ml-1 class-name
+                                          🏺-Classics ">🏺 Classics</div>
                                       </div>
                                       <div id="Sennai" class="col border-left">
                                           <h3 class="text-danger">Sennai</h3>
-                                          <div class="row pl-2 pb-2 mb-2 border-bottom text-black">Week B</div>
+                                          <div class="row pl-2 pb-2 mb-2 border-bottom text-black">Week A</div>
                                           <div class="row ml-1 class-name
-                                          🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name
+                                          🧮-Maths ">🧮 Maths</div><div class="row ml-1 class-name
                                           🧪-Science ">🧪 Science</div><div class="row ml-1 class-name-play-time
                                           ⚽-Break ">⚽ Break</div><div class="row ml-1 class-name
-                                          🧮-Maths ">🧮 Maths</div><div class="row ml-1 class-name-play-time
+                                          🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div><div class="row ml-1 class-name-play-time
                                           🍛-Lunch ">🍛 Lunch</div><div class="row ml-1 class-name
-                                          RS ">RS</div><div class="row ml-1 class-name-play-time
+                                          🇫🇷-French ">🇫🇷 French</div><div class="row ml-1 class-name-play-time
                                           🎲-Lunch-&-Clubs ">🎲 Lunch & Clubs</div><div class="row ml-1 class-name
-                                          👨🏽‍🏫-Form-Period ">👨🏽‍🏫 Form Period</div><div class="row ml-1 class-name
-                                          🔬-Humanities ">🔬 Humanities</div><div class="row ml-1 class-name
-                                          🧮-Maths ">🧮 Maths</div>
+                                          🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name
+                                          🏟️-Games ">🏟️ Games</div><div class="row ml-1 class-name
+                                          🏴󠁧󠁢󠁥󠁮󠁧󠁿-English ">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</div>
                                       </div>
                                  </div>
                                  `;
-    result += run_unit_test( "build_boys_time_table_for_ui", "Table of classes for tomorrow",
-                compare_html_and_visualise, expectedResult, [model.data.boysTimeTable, 13] );
+    result += run_unit_test( "build_boys_time_table_for_ui", `Table of classes for day after ${date}
+                                                                and showNextDayAfterHour=${showNextDayAfterHour}`,
+                compare_html_and_visualise, expectedResult, [model.data.boysTimeTable, showNextDayAfterHour] );
     return result;
 }
 
@@ -557,7 +561,8 @@ function build_html_for_classes_unit_test(){
 
     let week0 = MelkamsWeek.weeks[0];
 
-    result += run_unit_test( "build_html_for_classes", "list of Melkams's classes in a day",  compare_html_and_visualise, MelkamsExpectedResult, [ week0.days[0].classes, "Week A"] );
+    result += run_unit_test( "build_html_for_classes", "list of Melkams's classes in a day",
+                                compare_html_and_visualise, MelkamsExpectedResult, [ week0.days[0].classes, "Week A"] );
 
     let SennaisWeeks = {
                     "weeks": [
@@ -620,28 +625,48 @@ function build_html_for_classes_unit_test(){
                                 <div class="row ml-1 class-name 🧮-Maths ">🧮 Maths</div>
                                 `;
     week0 = SennaisWeeks.weeks[0];
-    result += run_unit_test( "build_html_for_classes", "list of Sennai's classes in a day",  compare_html_and_visualise, SennaisExpectedResult, [ week0.days[0].classes] );
-
-
-//    result += run_unit_test( "build_boys_time_table_for_ui", "table of Sennai's time table",  compare_html_and_visualise, expectedResult, [boysTimeTable] );
+    result += run_unit_test( "build_html_for_classes", "list of Sennai's classes in a day",
+                                compare_html_and_visualise, SennaisExpectedResult, [ week0.days[0].classes] );
     return result;
 }
 
 function time_table_day_to_show_test(){
-    let monday = new Date("2024-09-30T07:00:00.000Z");
-    let result = run_unit_test( "time_table_day_to_show", "Should show be 0 for monday",  compare_exact, 0, [monday] );
-    let tuesday = new Date("2024-10-01T07:00:00.000Z");
-    result += run_unit_test( "time_table_day_to_show", "Should show be 1 for tuesday",  compare_exact, 1, [tuesday] );
-    let wednesday = new Date("2024-10-02T07:00:00.000Z");
-    result += run_unit_test( "time_table_day_to_show", "Should show be 2 for wednesday",  compare_exact, 2, [wednesday] );
-    let thursday = new Date("2024-10-03T07:00:00.000Z");
-    result += run_unit_test( "time_table_day_to_show", "Should show be 3 for thursday",  compare_exact, 3, [thursday] );
-    let friday = new Date("2024-10-04T07:00:00.000Z");
-    result += run_unit_test( "time_table_day_to_show", "Should show be 4 for friday",  compare_exact, 4, [friday] );
-    let saturday = new Date("2024-10-05T07:00:00.000Z");
-    result += run_unit_test( "time_table_day_to_show", "Should show be 4 for monday next week",  compare_exact, 0, [saturday] );
-    let sunday = new Date("2024-10-06T07:00:00.000Z");
-    result += run_unit_test( "time_table_day_to_show", "Should show be 4 for monday next week",  compare_exact, 0, [sunday] );
+    let showNextDayAfterHour = 15;
+    let monday_am    = new Date("2024-09-30T07:00:00.000Z");
+    let monday_pm    = new Date("2024-09-30T14:00:00.000Z");
+    let tuesday_am   = new Date("2024-10-01T07:00:00.000Z");
+    let tuesday_pm   = new Date("2024-10-01T14:00:00.000Z");
+    let wednesday_am = new Date("2024-10-02T07:00:00.000Z");
+    let wednesday_pm = new Date("2024-10-02T14:00:00.000Z");
+    let thursday_am  = new Date("2024-10-03T07:00:00.000Z");
+    let thursday_pm  = new Date("2024-10-03T14:00:00.000Z");
+    let friday_am    = new Date("2024-10-04T07:00:00.000Z");
+    let friday_pm    = new Date("2024-10-04T14:00:00.000Z");
+    let saturday_am  = new Date("2024-10-05T07:00:00.000Z");
+    let saturday_pm  = new Date("2024-10-05T14:00:00.000Z");
+    let sunday_am    = new Date("2024-10-06T07:00:00.000Z");
+    let sunday_pm    = new Date("2024-10-06T14:00:00.000Z");
+
+    function helper( testDate, shouldReturn){
+        return run_unit_test( "time_table_day_to_show", `${testDate} should return ${shouldReturn} for a
+            ${weekday[testDate.getDay()]}`,  compare_exact, shouldReturn, [testDate, showNextDayAfterHour] );
+    }
+
+    let result = '';
+    result += helper( monday_am, 1 );
+    result += helper( monday_pm, 2 );
+    result += helper( tuesday_am, 2 );
+    result += helper( tuesday_pm, 3 );
+    result += helper( wednesday_am, 3 );
+    result += helper( wednesday_pm, 4 );
+    result += helper( thursday_am, 4 );
+    result += helper( thursday_pm, 5 );
+    result += helper( friday_am, 5 );
+    result += helper( friday_pm, 1 );
+    result += helper( saturday_am, 1 );
+    result += helper( saturday_pm, 1 );
+    result += helper( sunday_am, 1 );
+    result += helper( sunday_pm, 1 );
     return result;
 }
 
@@ -759,6 +784,7 @@ function seconds_from_string_unit_test(){
     result += run_unit_test( "seconds_from_string", 'now-26h is -93600',  compare_with_stringify, -93600, ['now-26h', date ] );
     result += run_unit_test( "seconds_from_string", '10:10',  compare_exact, '10:10' , ['10:10', date] );
     result += run_unit_test( "seconds_from_string", '24:10',  compare_exact, '24:10' , ['24:10', date] );
+    clock.adjust_current_time_by(0); // reset clock for future tests
     return result;
 }
 
