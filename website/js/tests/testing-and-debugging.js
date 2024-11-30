@@ -483,7 +483,7 @@ function build_boys_time_table_for_ui_unit_test(){
     date = new Date("2024-11-11T15:00:01.000Z");
     clock.set_new_date_to(date);
     expectedResult = `<div class="row">
-                                      <div class="row col-12 pl-4 border-bottom"><h3>Tuesday</h3></div>
+                                      <div class="row col-12 pl-4 border-bottom"><h3>Tuesday (tomorrow)</h3></div>
                                       <div id="Melkam" class="col">
                                           <h3 class="text-success">Melkam</h3>
                                           <div class="row pl-3 pb-2 mb-2 border-bottom text-success">Week A</div>
@@ -632,41 +632,28 @@ function build_html_for_classes_unit_test(){
 
 function time_table_day_to_show_test(){
     let showNextDayAfterHour = 15;
-    let monday_am    = new Date("2024-09-30T07:00:00.000Z");
-    let monday_pm    = new Date("2024-09-30T14:00:00.000Z");
-    let tuesday_am   = new Date("2024-10-01T07:00:00.000Z");
-    let tuesday_pm   = new Date("2024-10-01T14:00:00.000Z");
-    let wednesday_am = new Date("2024-10-02T07:00:00.000Z");
-    let wednesday_pm = new Date("2024-10-02T14:00:00.000Z");
-    let thursday_am  = new Date("2024-10-03T07:00:00.000Z");
-    let thursday_pm  = new Date("2024-10-03T14:00:00.000Z");
-    let friday_am    = new Date("2024-10-04T07:00:00.000Z");
-    let friday_pm    = new Date("2024-10-04T14:00:00.000Z");
-    let saturday_am  = new Date("2024-10-05T07:00:00.000Z");
-    let saturday_pm  = new Date("2024-10-05T14:00:00.000Z");
-    let sunday_am    = new Date("2024-10-06T07:00:00.000Z");
-    let sunday_pm    = new Date("2024-10-06T14:00:00.000Z");
 
-    function helper( testDate, shouldReturn){
-        return run_unit_test( "time_table_day_to_show", `${testDate} should return ${shouldReturn} for a
-            ${weekday[testDate.getDay()]}`,  compare_exact, shouldReturn, [testDate, showNextDayAfterHour] );
+    function helper( testDate, showNextSchoolDay, shouldReturn){
+        return run_unit_test( "time_table_day_to_show", `${weekday[testDate]} should return ${weekday[shouldReturn]}
+        if after school=${showNextSchoolDay}`,  compare_exact, shouldReturn, [testDate, showNextSchoolDay, showNextDayAfterHour] );
     }
 
     let result = '';
-    result += helper( monday_am, 1 );
-    result += helper( monday_pm, 2 );
-    result += helper( tuesday_am, 2 );
-    result += helper( tuesday_pm, 3 );
-    result += helper( wednesday_am, 3 );
-    result += helper( wednesday_pm, 4 );
-    result += helper( thursday_am, 4 );
-    result += helper( thursday_pm, 5 );
-    result += helper( friday_am, 5 );
-    result += helper( friday_pm, 1 );
-    result += helper( saturday_am, 1 );
-    result += helper( saturday_pm, 1 );
-    result += helper( sunday_am, 1 );
-    result += helper( sunday_pm, 1 );
+    result += helper( 1, false, 1 );
+    result += helper( 2, false, 2 );
+    result += helper( 3, false, 3 );
+    result += helper( 4, false, 4 );
+    result += helper( 5, false, 5 );
+    result += helper( 6, false, 1 );
+    result += helper( 0, false, 1 );
+
+    result += helper( 1, true, 2 );
+    result += helper( 2, true, 3 );
+    result += helper( 3, true, 4 );
+    result += helper( 4, true, 5 );
+    result += helper( 5, true, 1 );
+    result += helper( 6, true, 1 );
+    result += helper( 0, true, 1 );
     return result;
 }
 
