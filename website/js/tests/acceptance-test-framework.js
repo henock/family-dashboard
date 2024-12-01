@@ -1,6 +1,6 @@
 
 
-// Using this one as I dont want JQuery as part of my test suite
+// Using this one as I don't want JQuery as part of my test suite
 function getRemoteDataSimple( urlToGet ){
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", urlToGet, false ); // false for synchronous request

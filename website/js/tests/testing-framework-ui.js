@@ -52,20 +52,21 @@ function buildHtmlForTestGroup(result, hasFailedTests){
 
 function toggleToTextArea(event){
     const buttonId = event.id;
-    const button = document.getElementById("button-" +buttonId );
+    const button = document.getElementById( buttonId );
     const id = buttonId.substr("button-".length);
-    alert( buttonId);
-    alert( button);
-    if("false" === button.isToggledOn ){
+    const isToggledOn = button.getAttribute('istoggledon'); // seems to get changed to lowercase
+    if("false" === isToggledOn ){
         document.getElementById("expected-" + id ).classList.add('d-none');
         document.getElementById("actual-" + id ).classList.add('d-none');
         document.getElementById("text-area-expected-" + id ).classList.remove('d-none');
         document.getElementById("text-area-actual-" + id ).classList.remove('d-none');
+        button.setAttribute("istoggledon", "true");
     }else{
         document.getElementById("text-area-expected-" + id ).classList.add('d-none');
         document.getElementById("text-area-actual-" + id ).classList.add('d-none');
         document.getElementById("expected-" + id ).classList.remove('d-none');
         document.getElementById("actual-" + id ).classList.remove('d-none');
+        button.setAttribute("istoggledon", "false");
     }
 }
 

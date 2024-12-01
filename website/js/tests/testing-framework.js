@@ -12,7 +12,6 @@ function compareHtmlAndVisualise( a, b ){
     }
 }
 
-
 function dateTimeComparatorInsensitive(a, b){
     return dateTimeComparatorActual(a, b, true);
 }
